@@ -1,0 +1,4 @@
+include *.txt
+recursive-include cython *.pyx
+recursive-include cython *.c
+recursive-include cython *.h
