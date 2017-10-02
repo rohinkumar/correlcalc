@@ -2324,7 +2324,7 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
  *     cdef double dec2=y[2]
  *     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)             # <<<<<<<<<<<<<<
  *     res= s1*s1+s2*s2-2.0*s1*s2*c1*c2*costheta-K*s1*s1*s2*s2*sqrt(1.0+costheta*costheta)
- *     return res
+ *     return res*20408.1633
  */
   __pyx_v_costheta = ((sin(__pyx_v_dec1) * sin(__pyx_v_dec2)) + ((cos(__pyx_v_dec1) * cos(__pyx_v_dec2)) * cos((__pyx_v_ra1 - __pyx_v_ra2))));
 
@@ -2332,7 +2332,7 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
  *     cdef double dec2=y[2]
  *     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)
  *     res= s1*s1+s2*s2-2.0*s1*s2*c1*c2*costheta-K*s1*s1*s2*s2*sqrt(1.0+costheta*costheta)             # <<<<<<<<<<<<<<
- *     return res
+ *     return res*20408.1633
  * 
  */
   __pyx_v_res = ((((__pyx_v_s1 * __pyx_v_s1) + (__pyx_v_s2 * __pyx_v_s2)) - (((((2.0 * __pyx_v_s1) * __pyx_v_s2) * __pyx_v_c1) * __pyx_v_c2) * __pyx_v_costheta)) - (((((__pyx_v_K * __pyx_v_s1) * __pyx_v_s1) * __pyx_v_s2) * __pyx_v_s2) * sqrt((1.0 + (__pyx_v_costheta * __pyx_v_costheta)))));
@@ -2340,12 +2340,12 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
   /* "metrics.pyx":28
  *     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)
  *     res= s1*s1+s2*s2-2.0*s1*s2*c1*c2*costheta-K*s1*s1*s2*s2*sqrt(1.0+costheta*costheta)
- *     return res             # <<<<<<<<<<<<<<
+ *     return res*20408.1633             # <<<<<<<<<<<<<<
  * 
  * def closedistsq (double[:] x, double[:] y):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_10 = PyFloat_FromDouble(__pyx_v_res); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_t_10 = PyFloat_FromDouble((__pyx_v_res * 20408.1633)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __pyx_r = __pyx_t_10;
   __pyx_t_10 = 0;
@@ -2373,7 +2373,7 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
 }
 
 /* "metrics.pyx":30
- *     return res
+ *     return res*20408.1633
  * 
  * def closedistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     cdef double res = 0.0
@@ -2643,7 +2643,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
  *     cdef double dec2=y[2]
  *     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)             # <<<<<<<<<<<<<<
  *     res= s1*s1+s2*s2-2.0*s1*s2*c1*c2*costheta-K*s1*s1*s2*s2*sqrt(1.0+costheta*costheta)
- *     return res
+ *     return res*20408.1633
  */
   __pyx_v_costheta = ((sin(__pyx_v_dec1) * sin(__pyx_v_dec2)) + ((cos(__pyx_v_dec1) * cos(__pyx_v_dec2)) * cos((__pyx_v_ra1 - __pyx_v_ra2))));
 
@@ -2651,24 +2651,24 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
  *     cdef double dec2=y[2]
  *     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)
  *     res= s1*s1+s2*s2-2.0*s1*s2*c1*c2*costheta-K*s1*s1*s2*s2*sqrt(1.0+costheta*costheta)             # <<<<<<<<<<<<<<
- *     return res
+ *     return res*20408.1633
  */
   __pyx_v_res = ((((__pyx_v_s1 * __pyx_v_s1) + (__pyx_v_s2 * __pyx_v_s2)) - (((((2.0 * __pyx_v_s1) * __pyx_v_s2) * __pyx_v_c1) * __pyx_v_c2) * __pyx_v_costheta)) - (((((__pyx_v_K * __pyx_v_s1) * __pyx_v_s1) * __pyx_v_s2) * __pyx_v_s2) * sqrt((1.0 + (__pyx_v_costheta * __pyx_v_costheta)))));
 
   /* "metrics.pyx":43
  *     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)
  *     res= s1*s1+s2*s2-2.0*s1*s2*c1*c2*costheta-K*s1*s1*s2*s2*sqrt(1.0+costheta*costheta)
- *     return res             # <<<<<<<<<<<<<<
+ *     return res*20408.1633             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_10 = PyFloat_FromDouble(__pyx_v_res); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_10 = PyFloat_FromDouble((__pyx_v_res * 20408.1633)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __pyx_r = __pyx_t_10;
   __pyx_t_10 = 0;
   goto __pyx_L0;
 
   /* "metrics.pyx":30
- *     return res
+ *     return res*20408.1633
  * 
  * def closedistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     cdef double res = 0.0
@@ -16472,7 +16472,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(2, 0, 13, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_metrics_pyx, __pyx_n_s_opendistsq, 15, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 15, __pyx_L1_error)
 
   /* "metrics.pyx":30
- *     return res
+ *     return res*20408.1633
  * 
  * def closedistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     cdef double res = 0.0
@@ -16723,7 +16723,7 @@ PyMODINIT_FUNC PyInit_metrics(void)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "metrics.pyx":30
- *     return res
+ *     return res*20408.1633
  * 
  * def closedistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     cdef double res = 0.0

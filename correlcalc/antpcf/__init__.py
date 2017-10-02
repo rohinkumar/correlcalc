@@ -1,2 +1,0 @@
-def blah():
-    print "blah!"

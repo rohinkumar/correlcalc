@@ -15,21 +15,21 @@ cmdclass = { }
 ext_modules = []
 
 if use_cython:
-    ext_modules += [Extension("correlcalc.metrics", [ "cython/metrics.pyx" ]),
+    ext_modules += [Extension("correlcalc.metrics", [ "metrics/metrics.pyx" ]),
                                         ]
     cmdclass.update({ 'build_ext': build_ext })
 else:
-    ext_modules += [Extension("correlcalc.metrics", [ "cython/metrics.c" ]),
+    ext_modules += [Extension("correlcalc.metrics", [ "metrics/metrics.c" ]),
                                                 ]
 setup(
     name='correlcalc',
-    version='0.922',
+    version='0.945',
     description='Two-point correlation function (2pCF) calculation',
     url='http://github.com/rohinkumar/correlcalc',
     author='Rohin Kumar Y',
     author_email='yrohinkumar@gmail.com',
     license='MIT',
-    packages=['correlcalc'],
+    packages=['correlcalc','correlcalc.metrics'],
     install_requires=['numpy','scipy','astropy','cython','tqdm','matplotlib','pymangle'],
     cmdclass = cmdclass,
     ext_modules=ext_modules,
