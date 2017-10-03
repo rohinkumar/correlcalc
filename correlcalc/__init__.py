@@ -1,4 +1,4 @@
-__author__ 'Rohin Kumar Y'
+__author__ = 'Rohin Kumar Y'
 #import numpy as np
 #import math as m
 #from scipy import integrate

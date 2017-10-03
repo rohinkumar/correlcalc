@@ -1,4 +1,4 @@
-__author__ 'Rohin Kumar Y'
+__author__ = 'Rohin Kumar Y'
 from scipy import integrate
 import numpy as np 
 import math as m
@@ -21,6 +21,7 @@ def DC_LC(z):
 
 def comov(z,model='lcdm'):
     if model='lcdm':
+        DC_LCDM=np.vectorize(DC_LCDM)
         return DC_LCDM(z)
     else if model='lc':
         return DC_LC(z)

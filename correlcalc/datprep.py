@@ -1,13 +1,15 @@
-__author__ 'Rohin Kumar Y'
+__author__ = 'Rohin Kumar Y'
 import numpy as np
-import fileios
-import comovdist
+from fileios import *
+from genrand import *
+from comovdist import *
 from math import pi
 #calculate comoving distances and convert to 3xN np array
 #comov(z,**kwargs)
 #**kwargs 'lcdm', 'lc' model
 
-def datprep(filename,model):
+def datprep(ftype,model):
+    filename=inputfiles(ftype)
     data=ascii.read(filename)
     z=np.array(data['z'])
     ra=np.array(data['ra'])
@@ -19,3 +21,13 @@ def datprep(filename,model):
     dat.reshape(3,len(data))
     dat=dat.transpose()
     return dat
+
+def randcatprep(z,randcatsize,model):
+    maskfile=inputmaskfile()
+    z=randz(z,randcatsize)
+    rar,decr=randang(maskfile,randcatsize)
+    s=comov(z,model)
+    datR=np.array([s,rar,decr])
+    datR.reshape(3,len(data))
+    datR=datR.transpose()
+    return datR
