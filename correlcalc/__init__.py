@@ -12,6 +12,9 @@ global Ol
 #global randpath
 #global maskpath
 
+from .tpcf import *
+from .antpcf import *
+from .datprep import *
 #try:
 #    from correlcalc.metrics import *
 #except ImportError:
