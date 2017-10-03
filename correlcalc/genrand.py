@@ -1,7 +1,6 @@
 __author__ = 'Rohin Kumar Y'
 from scipy.stats import gaussian_kde
 import numpy as np
-import pymangle
 from fileios import *
 
 def kde(x, x_grid, bandwidth=0.2, **kwargs):
@@ -18,12 +17,11 @@ def generate_rand_from_pdf(pdf, x_grid, N):
     return random_from_cdf
 
 def randang(maskfile,randcatsize):
-    maskfile=checkmaskfile(maskfile)
-    mangle=pymangle.Mangle(maskfile)
+    mangle=readmaskfile(maskfile)
     rar,decr=mangle.genrand(randcatsize)
     return rar,decr
 
 def randz(z,randcatsize):
-    x_grid=[z.min(),z.max()]#check  nb file
-    pdf=kde(z,x_grid)#check  nb file
+    x_grid=np.linspace(min(z),max(z),randcatsize)#check  nb file
+    pdf=kde(z,x_grid,bandwidth=1e-3)#check  nb file#,bandwidth=0.01
     return generate_rand_from_pdf(pdf, x_grid, randcatsize)

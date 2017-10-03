@@ -1,42 +1,48 @@
+from __future__ import division
 #Samsiddhir Haritoshanam!
 __author__ = 'Rohin Kumar Y'
+
 #tpcf(dat, datR=None, randcatsize=2, bins,**kwargs)
 #
 #**kwargs for choosing geometry - metric 'flat' 'open' 'close'
 #**kwargs for choosing xi method - 'simple' 'ls' '...'
 #import fileios
 from tqdm import *
-from dataprep import *
+from datprep import *
 import numpy as np
+from metrics import *
 from sklearn.neighbors import BallTree
-from __future__ import divison
 
-def tpcf(dat, datR, randcatfact=2, bins, **kwargs):
-    print "Calculating DD..."
+
+def tpcf(dat, datR, randcatfact, bins, metric, method,**kwargs):
+    print ("Calculating DD...")
     DD=autocorr(dat,bins,metric)
-    print DD
-    if datR==None:
+    print (DD)
+    if len(datR)==0:
         randcatsize=randcatfact*len(dat)
         datR=randcatprep(z,randcatsize,model)
-    print "Calculating DR..."
+    print ("Calculating DR...")
     DR=crosscorr(dat,datR,bins,metric)
-    print DR
-    print "Calculating RR..."
+    print (DR)
+    print ("Calculating RR...")
     RR=autocorr(datR,bins,metric)
-    print RR
+    print (RR)
 
-    print "Calculating 2pCF with Poisson error"
+    print ("Calculating 2pCF with Poisson error")
+
+    RR[RR==0]=1.0
+    DD[DD==0]=1.0
 
     Nrd=len(datR)
     N=len(dat)
     f=(1.0*Nrd)/N
-    if method='ls':
+    if method=='ls':
         correl=1.0+f**2*DD/RR-2.0*f*DR/RR
-    else if method='simple':
+    elif method=='simple':
         correl=f**2*DD/RR-1.0
 
     correlerr = poserr(correl,DD)
-
+    print (correl, correlerr)
     return correl, correlerr
 
 def autocorr(dat,bins,metric):

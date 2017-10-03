@@ -1,40 +1,43 @@
 __author__ = 'Rohin Kumar Y'
 import os
 import astropy.io.ascii as ascii
+import pymangle
 
-def checkdatfile(filename):
+def readinfile(filename,ftype):
     if os.path.isfile(filename):
         dat=ascii.read(filename)
         cols=['z','ra','dec']
-        if all(x in dat.colnames for x in cols):
-            return filename
+        colnames=[]
+        for x in dat.colnames:
+            colnames.append(x.lower())
+        if all(x in colnames for x in cols):
+            if ftype=='data':
+                print ("Entered data ascii file")
+                print (dat)
+                return dat
+            elif ftype== 'random':
+                print ("Entered random ascii file")
+                print (dat)
+                return dat
+            else:
+                print ("Please provide the file as 'data' or 'random'")
+                return None
         else:
-            print "File should contain columns named 'z', 'ra' and 'dec'"
+            print "File should contain columns named 'z', 'ra' and 'dec'. Column names in your ascii file are"
+            print(colnames)
             return None
     else:
         print "Invalid File Path, File Doesn't exist"
         return None
 
-def inputfiles(ftype):
-    if ftype=='data':
-        filename=input("Enter ascii data file path:")
-        print filename
-        filename=checkdatfile(filename)
-    if ftype=='random':
-        filename=input("Enter random ascii file path:")
-        filename=checkdatfile(filename)
-    else:
-        print "Some problem with your file?"
-        filename=None
-    return filename
-
-def inputmaskfile():
-    maskfile=raw_input("Please provide mangle mask file:")
-    if os.path.isfile(maskfile):
-        if filename.lower().endswith('.ply'):
-            return maskfile
+def readmaskfile(fname):
+    if os.path.isfile(fname):
+        if fname.lower().endswith('.ply'):
+            mangle=pymangle.Mangle(fname)
+            print(mangle)
+            return mangle
         else:
-            print "Provide mask file with .ply extension"
+            print "Please provide mangle polygon file with .ply extension"
             return None
     else:
         print "Invalid File Path, File Doesn't exist"
