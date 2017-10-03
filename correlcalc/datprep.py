@@ -8,7 +8,7 @@ from math import pi
 #comov(z,**kwargs)
 #**kwargs 'lcdm', 'lc' model
 
-def datprep(fname,ftype,model):
+def datprep (fname,ftype,model):
     """Method to convert input ascii files into 3xN matrices needed for metric distance calculations. Calculates comoving distances as per input model."""
     data=readinfile(fname,ftype)
     for x in data.colnames:
@@ -19,7 +19,7 @@ def datprep(fname,ftype,model):
         elif x.lower()=='dec':
             dec=np.array(data[x])
         else:
-            print("Some problem with your file?")
+            pass
     s=comov(z,model)
     rar=ra*pi/180.0
     decr=dec*pi/180.0
@@ -30,13 +30,23 @@ def datprep(fname,ftype,model):
     #print(dat)
     return dat
 
-def randcatprep(z,randcatsize,model):
+
+def randcatprep(datfname,randcatsize,maskfile,model):
     """Method to generate random catalog from mangle mask and input redshift distribution"""
-    z=randz(z,randcatsize)
-    rar,decr=randang(maskfile,randcatsize)
-    s=comov(z,model)
+    print("Generating random catalog of %d size in file randcat.dat... "%randcatsize)
+    data=readinfile(datfname,'internal')
+    for x in data.colnames:
+        if x.lower()=='z':
+            z=np.array(data[x])
+    zr=randz(z,randcatsize)
+    ra,dec=randang(maskfile,randcatsize)
+    rar=ra*pi/180.0
+    decr=dec*pi/180.0
+    rcatfname="randcat.dat"#%(datfname)
+    storerandcat(z,rar,decr,rcatfname)
+    s=comov(zr,model)
     datR=np.array([s,rar,decr])
-    datR.reshape(3,len(data))
+    datR.reshape(3,len(zr))
     datR=datR.transpose()
-    print(datR)
+    #print(datR)
     return datR

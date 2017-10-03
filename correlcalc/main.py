@@ -28,10 +28,13 @@ from datvis import *
 from metrics import *
 from tpcf import *
 #dat=readinfile('./testfile.dat','data')
-dat=datprep('./testfile.dat','data','lcdm')
+#dat=datprep('./testfile.dat','data','lcdm')
 from antpcf import *
-bins=np.arange(0,0.201,0.01)
-tpcf(dat,dat,3,bins,flatdistsq,'ls')
+bins=np.arange(0.002,0.082,0.002)
+#tpcf('./testfile.dat',bins,randfile='./testfile.dat',method='ls')
+tpcf('./testfile.dat',bins,mask='/Users/rohin/Documents/ipy_notebooks/galsurveystudy/masks/boss_geometry_2011_06_10.ply',cosmology='lc',method='ls')
+#bins=np.arange(0,0.201,0.01)
+#tpcf(dat,dat,3,bins,flatdistsq,'ls')
 #antpcf(dat,dat,bins,flatdistsq,flatdistsq,'ls')
 #z=np.array(dat['Z'])
 #ra=np.array(dat['ra'])

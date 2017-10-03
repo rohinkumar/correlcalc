@@ -19,6 +19,8 @@ def readinfile(filename,ftype):
                 print ("Entered random ascii file")
                 print (dat)
                 return dat
+            elif ftype== 'internal':
+                return dat
             else:
                 print ("Please provide the file as 'data' or 'random'")
                 return None
@@ -42,3 +44,11 @@ def readmaskfile(fname):
     else:
         print "Invalid File Path, File Doesn't exist"
         return None
+
+def storerandcat(z,ra,dec,rcatname):
+    fobj = open(rcatname,'w')
+    fobj.write("z\t ra\t dec\n ")
+    for i in range(0,len(z)):
+        fobj.write("%f\t " %z[i])
+        fobj.write("%f\t %f\n " %(ra[i],dec[i]))
+    fobj.close()
