@@ -9,6 +9,7 @@ def kde(x, x_grid, bandwidth=0.2, **kwargs):
     return kde.evaluate(x_grid)
 
 def generate_rand_from_pdf(pdf, x_grid, N):
+    """Method to generate 'N' no. of random numbers from input probability distribution function (pdf) in form of kernel density"""
     cdf = np.cumsum(pdf)
     cdf = cdf / cdf[-1]
     values = np.random.rand(N)
@@ -17,11 +18,13 @@ def generate_rand_from_pdf(pdf, x_grid, N):
     return random_from_cdf
 
 def randang(maskfile,randcatsize):
+    """Method to calculate RA and DEC from mangle .ply file"""
     mangle=readmaskfile(maskfile)
     rar,decr=mangle.genrand(randcatsize)
     return rar,decr
 
 def randz(z,randcatsize):
-    x_grid=np.linspace(min(z),max(z),randcatsize)#check  nb file
-    pdf=kde(z,x_grid,bandwidth=1e-3)#check  nb file#,bandwidth=0.01
+    """Method to calculate random redshift values from input redshift distribution"""
+    x_grid=np.linspace(min(z),max(z),randcatsize)
+    pdf=kde(z,x_grid,bandwidth=1e-3)
     return generate_rand_from_pdf(pdf, x_grid, randcatsize)

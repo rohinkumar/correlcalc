@@ -15,8 +15,7 @@ from sklearn.neighbors import BallTree
 
 
 def tpcf(datfile, bins, **kwargs):
-    """Main function to calculate 2pCF"""
-
+    """Main function to calculate 2pCF. Takes multiple arguments such as randfile, maskfile, calculation method etc. for different geometry, cosmology models"""
     #Default function arguments
     cosmology='lcdm'
     geometry='flat'
@@ -181,8 +180,8 @@ def autocorr(dat,bins,metric):
     return DD
 
 def crosscorr(dat,datR,bins,metric,**kwargs):
-    bt=BallTree(dat,metric='pyfunc',func=metric)
-    counts_DR=bt.two_point_correlation(datR,bins)
+    rbt=BallTree(datR,metric='pyfunc',func=metric)
+    counts_DR=rbt.two_point_correlation(dat,bins)
     DR=np.diff(counts_DR)
     return DR
 

@@ -27,7 +27,7 @@
 # x = get_filename('TEMPLATE')
 # print(x)
 # -*- coding: utf-8 -*-
-"""Examples for halo.
+"""To add test methods.
 """
 # from time import sleep
 # from halo import Halo

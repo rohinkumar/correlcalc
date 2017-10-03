@@ -4,6 +4,7 @@ import astropy.io.ascii as ascii
 import pymangle
 
 def readinfile(filename,ftype):
+    """Method to run basic checks on input data/random files and return contents"""
     if os.path.isfile(filename):
         dat=ascii.read(filename)
         cols=['z','ra','dec']
@@ -33,6 +34,7 @@ def readinfile(filename,ftype):
         return None
 
 def readmaskfile(fname):
+    """Basic checks for mangle ply file. Returns mangle object"""
     if os.path.isfile(fname):
         if fname.lower().endswith('.ply'):
             mangle=pymangle.Mangle(fname)
@@ -46,6 +48,7 @@ def readmaskfile(fname):
         return None
 
 def storerandcat(z,ra,dec,rcatname):
+    """Create random catalog file to store generated random catalog from randcatprep method"""
     fobj = open(rcatname,'w')
     fobj.write("z\t ra\t dec\n ")
     for i in range(0,len(z)):

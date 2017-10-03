@@ -32,7 +32,7 @@ def datprep (fname,ftype,model):
 
 
 def randcatprep(datfname,randcatsize,maskfile,model):
-    """Method to generate random catalog from mangle mask and input redshift distribution"""
+    """Method to generate random catalog from mangle mask and input redshift distribution for given cosmology"""
     print("Generating random catalog of %d size in file randcat.dat... "%randcatsize)
     data=readinfile(datfname,'internal')
     for x in data.colnames:
