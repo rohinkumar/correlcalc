@@ -9,9 +9,6 @@ def atpcf(datfile, bins, **kwargs):
     """Main function to calculate anisotropic 2pCF. Takes multiple arguments such as randfile, maskfile, calculation method etc. for different geometry, cosmology models"""
     #Default function arguments
     rng=np.array([[min(bins), max(bins)], [min(bins), max(bins)]])
-    dd=np.zeros(len(bins),len(bins))
-    dr=np.zeros(len(bins),len(bins))
-    rr=np.zeros(len(bins),len(bins))
     cosmology='lcdm'
     #geometry='flat'
     metric=flatdistsq
@@ -23,7 +20,7 @@ def atpcf(datfile, bins, **kwargs):
 
     #Options for correl calculation methods and cosmology models
     mlist=['dp','ls','ph','hew','h']
-    clist=['lcdm','lc']
+    clist=['lcdm','lc']#to add wcdm
 
     if kwargs is not None:
         for key, value in kwargs.iteritems():
@@ -36,26 +33,26 @@ def atpcf(datfile, bins, **kwargs):
 
             elif key.lower()=='parmetric':
                 if value.lower()=='apdz':
-                    #metric='APdz'
                     parmetric=APdz
-                elif value.lower()=='spar':
-                    #metric='spar'
-                    parmetric=spar
-                elif value.lower()=='s':
-                    #geometry='close'
-                    parmetric=s
+                    #metric='APdz'
+                # elif value.lower()=='spar':
+                #     #metric='spar'
+                #     parmetric=spar
+                # elif value.lower()=='s':
+                #     #geometry='close'
+                #     parmetric=s
                 else:
                     print("Incorrect parallel metric argument provided!")
             elif key.lower()=='permetric':
-                if value.lower()=='apdth':
-                    #geometry='flat'
+                if value.lower()=='apzdth':
                     permetric=APzdth
-                elif value.lower()=='sper':
-                    #geometry='open'
-                    permetric=sper
-                elif value.lower()=='mu':
-                    #geometry='close'
-                    permetric=mu
+                    #geometry='flat'
+                # elif value.lower()=='sper':
+                #     #geometry='open'
+                #     permetric=sper
+                # elif value.lower()=='mu':
+                #     #geometry='close'
+                #     permetric=mu
                 else:
                     print("Incorrect perpendicular metric provided!")
 
@@ -109,7 +106,7 @@ def atpcf(datfile, bins, **kwargs):
         datR=datprep(randfile,'random',cosmology)
 
     #Nr=len(datR)
-    print ("Calculating 2pCF...")
+    print ("Calculating anisotropic 2pCF...")
 
     #f=(1.0*Nrd)/N
 
@@ -117,43 +114,44 @@ def atpcf(datfile, bins, **kwargs):
 
     if method=='ls':
         print ("Using Landy-Szalay method")
-        DD=aDDcalc(dat,binsq,metric)
-        RR=aRRcalc(datR,binsq,metric)
-        DR=aDRcalc(dat,datR,binsq,metric)
+        DD=aDDcalc(dat,binsq,parmetric,permetric,rng)
+        RR=aRRcalc(datR,binsq,parmetric,permetric,rng)
+        DR=aDRcalc(dat,datR,binsq,parmetric,permetric,rng)
         correl=1.0+(DD-2.0*DR)/RR
 
     elif method=='ph':
         print ("Using Peebles-Hauser method")
-        DD=aDDcalc(dat,binsq,metric)
-        RR=aRRcalc(datR,binsq,metric)
+        DD=aDDcalc(dat,binsq,parmetric,permetric,rng)
+        RR=aRRcalc(datR,binsq,parmetric,permetric,rng)
         correl=(DD/RR)-1.0
 
     elif method=='hew':
         print ("Using Hewett method")
-        DD=aDDcalc(dat,binsq,metric)
-        RR=aRRcalc(datR,binsq,metric)
-        DR=aDRcalc(dat,datR,binsq,metric)
+        DD=aDDcalc(dat,binsq,parmetric,permetric,rng)
+        RR=aRRcalc(datR,binsq,parmetric,permetric,rng)
+        DR=aDRcalc(dat,datR,binsq,parmetric,permetric,rng)
         correl=(DD-DR)/RR
 
     elif method=='dp':
         print ("Using Davis-Peebles method")
-        DD=aDDcalc(dat,binsq,metric)
-        DR=aDRcalc(dat,datR,binsq,metric)
+        DD=aDDcalc(dat,binsq,parmetric,permetric,rng)
+        DR=aDRcalc(dat,datR,binsq,parmetric,permetric,rng)
         correl=(DD/DR)-1.0
 
     elif method=='h':
         print ("Using Hamilton method")
-        DD=aDDcalc(dat,binsq,metric)
-        RR=aRRcalc(datR,binsq,metric)
+        DD=aDDcalc(dat,binsq,parmetric,permetric,rng)
+        RR=aRRcalc(datR,binsq,parmetric,permetric,rng)
         correl=(DD*RR)/DR**2 - 1.0
 
-    correlerr = poserr(correl,DD)
+    correlerr = poserr(correl,DD*(Nd*(Nd-1.0))*0.5)
     print("Two-point correlation=")
     print (correl, correlerr)
     return correl, correlerr
 
-def aDDcalc(dat,bins,metric):
+def aDDcalc(dat,bins,parmetric,permetric,rng):
     print "Calculating anisotropic DD...\n DD="
+    dd=np.zeros((len(bins)-1,len(bins)-1))
     ddbt=BallTree(dat,metric='pyfunc',func=permetric)
     for i in tqdm(xrange(len(dat))):
         ind=ddbt.query_radius(dat[i].reshape(1,-1),max(bins))
@@ -167,8 +165,9 @@ def aDDcalc(dat,bins,metric):
     print (DD)
     return DD
 
-def aRRcalc(datR,bins,metric):
+def aRRcalc(datR,bins,parmetric,permetric,rng):
     print ("Calculating anisotropic RR...\n RR=")
+    rr=np.zeros((len(bins)-1,len(bins)-1))
     rrbt=BallTree(datR,metric='pyfunc',func=permetric)
     for i in tqdm(xrange(len(datR))):
         ind=rrbt.query_radius(datR[i].reshape(1,-1),max(bins))
@@ -182,8 +181,10 @@ def aRRcalc(datR,bins,metric):
     print (RR)
     return RR
 
-def aDRcalc(dat,datR,bins,metric):
+def aDRcalc(dat,datR,bins,parmetric,permetric,rng):
     print ("Calculating anisotropic DR...\n DR=")
+    dr=np.zeros((len(bins)-1,len(bins)-1))
+    rrbt=BallTree(datR,metric='pyfunc',func=permetric)
     for i in tqdm(xrange(len(dat))):
         ind=rrbt.query_radius(dat[i].reshape(1,-1),max(bins))
         for j in ind:
@@ -198,54 +199,54 @@ def aDRcalc(dat,datR,bins,metric):
     return DR
 
 
-def antpcf(dat,datR,bins,parmetric,permetric,method,**kwargs):
-    rng=np.array([[min(bins), max(bins)], [min(bins), max(bins)]])
-    print "Calculating anisotropic DD..."
-    dd=np.zeros((len(bins),len(bins))
-    ddbt=BallTree(dat,metric='pyfunc',func=permetric)
-    for i in tqdm(xrange(len(dat))):
-        ind=ddbt.query_radius(dat[i].reshape(1,-1),max(bins))
-        for j in ind:
-            dist0=dist.cdist([dat[i],],dat[j],parmetric)[0]
-            dist1=dist.cdist([dat[i],],dat[j],permetric)[0]
-            dd+=np.histogram2d(dist0, dist1,range=rng,bins=(bins,bins))[0]
-    print dd
-
-    print "Calculating anisotropic RR..."
-    rr=np.zeros((len(bins),len(bins)))
-    rrbt=BallTree(datR,metric='pyfunc',func=permetric)
-    for i in tqdm(xrange(len(datR))):
-        ind=rrbt.query_radius(datR[i].reshape(1,-1),max(bins))
-        for j in ind:
-            dist0=dist.cdist([datR[i],],datR[j],parmetric)[0]
-            dist1=dist.cdist([datR[i],],datR[j],permetric)[0]
-            rr+=np.histogram2d(dist0, dist1,range=rng,bins=(bins,bins))[0]
-    print rr
-
-    print "Calculating anisotropic DR..."
-    dr=np.zeros((len(bins),len(bins)))
-    for i in tqdm(xrange(len(dat))):
-        ind=rrbt.query_radius(dat[i].reshape(1,-1),max(bins))
-        for j in ind:
-            dist0=dist.cdist([dat[i],],datR[j],parmetric)[0]
-            dist1=dist.cdist([dat[i],],datR[j],permetric)[0]
-            dr+=np.histogram2d(dist0, dist1,range=rng,bins=(bins,bins))[0]
-    print dr
-
-    print "Calculating anisotropic 2pCF with Poisson error"
-    rr[rr==0]=1.0
-    dd[dd==0]=1.0
-    Nrd=len(datR)
-    N=len(dat)
-    f=(1.0*Nrd)/N
-    if method=='ls':
-        correl=1.0+f**2*dd/rr-2.0*f*dr/rr
-    elif method=='simple':
-        correl=f**2*dd/rr-1.0
-
-    correlerr = poserr(correl,dd)
-    print(correl, correlerr)
-    return correl, correlerr
+# def antpcf(dat,datR,bins,parmetric,permetric,method,**kwargs):
+#     rng=np.array([[min(bins), max(bins)], [min(bins), max(bins)]])
+#     print "Calculating anisotropic DD..."
+#     dd=np.zeros((len(bins),len(bins))
+#     ddbt=BallTree(dat,metric='pyfunc',func=permetric)
+#     for i in tqdm(xrange(len(dat))):
+#         ind=ddbt.query_radius(dat[i].reshape(1,-1),max(bins))
+#         for j in ind:
+#             dist0=dist.cdist([dat[i],],dat[j],parmetric)[0]
+#             dist1=dist.cdist([dat[i],],dat[j],permetric)[0]
+#             dd+=np.histogram2d(dist0, dist1,range=rng,bins=(bins,bins))[0]
+#     print dd
+#
+#     print "Calculating anisotropic RR..."
+#     rr=np.zeros((len(bins),len(bins)))
+#     rrbt=BallTree(datR,metric='pyfunc',func=permetric)
+#     for i in tqdm(xrange(len(datR))):
+#         ind=rrbt.query_radius(datR[i].reshape(1,-1),max(bins))
+#         for j in ind:
+#             dist0=dist.cdist([datR[i],],datR[j],parmetric)[0]
+#             dist1=dist.cdist([datR[i],],datR[j],permetric)[0]
+#             rr+=np.histogram2d(dist0, dist1,range=rng,bins=(bins,bins))[0]
+#     print rr
+#
+#     print "Calculating anisotropic DR..."
+#     dr=np.zeros((len(bins),len(bins)))
+#     for i in tqdm(xrange(len(dat))):
+#         ind=rrbt.query_radius(dat[i].reshape(1,-1),max(bins))
+#         for j in ind:
+#             dist0=dist.cdist([dat[i],],datR[j],parmetric)[0]
+#             dist1=dist.cdist([dat[i],],datR[j],permetric)[0]
+#             dr+=np.histogram2d(dist0, dist1,range=rng,bins=(bins,bins))[0]
+#     print dr
+#
+#     print "Calculating anisotropic 2pCF with Poisson error"
+#     rr[rr==0]=1.0
+#     dd[dd==0]=1.0
+#     Nrd=len(datR)
+#     N=len(dat)
+#     f=(1.0*Nrd)/N
+#     if method=='ls':
+#         correl=1.0+f**2*dd/rr-2.0*f*dr/rr
+#     elif method=='simple':
+#         correl=f**2*dd/rr-1.0
+#
+#     correlerr = poserr(correl,dd)
+#     print(correl, correlerr)
+#     return correl, correlerr
 
 
 #def poserr2d(xi,dd2d):

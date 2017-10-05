@@ -50,3 +50,6 @@
 #
 # rocket_launch()
 
+from antpcf import *
+bins=np.arange(0.01,0.201,0.01)
+atpcf('./testfile.dat',bins,randfile='./testfile.dat',method='ls',permetric='apzdth',parmetric='apdz')

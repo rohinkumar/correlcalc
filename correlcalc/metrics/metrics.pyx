@@ -41,3 +41,9 @@ def closedistsq (double[:] x, double[:] y):
     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)
     res= s1*s1+s2*s2-2.0*s1*s2*c1*c2*costheta-K*s1*s1*s2*s2*sqrt(1.0+costheta*costheta)
     return res*20408.1633
+
+def APzdth(double[:] x, double[:] y):
+    return (x[0]+y[0])*0.5*acos(sin(x[2])*sin(y[2])+cos(x[2])*cos(y[2])*cos(x[1]-y[1]))
+
+def APdz(double[:] x, double[:] y):
+    return abs(x[0]-y[0])

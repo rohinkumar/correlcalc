@@ -69,6 +69,7 @@ from antpcf import *
 #s=DC_LCDM(z)
 #s=comov(z,'lcdm')
 #print s
+#For 2pCF for LCDM model
 from correlcalc import *
 bins=np.arange(0.002,0.082,0.002)
 correldr72=tpcf('/Users/rohin/Downloads/DR7-Full.ascii',bins,mask='/Users/rohin/Documents/ipy_notebooks/galsurveystudy/masks/window.dr72safe0.ply',randfact=2)
@@ -83,4 +84,7 @@ plt.yscale('log')
 plt.xscale('log')
 plt.plot(binMpc[3:],correldr72[0][2:],'ro-')
 plt.show()
-
+#For anisotropic 2pCF
+from antpcf import *
+bins=np.arange(0.01,0.201,0.01)
+atpcf('./testfile.dat',bins,randfile='./testfile.dat',method='ls',permetric='apzdth',parmetric='apdz')
