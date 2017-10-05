@@ -1,5 +1,6 @@
 import healpix_util as hu
 import numpy as np
+import matplotlib.pyplot as plt
 def healpixmap(ra,dec):
     """Method to view/visualize angular distribution of galaxies in terms of healpix maps"""
     NSIDE=512

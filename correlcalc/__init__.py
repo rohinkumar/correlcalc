@@ -16,6 +16,7 @@ from .tpcf import *
 #from .antpcf import *
 from .datprep import *
 from .antpcf import *
+from .datvis import *
 #try:
 #    from correlcalc.metrics import *
 #except ImportError:
