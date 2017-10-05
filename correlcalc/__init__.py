@@ -13,7 +13,7 @@ global Ol
 #global maskpath
 
 from .tpcf import *
-from .antpcf import *
+#from .antpcf import *
 from .datprep import *
 #try:
 #    from correlcalc.metrics import *

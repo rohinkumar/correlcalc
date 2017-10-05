@@ -43,7 +43,7 @@ def randcatprep(datfname,randcatsize,maskfile,model):
     rar=ra*pi/180.0
     decr=dec*pi/180.0
     rcatfname="randcat.dat"#%(datfname)
-    storerandcat(z,rar,decr,rcatfname)
+    storerandcat(zr,rar,decr,rcatfname)
     s=comov(zr,model)
     datR=np.array([s,rar,decr])
     datR.reshape(3,len(zr))

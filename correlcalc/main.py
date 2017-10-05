@@ -30,9 +30,9 @@ from tpcf import *
 #dat=readinfile('./testfile.dat','data')
 #dat=datprep('./testfile.dat','data','lcdm')
 from antpcf import *
-bins=np.arange(0.002,0.082,0.002)
+#bins=np.arange(0.002,0.082,0.002)
 #tpcf('./testfile.dat',bins,randfile='./testfile.dat',method='ls')
-tpcf('./testfile.dat',bins,mask='/Users/rohin/Documents/ipy_notebooks/galsurveystudy/masks/boss_geometry_2011_06_10.ply',cosmology='lc',method='ls')
+#tpcf('./testfile.dat',bins,mask='/Users/rohin/Documents/ipy_notebooks/galsurveystudy/masks/boss_geometry_2011_06_10.ply',cosmology='lc',method='ls')
 #bins=np.arange(0,0.201,0.01)
 #tpcf(dat,dat,3,bins,flatdistsq,'ls')
 #antpcf(dat,dat,bins,flatdistsq,flatdistsq,'ls')
@@ -69,3 +69,18 @@ tpcf('./testfile.dat',bins,mask='/Users/rohin/Documents/ipy_notebooks/galsurveys
 #s=DC_LCDM(z)
 #s=comov(z,'lcdm')
 #print s
+from correlcalc import *
+bins=np.arange(0.002,0.082,0.002)
+correldr72=tpcf('/Users/rohin/Downloads/DR7-Full.ascii',bins,mask='/Users/rohin/Documents/ipy_notebooks/galsurveystudy/masks/window.dr72safe0.ply',randfact=2)
+import matplotlib.pyplot as plt
+binMpc=3000*bins
+plt.plot(binMpc[1:],correldr72[0],'ro-')
+plt.show()
+plt.yscale('log')
+plt.plot(binMpc[4:],correldr72[0][3:],'ro-')
+plt.show()
+plt.yscale('log')
+plt.xscale('log')
+plt.plot(binMpc[3:],correldr72[0][2:],'ro-')
+plt.show()
+

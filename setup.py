@@ -23,7 +23,7 @@ else:
                                                 ]
 setup(
     name='correlcalc',
-    version='0.95',
+    version='0.951rc1',
     description='Two-point correlation function (2pCF) calculation',
     url='http://github.com/rohinkumar/correlcalc',
     author='Rohin Kumar Y',
