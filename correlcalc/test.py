@@ -52,4 +52,4 @@
 
 from antpcf import *
 bins=np.arange(0,0.201,0.01)
-atpcf('/Users/rohin/Downloads/DR7-Full.ascii',bins,randfile='/Users/rohin/Documents/ipy_notebooks/correlcalc-nb/randcat_DR72-2x.dat',permetric='apzdth',parmetric='apdz')
+atpcf('/Users/rohin/Downloads/DR7-Full.ascii',bins,randfile='/Users/rohin/Documents/ipy_notebooks/correlcalc-nb/randcat_DR72-2x.dat',permetric='apzdth',parmetric='apdz',method='ls')
