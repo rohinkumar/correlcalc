@@ -15,6 +15,7 @@ global Ol
 from .tpcf import *
 #from .antpcf import *
 from .datprep import *
+from .antpcf import *
 #try:
 #    from correlcalc.metrics import *
 #except ImportError:
