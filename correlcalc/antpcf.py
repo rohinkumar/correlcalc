@@ -152,7 +152,7 @@ def atpcf(datfile, bins, **kwargs):
 def aDDcalc(dat,bins,parmetric,permetric,rng):
     print "Calculating anisotropic DD...\n DD="
     dd=np.zeros((len(bins)-1,len(bins)-1))
-    ddbt=BallTree(dat,metric='pyfunc',func=parmetric)
+    ddbt=BallTree(dat,metric='pyfunc',func=permetric)
     for i in tqdm(xrange(len(dat))):
         ind=ddbt.query_radius(dat[i].reshape(1,-1),max(bins))
         for j in ind:
@@ -168,7 +168,7 @@ def aDDcalc(dat,bins,parmetric,permetric,rng):
 def aRRcalc(datR,bins,parmetric,permetric,rng):
     print ("Calculating anisotropic RR...\n RR=")
     rr=np.zeros((len(bins)-1,len(bins)-1))
-    rrbt=BallTree(datR,metric='pyfunc',func=parmetric)
+    rrbt=BallTree(datR,metric='pyfunc',func=permetric)
     for i in tqdm(xrange(len(datR))):
         ind=rrbt.query_radius(datR[i].reshape(1,-1),max(bins))
         for j in ind:
@@ -184,7 +184,7 @@ def aRRcalc(datR,bins,parmetric,permetric,rng):
 def aDRcalc(dat,datR,bins,parmetric,permetric,rng):
     print ("Calculating anisotropic DR...\n DR=")
     dr=np.zeros((len(bins)-1,len(bins)-1))
-    rrbt=BallTree(datR,metric='pyfunc',func=parmetric)
+    rrbt=BallTree(datR,metric='pyfunc',func=permetric)
     for i in tqdm(xrange(len(dat))):
         ind=rrbt.query_radius(dat[i].reshape(1,-1),max(bins))
         for j in ind:
