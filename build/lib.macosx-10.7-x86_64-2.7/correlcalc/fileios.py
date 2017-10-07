@@ -12,15 +12,15 @@ def readinfile(filename,ftype):
         for x in dat.colnames:
             colnames.append(x.lower())
         if all(x in colnames for x in cols):
-            if ftype.lower()=='data':
+            if ftype=='data':
                 print ("Entered data ascii file")
                 print (dat)
                 return dat
-            elif ftype.lower()== 'random':
+            elif ftype== 'random':
                 print ("Entered random ascii file")
                 print (dat)
                 return dat
-            elif ftype.lower()== 'internal':
+            elif ftype== 'internal':
                 return dat
             else:
                 print ("Please provide the file as 'data' or 'random'")

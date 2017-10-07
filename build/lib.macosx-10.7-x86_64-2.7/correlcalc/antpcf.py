@@ -1,6 +1,7 @@
 __author__ = 'Rohin Kumar Y'
 #Calculate anisotropic 2pCF
 from tpcf import *
+from scipy.spatial import distance as dist
 #antpcf(dat,datR,bins,parmetric,permetric) returns numpy 2d array DD, RR, DR correl
 #poserr(xi,DD) returns (1.0+xi)/np.sqrt(DD)
 

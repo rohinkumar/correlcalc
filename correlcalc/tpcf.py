@@ -5,29 +5,31 @@ __author__ = 'Rohin Kumar Y'
 #tpcf(dat, datR=None, randcatsize=2, bins,**kwargs)
 #
 #**kwargs for choosing geometry - metric 'flat' 'open' 'close'
-#**kwargs for choosing xi method - 'simple' 'ls' '...'
+#**kwargs for choosing xi estimator - 'simple' 'ls' '...'
 #import fileios
 from tqdm import *
 from datprep import *
 import numpy as np
 from metrics import *
 from sklearn.neighbors import BallTree
+from scipy.spatial import distance as dist
 
 
 def tpcf(datfile, bins, **kwargs):
-    """Main function to calculate 2pCF. Takes multiple arguments such as randfile, maskfile, calculation method etc. for different geometry, cosmology models"""
+    """Main function to calculate 2pCF. Takes multiple arguments such as randfile, maskfile, calculation estimator etc. for different geometry, cosmology models"""
     #Default function arguments
+    weights=np.array([])
     cosmology='lcdm'
     geometry='flat'
     metric=flatdistsq
     randcatfact = 2
-    method='dp'
+    estimator='dp'
     binsq=bins**2
     randfile=None
     maskfile=None
 
-    #Options for correl calculation methods and cosmology models
-    mlist=['dp','ls','ph','hew','h']
+    #Options for correl calculation estimators and cosmology models
+    elist=['dp','ls','ph','hew','h']
     clist=['lcdm','lc']
 
     if kwargs is not None:
@@ -35,10 +37,8 @@ def tpcf(datfile, bins, **kwargs):
             #print (key, value)
             if key.lower()=='randfile':
                 randfile=value
-
             elif key.lower()=='randfact':
                 randcatfact=value
-
             elif key.lower()=='geometry':
                 if value.lower()=='flat':
                     geometry='flat'
@@ -51,12 +51,11 @@ def tpcf(datfile, bins, **kwargs):
                     metric=closedistsq
                 else:
                     print("Incorrect geometry argument provided! Using flat geometry")
-
-            elif key.lower()=='method':
-                if value.lower() in mlist:
-                    method=value.lower()
+            elif key.lower()=='estimator':
+                if value.lower() in elist:
+                    estimator=value.lower()
                 else:
-                    print("Incorrect method provided! Using 'dp' as default")
+                    print("Incorrect estimator provided! Using 'dp' as default")
             elif key.lower()=='cosmology':
                 if value.lower() in clist:
                     cosmology=value.lower()
@@ -64,6 +63,14 @@ def tpcf(datfile, bins, **kwargs):
                     print("Incorrect Cosmology provided! Using 'lcdm' as default")
             elif key.lower()=='mask':
                 maskfile=value
+            elif key.lower()=='weights':
+                if value==True:
+                    fdat=readinfile(datfile,ftype='internal')
+                    weights=1.0/(1.0+4.0*np.array(fdat['nz']))
+                    weights=weights/np.mean(weights)
+                    #print (weights)
+                else:
+                    pass
             else:
                 print ("key argument not valid")
     else:
@@ -82,8 +89,8 @@ def tpcf(datfile, bins, **kwargs):
     print(cosmology)
     print("Geometry=")
     print(geometry)
-    print("Correl method=")
-    print(method)
+    print("Correl estimator=")
+    print(estimator)
     print("---------------")
     #Prepare dat from data file
     dat=datprep(datfile, 'data', cosmology)
@@ -96,9 +103,15 @@ def tpcf(datfile, bins, **kwargs):
             print ("Mask file compulsory. Please provide mask='maskfilepath.ply'")
         else:
             datR=randcatprep(datfile,randcatsize,maskfile,cosmology)
+            randfile='./randcat.dat'
     else:
         datR=datprep(randfile,'random',cosmology)
 
+    if len(weights)!=0:
+        rfdat=readinfile(randfile,ftype='internal')
+        rweights=1.0/(1.0+4.0*np.array(rfdat['nz']))
+        rweights=rweights/np.mean(rweights)
+        #print (rweights)
     #Nr=len(datR)
 
 
@@ -107,40 +120,44 @@ def tpcf(datfile, bins, **kwargs):
     #f=(1.0*Nrd)/N
 
     #Reference: arXiv: 1211.6211
-
-    if method=='ls':
-        print ("Using Landy-Szalay method")
-        DD=DDcalc(dat,binsq,metric)
-        RR=RRcalc(datR,binsq,metric)
-        DR=DRcalc(dat,datR,binsq,metric)
-        correl=1.0+(DD-2.0*DR)/RR
-
-    elif method=='ph':
-        print ("Using Peebles-Hauser method")
-        DD=DDcalc(dat,binsq,metric)
-        RR=RRcalc(datR,binsq,metric)
-        correl=(DD/RR)-1.0
-
-    elif method=='hew':
-        print ("Using Hewett method")
-        DD=DDcalc(dat,binsq,metric)
-        RR=RRcalc(datR,binsq,metric)
-        DR=DRcalc(dat,datR,binsq,metric)
-        correl=(DD-DR)/RR
-
-    elif method=='dp':
-        print ("Using Davis-Peebles method")
-        DD=DDcalc(dat,binsq,metric)
-        DR=DRcalc(dat,datR,binsq,metric)
+    if estimator=='dp':
+        if len(weights)==0 or len(weights)!=Nd or len(rweights)!=len(datR):
+            DD=DDcalc(dat,binsq,metric)
+            DR=DRcalc(dat,datR,binsq,metric)
+        else:
+            DD=DDwcalc(dat,binsq,metric,weights)
+            DR=DRwcalc(dat,datR,binsq,metric,weights,rweights)
+        print ("Using Davis-Peebles estimator")
         correl=(DD/DR)-1.0
 
-    elif method=='h':
-        print ("Using Hamilton method")
-        DD=DDcalc(dat,binsq,metric)
-        RR=RRcalc(datR,binsq,metric)
-        correl=(DD*RR)/DR**2 - 1.0
-
-    correlerr = poserr(correl,DD)
+    elif estimator=='ph':
+        if len(weights)==0 or len(weights)!=Nd or len(rweights)!=len(datR):
+            DD=DDcalc(dat,binsq,metric)
+            RR=RRcalc(datR,binsq,metric)
+        else:
+            DD=DDwcalc(dat,binsq,metric,weights)
+            RR=RRwcalc(datR,binsq,metric,rweights)
+        print ("Using Peebles-Hauser estimator")
+        correl=(DD/RR)-1.0
+    else:
+        if len(weights)==0 or len(weights)!=Nd or len(rweights)!=len(datR):
+            DD=DDcalc(dat,binsq,metric)
+            RR=RRcalc(datR,binsq,metric)
+            DR=DRcalc(dat,datR,binsq,metric)
+        else:
+            DD=DDwcalc(dat,binsq,metric,weights)
+            RR=RRwcalc(datR,binsq,metric,rweights)
+            DR=DRwcalc(dat,datR,binsq,metric,weights,rweights)
+        if estimator=='ls':
+            print ("Using Landy-Szalay estimator")
+            correl=(DD-2.0*DR+RR)/RR
+        elif estimator=='hew':
+            print ("Using Hewett estimator")
+            correl=(DD-DR)/RR
+        elif estimator=='h':
+            print ("Using Hamilton estimator")
+            correl=(DD*RR)/DR**2 - 1.0
+    correlerr = poserr(correl,DD*Nd*(Nd-1.0)*0.5)
     print("Two-point correlation=")
     print (correl, correlerr)
     return correl, correlerr
@@ -191,3 +208,54 @@ def poserr(xi,DD):
 #alternatively
 #rbt=BallTree(dat,metric='pyfunc',func=metric)
 #counts_RD=rbt.two_point_correlation(dat,bins)
+def DDwcalc(dat,bins,metric,weights):
+    print ("Calculating DD with weights...\n DD=")
+    DD=autocorrw(dat,bins,metric,weights)
+    DD[DD==0]=1.0
+    Nd=len(dat)
+    DD=2.0*DD/(Nd*(Nd-1.0))
+    print (DD)
+    return DD
+
+def RRwcalc(datR,bins,metric,weights):
+    print ("Calculating RR with weights...\n RR=")
+    RR=autocorrw(datR,bins,metric,weights)
+    RR[RR==0]=1.0
+    Nr=len(datR)
+    RR=2.0*RR/(Nr*(Nr-1.0))
+    print (RR)
+    return RR
+
+def DRwcalc(dat,datR,bins,metric,weights,rweights):
+    print ("Calculating DR with weights...\n DR=")
+    DR=crosscorrw(dat,datR,bins,metric,weights,rweights)
+    DR[DR==0]=1.0
+    Nd=len(dat)
+    Nr=len(datR)
+    DR=DR/(Nd*Nr)
+    print (DR)
+    return DR
+
+def autocorrw(dat,bins,metric,weights):
+    bt=BallTree(dat,metric='pyfunc',func=metric)
+    DD=np.zeros(len(bins)-1)
+    for i in tqdm(xrange(len(dat))):
+        ind=bt.query_radius(dat[i].reshape(1,-1),max(bins))
+        #wts=np.array([])
+        for j in ind:
+            dist0=dist.cdist([dat[i],],dat[j],metric)[0]
+            DD+=np.histogram(dist0,bins=bins,weights=weights[j])[0]
+            #print (dist0,weights[j])
+    return DD
+
+def crosscorrw(dat,datR,bins,metric,weights,rweights):
+    rbt=BallTree(datR,metric='pyfunc',func=metric)
+    DR=np.zeros(len(bins)-1)
+    for i in tqdm(xrange(len(dat))):
+        ind=rbt.query_radius(dat[i].reshape(1,-1),max(bins))
+        #wts=np.array([])
+        for j in ind:
+            dist0=dist.cdist([dat[i],],datR[j],metric)[0]
+            DR+=np.histogram(dist0,bins=bins,weights=weights[j])[0]
+            #print (dist0,weights[j])
+    return DR
