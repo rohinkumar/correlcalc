@@ -150,12 +150,12 @@ def atpcf(datfile, bins, **kwargs):
             DD=aDDcalc(dat,binsq,parmetric,permetric,rng)
             DR=aDRcalc(dat,datR,binsq,parmetric,permetric,rng)
         else:
-            if len(rweights)!=len(datR):
-                DD=aDDwcalc(dat,binsq,parmetric,permetric,rng,weights)
-                DR=aRDwcalc(dat,datR,binsq,parmetric,permetric,rng,weights)
-            else:
-                DD=aDDwcalc(dat,binsq,parmetric,permetric,rng,weights)
-                DR=aDRwcalc(dat,datR,binsq,parmetric,permetric,rng,weights,rweights)
+            # if len(rweights)!=len(datR):
+            DD=aDDwcalc(dat,binsq,parmetric,permetric,rng,weights)
+            DR=aRDwcalc(dat,datR,binsq,parmetric,permetric,rng,weights)
+            # else:
+            #     DD=aDDwcalc(dat,binsq,parmetric,permetric,rng,weights)
+            #     DR=aDRwcalc(dat,datR,binsq,parmetric,permetric,rng,weights,rweights)
 
         print ("Using Davis-Peebles estimator")
         correl=(DD/DR)-1.0
@@ -177,7 +177,7 @@ def atpcf(datfile, bins, **kwargs):
         else:
             DD=aDDwcalc(dat,binsq,parmetric,permetric,rng,weights)
             RR=aRRwcalc(datR,binsq,parmetric,permetric,rng,rweights)
-            DR=aDRwcalc(dat,datR,binsq,parmetric,permetric,rng,weights,rweights)
+            DR=aRDwcalc(dat,datR,binsq,parmetric,permetric,rng,weights)
         if estimator=='ls':
             print ("Using Landy-Szalay estimator")
             correl=(DD-2.0*DR+RR)/RR

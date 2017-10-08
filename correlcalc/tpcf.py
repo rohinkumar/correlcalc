@@ -134,17 +134,17 @@ def tpcf(datfile, bins, **kwargs):
             DD=DDcalc(dat,binsq,metric)
             DR=DRcalc(dat,datR,binsq,metric)
         else:
-            if len(rweights)!=len(datR):
-                DD=DDwcalc(dat,binsq,metric,weights)
-                DR=RDwcalc(dat,datR,binsq,metric,weights)
-            else:
-                DD=DDwcalc(dat,binsq,metric,weights)
-                DR=DRwcalc(dat,datR,binsq,metric,rweights)
+            # if len(rweights)!=len(datR):
+            DD=DDwcalc(dat,binsq,metric,weights)
+            DR=RDwcalc(dat,datR,binsq,metric,weights)
+            # else:
+            #     DD=DDwcalc(dat,binsq,metric,weights)
+            #     DR=DRwcalc(dat,datR,binsq,metric,rweights)
         print ("Using Davis-Peebles estimator")
         correl=(DD/DR)-1.0
 
     elif estimator=='ph':
-        if weightsflag==False or len(weights)!=Nd or len(rweights)!=len(datR):
+        if weightsflag==False or len(weights)!=Nd:
             DD=DDcalc(dat,binsq,metric)
             RR=RRcalc(datR,binsq,metric)
         else:
@@ -153,14 +153,14 @@ def tpcf(datfile, bins, **kwargs):
         print ("Using Peebles-Hauser estimator")
         correl=(DD/RR)-1.0
     else:
-        if weightsflag==False or len(weights)!=Nd or len(rweights)!=len(datR):
+        if weightsflag==False or len(weights)!=Nd:
             DD=DDcalc(dat,binsq,metric)
             RR=RRcalc(datR,binsq,metric)
             DR=DRcalc(dat,datR,binsq,metric)
         else:
             DD=DDwcalc(dat,binsq,metric,weights)
             RR=RRwcalc(datR,binsq,metric,rweights)
-            DR=DRwcalc(dat,datR,binsq,metric,rweights)
+            DR=RDwcalc(dat,datR,binsq,metric,weights)
         if estimator=='ls':
             print ("Using Landy-Szalay estimator")
             correl=(DD-2.0*DR+RR)/RR
