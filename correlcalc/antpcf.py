@@ -250,7 +250,7 @@ def aDDwcalc(dat,bins,parmetric,permetric,rng,weights):
         for j in ind:
             dist0=dist.cdist([dat[i],],dat[j],parmetric)[0]
             dist1=dist.cdist([dat[i],],dat[j],permetric)[0]
-            dd+=np.histogram2d(dist0, dist1,range=rng,bins=(bins,bins),weights=weights)[0]
+            dd+=np.histogram2d(dist0, dist1,range=rng,bins=(bins,bins),weights=weights[j])[0]
     dd[dd==0]=1.0
     Nd=len(dat)
     DD=2.0*dd/(Nd*(Nd-1.0))
@@ -266,7 +266,7 @@ def aRRwcalc(datR,bins,parmetric,permetric,rng,rweights):
         for j in ind:
             dist0=dist.cdist([datR[i],],datR[j],parmetric)[0]
             dist1=dist.cdist([datR[i],],datR[j],permetric)[0]
-            rr+=np.histogram2d(dist0, dist1,range=rng,bins=(bins,bins),weights=rweights)[0]
+            rr+=np.histogram2d(dist0, dist1,range=rng,bins=(bins,bins),weights=rweights[j])[0]
     rr[rr==0]=1.0
     Nr=len(datR)
     RR=2.0*rr/(Nr*(Nr-1.0))
@@ -282,7 +282,7 @@ def aDRwcalc(dat,datR,bins,parmetric,permetric,rng,weights,rweights):
         for j in ind:
             dist0=dist.cdist([dat[i],],datR[j],parmetric)[0]
             dist1=dist.cdist([dat[i],],datR[j],permetric)[0]
-            dr+=np.histogram2d(dist0, dist1,range=rng,bins=(bins,bins),weights=rweights)[0]
+            dr+=np.histogram2d(dist0, dist1,range=rng,bins=(bins,bins),weights=rweights[j])[0]
     dr[dr==0]=1.0
     Nd=len(dat)
     Nr=len(datR)
@@ -299,7 +299,7 @@ def aRDwcalc(dat,datR,bins,parmetric,permetric,rng,weights):
         for j in ind:
             dist0=dist.cdist([datR[i],],dat[j],parmetric)[0]
             dist1=dist.cdist([datR[i],],dat[j],permetric)[0]
-            dr+=np.histogram2d(dist0, dist1,range=rng,bins=(bins,bins),weights=weights)[0]
+            dr+=np.histogram2d(dist0, dist1,range=rng,bins=(bins,bins),weights=weights[j])[0]
     dr[dr==0]=1.0
     Nd=len(dat)
     Nr=len(datR)
