@@ -93,7 +93,7 @@ def tpcf(datfile, bins, **kwargs):
     print(geometry)
     print("Correl estimator=")
     print(estimator)
-    print ("Weights")
+    print ("Weights=")
     print (weightsflag)
     print("-----------------------------------------")
     #Prepare dat from data file
@@ -107,8 +107,9 @@ def tpcf(datfile, bins, **kwargs):
             print ("Mask file compulsory. Please provide mask='maskfilepath.ply'")
         else:
             datR=randcatprep(datfile,randcatsize,maskfile,cosmology)
-            randfile='./randcat.dat'
-            datR, rweights=datprep(randfile,'random',cosmology)
+            rweights=np.array([])
+            #randfile='./randcat.dat'
+            #datR, rweights=datprep(randfile,'random',cosmology)
     else:
         datR, rweights=datprep(randfile,'random',cosmology)
 
@@ -126,15 +127,19 @@ def tpcf(datfile, bins, **kwargs):
     #print (weights)
     #Reference: arXiv: 1211.6211
     if estimator=='dp':
-        if weightsflag==False or len(weights)!=Nd or len(rweights)!=len(datR):
+        if weightsflag==False or len(weights)!=Nd:
             # print (weightsflag)
             # print(len(weights))
             # print(len(datR))
             DD=DDcalc(dat,binsq,metric)
             DR=DRcalc(dat,datR,binsq,metric)
         else:
-            DD=DDwcalc(dat,binsq,metric,weights)
-            DR=DRwcalc(dat,datR,binsq,metric,weights,rweights)
+            if len(rweights)!=len(datR):
+                DD=DDwcalc(dat,binsq,metric,weights)
+                DR=RDwcalc(dat,datR,binsq,metric,weights)
+            else:
+                DD=DDwcalc(dat,binsq,metric,weights)
+                DR=DRwcalc(dat,datR,binsq,metric,rweights)
         print ("Using Davis-Peebles estimator")
         correl=(DD/DR)-1.0
 
@@ -155,7 +160,7 @@ def tpcf(datfile, bins, **kwargs):
         else:
             DD=DDwcalc(dat,binsq,metric,weights)
             RR=RRwcalc(datR,binsq,metric,rweights)
-            DR=DRwcalc(dat,datR,binsq,metric,weights,rweights)
+            DR=DRwcalc(dat,datR,binsq,metric,rweights)
         if estimator=='ls':
             print ("Using Landy-Szalay estimator")
             correl=(DD-2.0*DR+RR)/RR
@@ -204,7 +209,7 @@ def autocorr(dat,bins,metric):
     DD = np.diff(counts_DD)
     return DD
 
-def crosscorr(dat,datR,bins,metric,**kwargs):
+def crosscorr(dat,datR,bins,metric):
     rbt=BallTree(datR,metric='pyfunc',func=metric)
     counts_DR=rbt.two_point_correlation(dat,bins)
     DR=np.diff(counts_DR)
@@ -234,9 +239,19 @@ def RRwcalc(datR,bins,metric,weights):
     print (RR)
     return RR
 
-def DRwcalc(dat,datR,bins,metric,weights,rweights):
+def DRwcalc(dat,datR,bins,metric,rweights):
     print ("Calculating DR with weights...\n DR=")
-    DR=crosscorrw(dat,datR,bins,metric,weights,rweights)
+    DR=crosscorrw(dat,datR,bins,metric,rweights)
+    DR[DR==0]=1.0
+    Nd=len(dat)
+    Nr=len(datR)
+    DR=DR/(Nd*Nr)
+    print (DR)
+    return DR
+
+def RDwcalc(dat,datR,bins,metric,weights):
+    print ("Calculating RD with weights...\n RD=")
+    DR=crosscorrwrd(dat,datR,bins,metric,weights)
     DR[DR==0]=1.0
     Nd=len(dat)
     Nr=len(datR)
@@ -256,7 +271,7 @@ def autocorrw(dat,bins,metric,weights):
             #print (dist0,weights[j])
     return DD
 
-def crosscorrw(dat,datR,bins,metric,weights,rweights):
+def crosscorrw(dat,datR,bins,metric,rweights):
     rbt=BallTree(datR,metric='pyfunc',func=metric)
     DR=np.zeros(len(bins)-1)
     for i in tqdm(xrange(len(dat))):
@@ -267,3 +282,15 @@ def crosscorrw(dat,datR,bins,metric,weights,rweights):
             DR+=np.histogram(dist0,bins=bins,weights=rweights[j])[0]
             #print (dist0,weights[j])
     return DR
+
+def crosscorrwrd(dat,datR,bins,metric,weights):
+    bt=BallTree(dat,metric='pyfunc',func=metric)
+    RD=np.zeros(len(bins)-1)
+    for i in tqdm(xrange(len(datR))):
+        ind=bt.query_radius(datR[i].reshape(1,-1),max(bins))
+        #wts=np.array([])
+        for j in ind:
+            dist0=dist.cdist([datR[i],],dat[j],metric)[0]
+            RD+=np.histogram(dist0,bins=bins,weights=weights[j])[0]
+            #print (dist0,weights[j])
+    return RD

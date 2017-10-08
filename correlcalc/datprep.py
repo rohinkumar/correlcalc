@@ -19,9 +19,11 @@ def datprep (fname,ftype,model):
             ra=np.array(data[x])
         elif x.lower()=='dec':
             dec=np.array(data[x])
-        elif x.lower()=='nz':
-            weights=1.0/(1.0+4.0*np.array(data[x]))
-            weights=weights/np.mean(weights)
+        elif x.lower()=='radial_weight':
+            weights=np.array(data[x])
+        # elif x.lower()=='nz':
+        #     weights=1.0/(1.0+4.0*np.array(data[x]))
+        #     weights=weights/np.mean(weights)
             #print (weights)
         else:
             pass
