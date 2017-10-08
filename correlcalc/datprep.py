@@ -11,6 +11,7 @@ from math import pi
 def datprep (fname,ftype,model):
     """Method to convert input ascii files into 3xN matrices needed for metric distance calculations. Calculates comoving distances as per input model."""
     data=readinfile(fname,ftype)
+    weights=np.array([])
     for x in data.colnames:
         if x.lower()=='z':
             z=np.array(data[x])
@@ -18,6 +19,10 @@ def datprep (fname,ftype,model):
             ra=np.array(data[x])
         elif x.lower()=='dec':
             dec=np.array(data[x])
+        elif x.lower()=='nz':
+            weights=1.0/(1.0+4.0*np.array(data[x]))
+            weights=weights/np.mean(weights)
+            #print (weights)
         else:
             pass
     s=comov(z,model)
@@ -28,7 +33,7 @@ def datprep (fname,ftype,model):
     dat=dat.transpose()
     #print ("Printing 3xN array")
     #print(dat)
-    return dat
+    return dat, weights
 
 
 def randcatprep(datfname,randcatsize,maskfile,model):
@@ -38,6 +43,11 @@ def randcatprep(datfname,randcatsize,maskfile,model):
     for x in data.colnames:
         if x.lower()=='z':
             z=np.array(data[x])
+        # elif x.lower()=='nz':
+        #     rweights=1.0/(1.0+4.0*np.array(data[x]))
+        #     rweights=weights/np.mean(rweights)
+        # else:
+        #
     zr=randz(z,randcatsize)
     ra,dec=randang(maskfile,randcatsize)
     rar=ra*pi/180.0

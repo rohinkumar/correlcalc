@@ -19,6 +19,7 @@ def tpcf(datfile, bins, **kwargs):
     """Main function to calculate 2pCF. Takes multiple arguments such as randfile, maskfile, calculation estimator etc. for different geometry, cosmology models"""
     #Default function arguments
     weights=np.array([])
+    weightsflag=False
     cosmology='lcdm'
     geometry='flat'
     metric=flatdistsq
@@ -65,14 +66,15 @@ def tpcf(datfile, bins, **kwargs):
                 maskfile=value
             elif key.lower()=='weights':
                 if value==True:
-                    fdat=readinfile(datfile,ftype='internal')
-                    weights=1.0/(1.0+4.0*np.array(fdat['nz']))
-                    weights=weights/np.mean(weights)
+                    weightsflag=True
+                    # fdat=readinfile(datfile,ftype='internal')
+                    # weights=1.0/(1.0+4.0*np.array(fdat['nz']))
+                    # weights=weights/np.mean(weights)
                     #print (weights)
                 else:
-                    pass
+                    weightsflag=False
             else:
-                print ("key argument not valid")
+                print ("key argument %s not valid"%key)
     else:
         print ("Refer documentation to enter valid keyword arguments")
 
@@ -91,11 +93,13 @@ def tpcf(datfile, bins, **kwargs):
     print(geometry)
     print("Correl estimator=")
     print(estimator)
-    print("---------------")
+    print ("Weights")
+    print (weightsflag)
+    print("-----------------------------------------")
     #Prepare dat from data file
-    dat=datprep(datfile, 'data', cosmology)
+    dat, weights=datprep(datfile, 'data', cosmology)
     Nd=len(dat)
-
+    #print (weights)
     #Prepare datR from random file or generate a random catalog
     if randfile==None:
         randcatsize=randcatfact*Nd
@@ -104,13 +108,14 @@ def tpcf(datfile, bins, **kwargs):
         else:
             datR=randcatprep(datfile,randcatsize,maskfile,cosmology)
             randfile='./randcat.dat'
+            datR, rweights=datprep(randfile,'random',cosmology)
     else:
-        datR=datprep(randfile,'random',cosmology)
+        datR, rweights=datprep(randfile,'random',cosmology)
 
-    if len(weights)!=0:
-        rfdat=readinfile(randfile,ftype='internal')
-        rweights=1.0/(1.0+4.0*np.array(rfdat['nz']))
-        rweights=rweights/np.mean(rweights)
+    #if len(weights)!=0:
+        #rfdat=readinfile(randfile,ftype='internal')
+        #rweights=1.0/(1.0+4.0*np.array(rfdat['nz']))
+        #rweights=rweights/np.mean(rweights)
         #print (rweights)
     #Nr=len(datR)
 
@@ -118,10 +123,13 @@ def tpcf(datfile, bins, **kwargs):
     print ("Calculating 2pCF...")
 
     #f=(1.0*Nrd)/N
-
+    #print (weights)
     #Reference: arXiv: 1211.6211
     if estimator=='dp':
-        if len(weights)==0 or len(weights)!=Nd or len(rweights)!=len(datR):
+        if weightsflag==False or len(weights)!=Nd or len(rweights)!=len(datR):
+            # print (weightsflag)
+            # print(len(weights))
+            # print(len(datR))
             DD=DDcalc(dat,binsq,metric)
             DR=DRcalc(dat,datR,binsq,metric)
         else:
@@ -131,7 +139,7 @@ def tpcf(datfile, bins, **kwargs):
         correl=(DD/DR)-1.0
 
     elif estimator=='ph':
-        if len(weights)==0 or len(weights)!=Nd or len(rweights)!=len(datR):
+        if weightsflag==False or len(weights)!=Nd or len(rweights)!=len(datR):
             DD=DDcalc(dat,binsq,metric)
             RR=RRcalc(datR,binsq,metric)
         else:
@@ -140,7 +148,7 @@ def tpcf(datfile, bins, **kwargs):
         print ("Using Peebles-Hauser estimator")
         correl=(DD/RR)-1.0
     else:
-        if len(weights)==0 or len(weights)!=Nd or len(rweights)!=len(datR):
+        if weightsflag==False or len(weights)!=Nd or len(rweights)!=len(datR):
             DD=DDcalc(dat,binsq,metric)
             RR=RRcalc(datR,binsq,metric)
             DR=DRcalc(dat,datR,binsq,metric)
@@ -256,6 +264,6 @@ def crosscorrw(dat,datR,bins,metric,weights,rweights):
         #wts=np.array([])
         for j in ind:
             dist0=dist.cdist([dat[i],],datR[j],metric)[0]
-            DR+=np.histogram(dist0,bins=bins,weights=weights[j])[0]
+            DR+=np.histogram(dist0,bins=bins,weights=rweights[j])[0]
             #print (dist0,weights[j])
     return DR
