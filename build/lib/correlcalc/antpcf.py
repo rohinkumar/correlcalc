@@ -328,10 +328,10 @@ def aDRcalc(dat, datR, bins, parmetric, permetric, rng):
     dr = np.zeros((len(bins)-1, len(bins)-1))
     rrbt = BallTree(datR, metric='pyfunc', func=permetric)
     for i in tqdm(xrange(len(dat))):
-        ind = rrbt.query_radius(dat[i].reshape(1, -1), max(bins))
+        ind = rrbt.query_radius(dat[i].reshape(1,-1), max(bins))
         for j in ind:
-            dist0 = dist.cdist([dat[i], ], datR[j], parmetric)[0]
-            dist1 = dist.cdist([dat[i], ], datR[j], permetric)[0]
+            dist0 = dist.cdist([dat[i],], datR[j], parmetric)[0]
+            dist1 = dist.cdist([dat[i],], datR[j], permetric)[0]
             dr += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins))[0]
     dr[dr == 0] = 1.0
     Nd = len(dat)
@@ -347,8 +347,8 @@ def aDDwcalc(dat, bins, parmetric, permetric, rng, weights):
     for i in tqdm(xrange(len(dat))):
         ind = ddbt.query_radius(dat[i].reshape(1, -1), max(bins))
         for j in ind:
-            dist0 = dist.cdist([dat[i], ], dat[j], parmetric)[0]
-            dist1 = dist.cdist([dat[i], ], dat[j], permetric)[0]
+            dist0 = dist.cdist([dat[i],], dat[j], parmetric)[0]
+            dist1 = dist.cdist([dat[i],], dat[j], permetric)[0]
             dd += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins), weights=weights[j])[0]
     dd[dd == 0] = 1.0
     Nd = len(dat)
@@ -361,7 +361,7 @@ def aRRwcalc(datR, bins, parmetric, permetric, rng, rweights):
     rr = np.zeros((len(bins)-1, len(bins)-1))
     rrbt = BallTree(datR, metric='pyfunc', func=permetric)
     for i in tqdm(xrange(len(datR))):
-        ind = rrbt.query_radius(datR[i].reshape(1, -1), max(bins))
+        ind = rrbt.query_radius(datR[i].reshape(1,-1), max(bins))
         for j in ind:
             dist0 = dist.cdist([datR[i], ], datR[j], parmetric)[0]
             dist1 = dist.cdist([datR[i], ], datR[j], permetric)[0]

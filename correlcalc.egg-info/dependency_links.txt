@@ -1,0 +1,1 @@
+https://github.com/esheldon/healpix_util/master/tarball#egg=package-0.1
