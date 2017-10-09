@@ -1,12 +1,12 @@
 from __future__ import division
-#Samsiddhir Haritoshanam!
+# Samsiddhir Haritoshanam!
 __author__ = 'Rohin Kumar Y'
 
-#tpcf(dat, datR=None, randcatsize=2, bins,**kwargs)
+# tpcf(dat, datR=None, randcatsize=2, bins,**kwargs)
 #
-#**kwargs for choosing geometry - metric 'flat' 'open' 'close'
-#**kwargs for choosing xi estimator - 'simple' 'ls' '...'
-#import fileios
+# **kwargs for choosing geometry - metric 'flat' 'open' 'close'
+# **kwargs for choosing xi estimator - 'simple' 'ls' '...'
+# import fileios
 from tqdm import *
 from datprep import *
 import numpy as np
@@ -17,7 +17,7 @@ from scipy.spatial import distance as dist
 
 def tpcf(datfile, bins, **kwargs):
     """Main function to calculate 2pCF. Takes multiple arguments such as randfile, maskfile, calculation estimator etc. for different geometry, cosmology models"""
-    #Default function arguments
+    # Default function arguments
     weights=np.array([])
     weightsflag=False
     cosmology='lcdm'
@@ -65,7 +65,7 @@ def tpcf(datfile, bins, **kwargs):
             elif key.lower()=='mask':
                 maskfile=value
             elif key.lower()=='weights':
-                if value==True:
+                if value is True:
                     weightsflag=True
                     # fdat=readinfile(datfile,ftype='internal')
                     # weights=1.0/(1.0+4.0*np.array(fdat['nz']))

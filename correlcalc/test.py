@@ -51,9 +51,24 @@
 # rocket_launch()
 
 from antpcf import *
-#bins=np.arange(0.002,0.06,0.002)
-bins=np.arange(0.01,0.201,0.01)
-atpcf('/Users/rohin/Downloads/DR7-Full.ascii',bins,randfile='/Users/rohin/Downloads/random-DR7-Ful.ascii',permetric='apzdth',parmetric='apdz',weights=True)
-#tpcf('/Users/rohin/Downloads/DR3-ns.ascii',bins,randfile='/Users/rohin/Downloads/random-DR3-ns.ascii',weights=True)
-#tpcf('./testw.dat',bins,randfile='./testw.dat',weights=True)
-#atpcf('./testw.dat',bins,randfile='./testw.dat',permetric='apzdth',parmetric='apdz',method='ls',weights=True)
+# bins=np.arange(0.002,0.06,0.002)
+# bins = np.arange(0.01, 0.201, 0.01)
+# atpcf('/Users/rohin/Downloads/DR7-Full.ascii', bins, randfile='/Users/rohin/Downloads/random-DR7-Ful.ascii',permetric='apzdth', parmetric='apdz', weights=True)
+# tpcf('/Users/rohin/Downloads/DR3-ns.ascii',bins,randfile='/Users/rohin/Downloads/random-DR3-ns.ascii',weights=True)
+# tpcf('./testw.dat',bins,randfile='./testw.dat',weights=True)
+# atpcf('./testw.dat',bins,randfile='./testw.dat',permetric='apzdth',parmetric='apdz',method='ls',weights=True)
+# blha=readfitsfile('/Users/rohin/Documents/ipy_notebooks/galsurveystudy/input/galaxy_DR12v5_CMASS_North.fits','data')
+# dr12gcmn, weights = datprep('/Users/rohin/Documents/ipy_notebooks/galsurveystudy/input/galaxy_DR12v5_LOWZ_South.fits','data','lcdm')
+dat = readfitsfile('/Users/rohin/Documents/ipy_notebooks/galsurveystudy/input/galaxy_DR12v5_LOWZ_South.fits','data')
+weights = dat['WEIGHT_SYSTOT']
+import pyfits
+dpy = pyfits.open('/Users/rohin/Documents/ipy_notebooks/galsurveystudy/input/galaxy_DR12v5_LOWZ_South.fits')
+dpyd = dpy[1].data
+wts = dpyd['WEIGHT_SYSTOT']
+print(wts)
+print(min(wts))
+print(max(wts))
+# print(dr12gcmn)
+#print(weights)
+#print (min(weights))
+#print(max(weights))

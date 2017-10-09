@@ -30,7 +30,7 @@ setup(
     author_email='yrohinkumar@gmail.com',
     license='MIT',
     packages=['correlcalc','correlcalc.metrics'],
-    install_requires=['numpy','scipy','astropy','cython','tqdm','matplotlib','pymangle'],
+    install_requires=['numpy','scipy','astropy','cython','tqdm','matplotlib','pymangle','sklearn'],
     dependency_links=['https://github.com/esheldon/healpix_util/master/tarball#egg=package-0.1'],
     cmdclass = cmdclass,
     ext_modules=ext_modules,
