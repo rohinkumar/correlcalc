@@ -292,6 +292,7 @@ def DDcalc(dat, bins, metric):
     print (DD)
     return DD
 
+
 def RRcalc(datR, bins, metric):
     print ("Calculating RR...\n RR=")
     RR = autocorr(datR, bins, metric)
@@ -300,6 +301,7 @@ def RRcalc(datR, bins, metric):
     RR = 2.0*RR/(Nr*(Nr-1.0))
     print (RR)
     return RR
+
 
 def DRcalc(dat, datR, bins, metric):
     print ("Calculating DR...\n DR=")
@@ -311,11 +313,13 @@ def DRcalc(dat, datR, bins, metric):
     print (DR)
     return DR
 
+
 def autocorr(dat, bins, metric):
     bt = BallTree(dat, metric='pyfunc', func=metric)
     counts_DD = bt.two_point_correlation(dat, bins)
     DD = np.diff(counts_DD)
     return DD
+
 
 def crosscorr(dat, datR, bins, metric):
     rbt = BallTree(datR, metric='pyfunc', func=metric)
@@ -323,12 +327,15 @@ def crosscorr(dat, datR, bins, metric):
     DR = np.diff(counts_DR)
     return DR
 
+
 def poserr(xi, DD):
     print ("Calculating Poisson error")
     return (1.0+xi)/np.sqrt(DD)
 # alternatively
 # rbt=BallTree(dat,metric='pyfunc',func=metric)
 # counts_RD=rbt.two_point_correlation(dat,bins)
+
+
 def DDwcalc(dat, bins, metric, weights):
     print ("Calculating DD with weights...\n DD=")
     DD = autocorrw(dat, bins, metric, weights)
@@ -338,6 +345,7 @@ def DDwcalc(dat, bins, metric, weights):
     print (DD)
     return DD
 
+
 def RRwcalc(datR, bins, metric, weights):
     print ("Calculating RR with weights...\n RR=")
     RR = autocorrw(datR, bins, metric, weights)
@@ -346,6 +354,7 @@ def RRwcalc(datR, bins, metric, weights):
     RR = 2.0*RR/(Nr*(Nr-1.0))
     print (RR)
     return RR
+
 
 def DRwcalc(dat, datR, bins, metric, rweights):
     print ("Calculating DR with weights...\n DR=")
@@ -357,6 +366,7 @@ def DRwcalc(dat, datR, bins, metric, rweights):
     print (DR)
     return DR
 
+
 def RDwcalc(dat, datR, bins, metric, weights):
     print ("Calculating RD with weights...\n RD=")
     DR = crosscorrwrd(dat, datR, bins, metric, weights)
@@ -367,38 +377,41 @@ def RDwcalc(dat, datR, bins, metric, weights):
     print (DR)
     return DR
 
+
 def autocorrw(dat, bins, metric, weights):
     bt = BallTree(dat, metric='pyfunc', func=metric)
     DD = np.zeros(len(bins)-1)
     for i in tqdm(xrange(len(dat))):
-        ind = bt.query_radius(dat[i].reshape(1,-1),max(bins))
+        ind = bt.query_radius(dat[i].reshape(1, -1), max(bins))
         # wts=np.array([])
         for j in ind:
-            dist0 = dist.cdist([dat[i],], dat[j], metric)[0]
+            dist0 = dist.cdist([dat[i], ], dat[j], metric)[0]
             DD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
             # print (dist0,weights[j])
     return DD
+
 
 def crosscorrw(dat, datR, bins, metric, rweights):
     rbt = BallTree(datR, metric='pyfunc', func=metric)
     DR = np.zeros(len(bins)-1)
     for i in tqdm(xrange(len(dat))):
-        ind = rbt.query_radius(dat[i].reshape(1,-1),max(bins))
+        ind = rbt.query_radius(dat[i].reshape(1, -1), max(bins))
         # wts=np.array([])
         for j in ind:
-            dist0 = dist.cdist([dat[i],],datR[j],metric)[0]
+            dist0 = dist.cdist([dat[i], ], datR[j], metric)[0]
             DR += np.histogram(dist0, bins=bins, weights=rweights[j])[0]
             # print (dist0,weights[j])
     return DR
+
 
 def crosscorrwrd(dat, datR, bins, metric, weights):
     bt = BallTree(dat, metric='pyfunc', func=metric)
     RD = np.zeros(len(bins)-1)
     for i in tqdm(xrange(len(datR))):
-        ind = bt.query_radius(datR[i].reshape(1,-1),max(bins))
+        ind = bt.query_radius(datR[i].reshape(1, -1), max(bins))
         #  wts=np.array([])
         for j in ind:
-            dist0 = dist.cdist([datR[i],],dat[j],metric)[0]
+            dist0 = dist.cdist([datR[i], ], dat[j], metric)[0]
             RD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
             # print (dist0,weights[j])
     return RD

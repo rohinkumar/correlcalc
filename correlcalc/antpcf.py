@@ -6,6 +6,7 @@ from tpcf import *
 # antpcf(dat,datR,bins,parmetric,permetric) returns numpy 2d array DD, RR, DR correl
 # poserr(xi,DD) returns (1.0+xi)/np.sqrt(DD)
 
+
 def atpcf(datfile, bins, **kwargs):
     """Main function to calculate anisotropic 2pCF. Takes multiple arguments such as randfile, maskfile, calculation estimator etc. for different geometry, cosmology models
     Usage of the package is given in jupyter notebook "Using correlcalc example-anisotropic.nb" and in `main.py`
@@ -307,6 +308,7 @@ def aDDcalc(dat, bins, parmetric, permetric, rng):
     print (DD)
     return DD
 
+
 def aRRcalc(datR, bins, parmetric, permetric, rng):
     print ("Calculating anisotropic RR...\n RR=")
     rr = np.zeros((len(bins)-1, len(bins)-1))
@@ -322,6 +324,7 @@ def aRRcalc(datR, bins, parmetric, permetric, rng):
     RR = 2.0*rr/(Nr*(Nr-1.0))
     print (RR)
     return RR
+
 
 def aDRcalc(dat, datR, bins, parmetric, permetric, rng):
     print ("Calculating anisotropic DR...\n DR=")
@@ -340,6 +343,7 @@ def aDRcalc(dat, datR, bins, parmetric, permetric, rng):
     print (DR)
     return DR
 
+
 def aDDwcalc(dat, bins, parmetric, permetric, rng, weights):
     print ("Calculating anisotropic DD with weights...\n DD=")
     dd = np.zeros((len(bins)-1, len(bins)-1))
@@ -355,6 +359,7 @@ def aDDwcalc(dat, bins, parmetric, permetric, rng, weights):
     DD = 2.0*dd/(Nd*(Nd-1.0))
     print (DD)
     return DD
+
 
 def aRRwcalc(datR, bins, parmetric, permetric, rng, rweights):
     print ("Calculating anisotropic RR with weights...\n RR=")
@@ -372,6 +377,7 @@ def aRRwcalc(datR, bins, parmetric, permetric, rng, rweights):
     print (RR)
     return RR
 
+
 def aDRwcalc(dat, datR, bins, parmetric, permetric, rng, weights, rweights):
     print ("Calculating anisotropic DR with weights...\n DR=")
     dr = np.zeros((len(bins)-1, len(bins)-1))
@@ -388,6 +394,7 @@ def aDRwcalc(dat, datR, bins, parmetric, permetric, rng, weights, rweights):
     DR = dr/(Nd*Nr)
     print (DR)
     return DR
+
 
 def aRDwcalc(dat, datR, bins, parmetric, permetric, rng, weights):
     print ("Calculating anisotropic RD with weights...\n DR=")
