@@ -5,3 +5,4 @@ cython
 tqdm
 matplotlib
 pymangle
+sklearn
