@@ -51,8 +51,9 @@
 # rocket_launch()
 
 from antpcf import *
-bins=np.arange(0.002,0.06,0.002)
-atpcf('/Users/rohin/Downloads/DR7-Full.ascii',bins,randfile='/Users/rohin/Documents/ipy_notebooks/correlcalc-nb/randcat_DR72-2x.dat',permetric='apzdth',parmetric='apdz',method='ls',weights=True)
+#bins=np.arange(0.002,0.06,0.002)
+bins=np.arange(0.01,0.201,0.01)
+atpcf('/Users/rohin/Downloads/DR7-Full.ascii',bins,randfile='/Users/rohin/Downloads/random-DR7-Ful.ascii',permetric='apzdth',parmetric='apdz',weights=True)
 #tpcf('/Users/rohin/Downloads/DR3-ns.ascii',bins,randfile='/Users/rohin/Downloads/random-DR3-ns.ascii',weights=True)
 #tpcf('./testw.dat',bins,randfile='./testw.dat',weights=True)
 #atpcf('./testw.dat',bins,randfile='./testw.dat',permetric='apzdth',parmetric='apdz',method='ls',weights=True)

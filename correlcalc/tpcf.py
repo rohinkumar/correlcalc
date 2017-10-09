@@ -74,7 +74,7 @@ def tpcf(datfile, bins, **kwargs):
                 else:
                     weightsflag=False
             else:
-                print ("key argument %s not valid"%key)
+                print ("key argument `%s` not valid"%key)
     else:
         print ("Refer documentation to enter valid keyword arguments")
 

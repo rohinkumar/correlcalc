@@ -74,11 +74,11 @@ def atpcf(datfile, bins, **kwargs):
                 else:
                     weightsflag=False
             else:
-                print ("key argument not valid")
+                print ("key argument `%s` not valid"%key)
     else:
         print ("Refer documentation to enter valid keyword arguments")
 
-    print("Calculating Correlation function with the following parameters")
+    print("Calculating Anisotropic Correlation function with the following parameters")
     print ("data file=")
     print(datfile)
     print("random file=")
