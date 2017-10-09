@@ -1,3 +1,5 @@
+MANIFEST.in
+README.rst
 setup.py
 correlcalc/__init__.py
 correlcalc/antpcf.py

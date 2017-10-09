@@ -2,6 +2,9 @@ from setuptools import setup
 from distutils.core import setup
 from distutils.extension import Extension
 
+def readme():
+        with open('README.rst') as f:
+                    return f.read()
 # try:
 #     from Cython.Distutils import build_ext
 #     from Cython.Build import cythonize
@@ -21,8 +24,9 @@ from distutils.extension import Extension
 #     ext_modules += [Extension("metrics", ["metrics.c"]), ]
 setup(
     name='correlcalc',
-    version='0.96rc3',
+    version='0.97rc1',
     description='Two-point correlation function (2pCF) calculation',
+    long_description=readme(),
     url='http://github.com/rohinkumar/correlcalc',
     author='Rohin Kumar Y',
     author_email='yrohinkumar@gmail.com',
