@@ -24,7 +24,7 @@ def readme():
 #     ext_modules += [Extension("metrics", ["metrics.c"]), ]
 setup(
     name='correlcalc',
-    version='0.97rc1',
+    version='0.97rc2',
     description='Two-point correlation function (2pCF) calculation',
     long_description=readme(),
     url='http://github.com/rohinkumar/correlcalc',

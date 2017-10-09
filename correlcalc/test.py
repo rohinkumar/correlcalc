@@ -51,7 +51,7 @@
 # rocket_launch()
 
 from antpcf import *
-# bins=np.arange(0.002,0.06,0.002)
+bins = np.arange(0.002, 0.06, 0.002)
 # bins = np.arange(0.01, 0.201, 0.01)
 # atpcf('/Users/rohin/Downloads/DR7-Full.ascii', bins, randfile='/Users/rohin/Downloads/random-DR7-Ful.ascii',permetric='apzdth', parmetric='apdz', weights=True)
 # tpcf('/Users/rohin/Downloads/DR3-ns.ascii',bins,randfile='/Users/rohin/Downloads/random-DR3-ns.ascii',weights=True)
@@ -72,3 +72,4 @@ from antpcf import *
 # print(weights)
 # print (min(weights))
 # print(max(weights))
+dr12gls=tpcf('/Users/rohin/Documents/ipy_notebooks/galsurveystudy/input/galaxy_DR12v5_LOWZ_South.fits',bins,randfile='/Users/rohin/Downloads/random0_DR12v5_LOWZ_South.fits',weights=True)
