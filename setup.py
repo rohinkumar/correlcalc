@@ -10,27 +10,25 @@ except ImportError:
 else:
     use_cython = True
     
-cmdclass = { }
-#ext_modules = [cythonize('cython/metrics.pyx') ]
+cmdclass = {}
+# ext_modules = [cythonize('cython/metrics.pyx') ]
 ext_modules = []
 
 if use_cython:
-    ext_modules += [Extension("correlcalc.metrics", [ "metrics/metrics.pyx" ]),
-                                        ]
-    cmdclass.update({ 'build_ext': build_ext })
+    ext_modules += [Extension("metrics", ["metrics.pyx"]), ]
+    cmdclass.update({'build_ext': build_ext})
 else:
-    ext_modules += [Extension("correlcalc.metrics", [ "metrics/metrics.c" ]),
-                                                ]
+    ext_modules += [Extension("metrics", ["metrics.c"]), ]
 setup(
     name='correlcalc',
-    version='0.96rc2',
+    version='0.96rc3',
     description='Two-point correlation function (2pCF) calculation',
     url='http://github.com/rohinkumar/correlcalc',
     author='Rohin Kumar Y',
     author_email='yrohinkumar@gmail.com',
     license='MIT',
-    packages=['correlcalc','correlcalc.metrics'],
-    install_requires=['numpy','scipy','astropy','cython','tqdm','matplotlib','pymangle','sklearn'],
+    packages=['correlcalc', 'metrics'],
+    install_requires=['numpy', 'scipy', 'astropy', 'cython', 'tqdm', 'matplotlib', 'pymangle', 'sklearn'],
     dependency_links=['https://github.com/esheldon/healpix_util/master/tarball#egg=package-0.1'],
     cmdclass = cmdclass,
     ext_modules=ext_modules,

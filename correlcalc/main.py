@@ -87,4 +87,4 @@ plt.show()
 #For anisotropic 2pCF using delta Z and Z delta theta as in arXiv: 1312.0003
 from antpcf import *
 bins=np.arange(0.01,0.201,0.01)
-atpcf('./testfile.dat',bins,randfile='./testfile.dat',method='ls',permetric='apzdth',parmetric='apdz')
+atpcf('./testfile.dat',bins,randfile='./testfile.dat',estimator='ls',permetric='apzdth',parmetric='apdz')
