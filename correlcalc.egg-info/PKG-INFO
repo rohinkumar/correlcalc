@@ -1,11 +1,12 @@
 Metadata-Version: 1.0
 Name: correlcalc
-Version: 0.972rc6
+Version: 0.973
 Summary: Two-point correlation function (2pCF) calculation
 Home-page: http://github.com/rohinkumar/correlcalc
 Author: Rohin Kumar Y
 Author-email: yrohinkumar@gmail.com
 License: MIT
+Description-Content-Type: UNKNOWN
 Description: correlcalc
         ==========
         

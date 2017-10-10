@@ -10,7 +10,7 @@ __author__ = 'Rohin Kumar Y'
 from tqdm import *
 from datprep import *
 import numpy as np
-from metrics import *
+from .metrics import *
 from sklearn.neighbors import BallTree
 from scipy.spatial import distance as dist
 

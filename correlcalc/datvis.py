@@ -1,6 +1,6 @@
 import healpix_util as hu
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 
 def healpixmap(ra, dec, weights):

@@ -20,20 +20,21 @@ cmdclass = {}
 ext_modules = []
 
 if use_cython:
-    ext_modules += [Extension("metrics", ["metrics/metrics.pyx"]), ]
+    ext_modules += [Extension("correlcalc.metrics", ["metrics/metrics.pyx"]), ]
     cmdclass.update({'build_ext': build_ext})
 else:
-    ext_modules += [Extension("metrics", ["metrics/metrics.c"]), ]
+    ext_modules += [Extension("correlcalc.metrics", ["metrics/metrics.c"]), ]
 setup(
     name='correlcalc',
-    version='0.972rc6',
+    version='0.973',
     description='Two-point correlation function (2pCF) calculation',
     long_description=readme(),
     url='http://github.com/rohinkumar/correlcalc',
     author='Rohin Kumar Y',
     author_email='yrohinkumar@gmail.com',
     license='MIT',
-    packages=['correlcalc','correlcalc.metrics'],
+    packages=['correlcalc'],
+    # ,'correlcalc.metrics'
     # package_dir={
     #     'correlcalc' : base_dir + '/correlcalc',
     # },
@@ -41,5 +42,5 @@ setup(
     dependency_links=['https://github.com/esheldon/healpix_util/master/tarball#egg=package-0.1'],
     cmdclass = cmdclass,
     ext_modules=ext_modules,
-
+    include_package_data=True,
     zip_safe=False)

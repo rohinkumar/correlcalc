@@ -9,10 +9,6 @@ correlcalc/datvis.py
 correlcalc/fileios.py
 correlcalc/genrand.py
 correlcalc/main.py
-correlcalc/metrics.c
-correlcalc/metrics.pyx
-correlcalc/metrics.so
-correlcalc/metricsetup.py
 correlcalc/param.py
 correlcalc/runtimeupdate.py
 correlcalc/test.py
@@ -23,3 +19,7 @@ correlcalc.egg-info/dependency_links.txt
 correlcalc.egg-info/not-zip-safe
 correlcalc.egg-info/requires.txt
 correlcalc.egg-info/top_level.txt
+metrics/metrics.c
+metrics/metrics.pyx
+metrics/metrics.so
+metrics/metrics/metrics.so
