@@ -222,7 +222,7 @@ def atpcf(datfile, bins, **kwargs):
     print(estimator)
     print("-------------------------------")
     # Prepare dat from data file
-    dat, weights = datprep(datfile, 'data', cosmology)
+    dat, weights = datprepz(datfile, 'data', cosmology)
     Nd = len(dat)
     # print (weights)
     # Prepare datR from random file or generate a random catalog
@@ -231,12 +231,12 @@ def atpcf(datfile, bins, **kwargs):
         if maskfile is None:
             print ("Mask file compulsory. Please provide mask='maskfilepath.ply'")
         else:
-            datR = randcatprep(datfile, randcatsize, maskfile, cosmology)
+            datR = randcatprepz(datfile, randcatsize, maskfile, cosmology)
             rweights = np.array([])
             # randfile='./randcat.dat'
             # datR, rweights=datprep(randfile,'random',cosmology)
     else:
-        datR, rweights = datprep(randfile, 'random', cosmology)
+        datR, rweights = datprepz(randfile, 'random', cosmology)
 
     print ("Calculating anisotropic 2pCF...")
 
