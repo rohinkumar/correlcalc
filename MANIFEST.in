@@ -1,1 +1,4 @@
 include README.rst
+recursive-include metrics *.pyx
+recursive-include metrics *.c
+recursive-include metrics *.so

@@ -9,6 +9,9 @@ correlcalc/datvis.py
 correlcalc/fileios.py
 correlcalc/genrand.py
 correlcalc/main.py
+correlcalc/metrics.c
+correlcalc/metrics.pyx
+correlcalc/metrics.so
 correlcalc/metricsetup.py
 correlcalc/param.py
 correlcalc/runtimeupdate.py
