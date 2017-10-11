@@ -35,6 +35,7 @@ def datprep(fname, ftype, model):
             # print (weights)
         else:
             pass
+    print ("Calcuating comoving distances and converting angles to radians...")
     s = comov(z, model)
     rar = ra*pi/180.0
     decr = dec*pi/180.0
@@ -72,6 +73,7 @@ def datprepz(fname, ftype, model):
             # print (weights)
         else:
             pass
+    print ("Converting angles to radians...")
     rar = ra*pi/180.0
     decr = dec*pi/180.0
     dat = np.array([z, rar, decr])
