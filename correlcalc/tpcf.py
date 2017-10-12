@@ -487,8 +487,8 @@ def multi_crosscp(dat, datR, bins, metric, weights, Nr, CORES=pcpus):
 
     DR = np.zeros(len(bins)-1)
     queues = [Queue() for i in range(CORES)]
-    args = [(dat, bins, metric, weights, range(int(Nr*i/CORES),int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
-    jobs = [Process(target=autocorrwp, args=(a)) for a in args]
+    args = [(dat, datR, bins, metric, weights, range(int(Nr*i/CORES),int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
+    jobs = [Process(target=crosscorrwrdp, args=(a)) for a in args]
     for j in jobs: j.start()
     for q in queues: DR+=q.get()
     for j in jobs: j.join()
