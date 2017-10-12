@@ -10,7 +10,7 @@ __author__ = 'Rohin Kumar Y'
 from tqdm import *
 from datprep import *
 import numpy as np
-from metrics.metrics import *
+from metrics import *
 from multiprocessing import cpu_count
 from multiprocessing import Process
 from multiprocessing.queues import Queue

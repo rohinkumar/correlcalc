@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8aa9335b-471d-42fe-9031-1d36388dc0a2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/correlcalc/antpcf.py" afterPath="$PROJECT_DIR$/correlcalc/antpcf.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/correlcalc/test.py" afterPath="$PROJECT_DIR$/correlcalc/test.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/correlcalc/tpcf.py" afterPath="$PROJECT_DIR$/correlcalc/tpcf.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/setup.py" afterPath="$PROJECT_DIR$/setup.py" />
     </list>
@@ -93,7 +91,7 @@
         <entry file="file://$PROJECT_DIR$/correlcalc/test.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-305">
-              <caret line="53" column="0" lean-forward="true" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+              <caret line="53" column="0" lean-forward="false" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -114,8 +112,8 @@
       <file leaf-file-name="tpcf.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/correlcalc/tpcf.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-6752">
-              <caret line="20" column="19" lean-forward="true" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
+            <state relative-caret-position="228">
+              <caret line="12" column="5" lean-forward="false" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -183,8 +181,8 @@
         <option value="$PROJECT_DIR$/correlcalc/datprep.py" />
         <option value="$PROJECT_DIR$/correlcalc/__init__.py" />
         <option value="$PROJECT_DIR$/correlcalc/test.py" />
-        <option value="$PROJECT_DIR$/correlcalc/tpcf.py" />
         <option value="$PROJECT_DIR$/correlcalc/antpcf.py" />
+        <option value="$PROJECT_DIR$/correlcalc/tpcf.py" />
         <option value="$PROJECT_DIR$/setup.py" />
       </list>
     </option>
@@ -985,14 +983,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/correlcalc/tpcf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6752">
-          <caret line="20" column="19" lean-forward="true" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/correlcalc/antpcf.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-410">
@@ -1004,7 +994,15 @@
     <entry file="file://$PROJECT_DIR$/correlcalc/test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-305">
-          <caret line="53" column="0" lean-forward="true" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+          <caret line="53" column="0" lean-forward="false" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/correlcalc/tpcf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="12" column="5" lean-forward="false" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
           <folding />
         </state>
       </provider>
