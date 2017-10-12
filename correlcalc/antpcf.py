@@ -356,7 +356,7 @@ def aDDwcalc(dat, bins, parmetric, permetric, rng, weights):
             dd += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins), weights=weights[j])[0]
     dd[dd == 0] = 1.0
     Nd = len(dat)
-    DD = 2.0*dd/(Nd*(Nd-1.0))
+    DD = dd/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
     print (DD)
     return DD
 
@@ -373,7 +373,7 @@ def aRRwcalc(datR, bins, parmetric, permetric, rng, rweights):
             rr += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins), weights=rweights[j])[0]
     rr[rr == 0] = 1.0
     Nr = len(datR)
-    RR = 2.0*rr/(Nr*(Nr-1.0))
+    RR = rr/(Nr*(Nr-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
     print (RR)
     return RR
 

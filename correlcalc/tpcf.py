@@ -11,10 +11,14 @@ from tqdm import *
 from datprep import *
 import numpy as np
 from metrics.metrics import *
-import multiprocessing
+from multiprocessing import cpu_count
+from multiprocessing import Process
+from multiprocessing.queues import Queue
 # from .correlcalc import metrics
 from sklearn.neighbors import BallTree
 from scipy.spatial import distance as dist
+
+pcpus=cpu_count()-1
 
 
 def tpcf(datfile, bins, **kwargs):
@@ -340,10 +344,11 @@ def poserr(xi, DD):
 
 def DDwcalc(dat, bins, metric, weights):
     print ("Calculating DD with weights...\n DD=")
-    DD = autocorrw(dat, bins, metric, weights)
+    # DD = autocorrw(dat, bins, metric, weights)
+    DD = multi_autocp(dat, bins, metric, weights, len(dat), pcpus)
     DD[DD == 0] = 1.0
     Nd = len(dat)
-    DD = DD/(Nd*(Nd-1.0))
+    DD = DD/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
     print (DD)
     return DD
 
@@ -423,3 +428,55 @@ def crosscorrwrd(dat, datR, bins, metric, weights):
             # return RD
     print(RD)
     return RD
+
+
+def autocorrwp(dat, bins, metric, weights, Nd, multi=False, queue=0):
+    bt = BallTree(dat, metric='pyfunc', func=metric)
+    DD = np.zeros(len(bins)-1)
+    for i in tqdm(range(Nd)):
+        ind = bt.query_radius(dat[i].reshape(1, -1), max(bins))
+        # wts=np.array([])
+        for j in ind:
+            dist0 = dist.cdist([dat[i], ], dat[j], metric)[0]
+            DD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
+            # print (dist0,weights[j])
+    if multi:
+        queue.put(DD)
+    else:
+        return DD
+    print (DD)
+    return DD
+
+
+def crosscorrwrdp(dat, datR, bins, metric, weights):
+    bt = BallTree(dat, metric='pyfunc', func=metric)
+    RD = np.zeros(len(bins)-1)
+    # p=multiprocessing.Pool(processes=multiprocessing.cpu_count())
+    # RD=p.map(rdcalc, range(len(datR)))
+    for i in tqdm(range(len(datR))):
+    # def rdcalc():
+        ind = bt.query_radius(datR[i].reshape(1, -1), max(bins))
+        #  wts=np.array([])
+        for j in ind:
+            dist0 = dist.cdist([datR[i], ], dat[j], metric)[0]
+            RD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
+                # print (dist0,weights[j])
+            # return RD
+    print(RD)
+    return RD
+
+
+def multi_autocp(dat, bins, metric, weights, T, CORES=pcpus):
+
+    # results = np.zeros(len(bins)-1)
+    DD = np.zeros(len(bins)-1)
+    queues = [Queue() for i in range(CORES)]
+    args = [(dat, bins, metric, weights, int(T*(i+1)/CORES), True, queues[i]) for i in range(CORES)]
+    jobs = [Process(target=autocorrwp, args=(a)) for a in args]
+    for j in jobs: j.start()
+    for q in queues: DD+=q.get()
+    for j in jobs: j.join()
+
+    # DD += results
+
+    return DD
