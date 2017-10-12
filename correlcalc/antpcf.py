@@ -238,6 +238,8 @@ def atpcf(datfile, bins, **kwargs):
     else:
         datR, rweights = datprepz(randfile, 'random', cosmology)
 
+    Nr=len(datR)
+
     print ("Calculating anisotropic 2pCF...")
 
     # Reference: arXiv: 1211.6211
@@ -250,8 +252,12 @@ def atpcf(datfile, bins, **kwargs):
             DR = aDRcalc(dat, datR, binsq, parmetric, permetric, rng)
         else:
             # if len(rweights)!=len(datR):
-            DD = aDDwcalc(dat, binsq, parmetric, permetric, rng, weights)
-            DR = aRDwcalc(dat, datR, binsq, parmetric, permetric, rng, weights)
+            # DD = aDDwcalc(dat, binsq, parmetric, permetric, rng, weights)
+            print ("Calculating anisotropic DD with weights (parallelized)...\n DD=")
+            DD = amulti_autocp(dat, binsq, parmetric, permetric, rng, weights, Nd, pcpus)
+            # DR = aRDwcalc(dat, datR, binsq, parmetric, permetric, rng, weights)
+            print ("Calculating anisotropic DR with weights (parallelized)...\n DR=")
+            DR = amulti_crosscp(dat, datR, binsq, parmetric, permetric, rng, weights, Nr, pcpus)
             # else:
             #     DD=aDDwcalc(dat,binsq,parmetric,permetric,rng,weights)
             #     DR=aDRwcalc(dat,datR,binsq,parmetric,permetric,rng,weights,rweights)
@@ -264,8 +270,11 @@ def atpcf(datfile, bins, **kwargs):
             DD = aDDcalc(dat, binsq, parmetric, permetric, rng)
             RR = aRRcalc(datR, binsq, parmetric, permetric, rng)
         else:
-            DD = aDDwcalc(dat, binsq, parmetric, permetric, rng, weights)
-            RR = aRRwcalc(datR, binsq, parmetric, permetric, rng, rweights)
+            print ("Calculating anisotropic DD with weights (parallelized)...\n DD=")
+            # DD = aDDwcalc(dat, binsq, parmetric, permetric, rng, weights)
+            DD = amulti_autocp(dat, binsq, parmetric, permetric, rng, weights, Nd, pcpus)
+            print ("Calculating anisotropic RR with weights (parallelized)...\n RR=")
+            RR = amulti_autocp(datR, binsq, parmetric, permetric, rng, rweights, Nr, pcpus)
         print ("Using Peebles-Hauser estimator")
         correl = (DD/RR)-1.0
     else:
@@ -274,9 +283,15 @@ def atpcf(datfile, bins, **kwargs):
             RR = aDDcalc(datR, binsq, parmetric, permetric, rng)
             DR = aDRcalc(dat, datR, binsq, parmetric, permetric, rng)
         else:
-            DD = aDDwcalc(dat, binsq, parmetric, permetric, rng, weights)
-            RR = aRRwcalc(datR, binsq, parmetric, permetric, rng, rweights)
-            DR = aRDwcalc(dat, datR, binsq, parmetric, permetric, rng, weights)
+            print ("Calculating anisotropic DD with weights (parallelized)...\n DD=")
+            # DD = aDDwcalc(dat, binsq, parmetric, permetric, rng, weights)
+            DD = amulti_autocp(dat, binsq, parmetric, permetric, rng, weights, Nd, pcpus)
+            print ("Calculating anisotropic RR with weights (parallelized)...\n RR=")
+            # RR = aRRwcalc(datR, binsq, parmetric, permetric, rng, rweights)
+            RR = amulti_autocp(datR, binsq, parmetric, permetric, rng, rweights, Nr, pcpus)
+            # DR = aRDwcalc(dat, datR, binsq, parmetric, permetric, rng, weights)
+            print ("Calculating anisotropic DR with weights (parallelized)...\n DR=")
+            DR = amulti_crosscp(dat, datR, binsq, parmetric, permetric, rng, weights, Nr, pcpus)
         if estimator == 'ls':
             print ("Using Landy-Szalay estimator")
             correl = (DD-2.0*DR+RR)/RR
@@ -411,4 +426,106 @@ def aRDwcalc(dat, datR, bins, parmetric, permetric, rng, weights):
     Nr = len(datR)
     DR = dr/(Nd*Nr)
     print (DR)
+    return DR
+
+def aDDwcalcp(dat, bins, parmetric, permetric, rng, weights, rNd, multi=False, queue=0):
+    dd = np.zeros((len(bins)-1, len(bins)-1))
+    ddbt = BallTree(dat, metric='pyfunc', func=permetric)
+    for i in tqdm(rNd):
+        ind = ddbt.query_radius(dat[i].reshape(1, -1), max(bins))
+        for j in ind:
+            dist0 = dist.cdist([dat[i], ], dat[j], parmetric)[0]
+            dist1 = dist.cdist([dat[i], ], dat[j], permetric)[0]
+            dd += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins), weights=weights[j])[0]
+    if multi:
+        queue.put(dd)
+    else:
+        return dd
+    # print (DD)
+    return dd
+
+
+def aRRwcalcp(datR, bins, parmetric, permetric, rng, rweights, rNr, multi=False, queue=0):
+    rr = np.zeros((len(bins)-1, len(bins)-1))
+    rrbt = BallTree(datR, metric='pyfunc', func=permetric)
+    for i in tqdm(rNr):
+        ind = rrbt.query_radius(datR[i].reshape(1, -1), max(bins))
+        for j in ind:
+            dist0 = dist.cdist([datR[i], ], datR[j], parmetric)[0]
+            dist1 = dist.cdist([datR[i], ], datR[j], permetric)[0]
+            rr += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins), weights=rweights[j])[0]
+    if multi:
+        queue.put(rr)
+    else:
+        return rr
+    # rr[rr == 0] = 1.0
+    # Nr = len(datR)
+    # RR = rr/(Nr*(Nr-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
+    # print (RR)
+    return rr
+
+
+def aDRwcalcp(dat, datR, bins, parmetric, permetric, rng, rweights, rNd, multi=False, queue=0):
+    # print ("Calculating anisotropic DR with weights (parallelized)...\n DR=")
+    dr = np.zeros((len(bins)-1, len(bins)-1))
+    rrbt = BallTree(datR, metric='pyfunc', func=permetric)
+    for i in tqdm(rNd):
+        ind = rrbt.query_radius(dat[i].reshape(1, -1), max(bins))
+        for j in ind:
+            dist0 = dist.cdist([dat[i], ], datR[j], parmetric)[0]
+            dist1 = dist.cdist([dat[i], ], datR[j], permetric)[0]
+            dr += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins), weights=rweights[j])[0]
+    if multi:
+        queue.put(dr)
+    else:
+        return dr
+    # print (DR)
+    return dr
+
+
+def aRDwcalcp(dat, datR, bins, parmetric, permetric, rng, weights, rNr, multi=False, queue=0):
+    # print ("Calculating anisotropic RD with weights (parallelized)...\n DR=")
+    dr = np.zeros((len(bins)-1, len(bins)-1))
+    bt = BallTree(dat, metric='pyfunc', func=permetric)
+    for i in tqdm(rNr):
+        ind = bt.query_radius(datR[i].reshape(1, -1), max(bins))
+        for j in ind:
+            dist0 = dist.cdist([datR[i], ], dat[j], parmetric)[0]
+            dist1 = dist.cdist([datR[i], ], dat[j], permetric)[0]
+            dr += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins), weights=weights[j])[0]
+    if multi:
+        queue.put(dr)
+    else:
+        return dr
+    return dr
+
+
+def amulti_autocp(dat, bins, parmetric, permetric, rng, weights, Nd, CORES=pcpus):
+
+    DD = np.zeros((len(bins)-1, len(bins)-1))
+    queues = [Queue() for i in range(CORES)]
+    args = [(dat, bins, parmetric, permetric, rng, weights, range(int(Nd*i/CORES),int(Nd*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
+    jobs = [Process(target=aDDwcalcp, args=(a)) for a in args]
+    for j in jobs: j.start()
+    for q in queues: DD+=q.get()
+    for j in jobs: j.join()
+    DD[DD == 0] = 1.0
+    DD = DD/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
+    print DD
+    return DD
+
+
+def amulti_crosscp(dat, datR, bins, parmetric, permetric, rng, weights, Nr, CORES=pcpus):
+
+    DR = np.zeros((len(bins)-1, len(bins)-1))
+    queues = [Queue() for i in range(CORES)]
+    args = [(dat, datR, bins, parmetric, permetric, rng, weights, range(int(Nr*i/CORES),int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
+    jobs = [Process(target=aRDwcalcp, args=(a)) for a in args]
+    for j in jobs: j.start()
+    for q in queues: DR+=q.get()
+    for j in jobs: j.join()
+    DR[DR == 0] = 1.0
+    Nd=len(dat)
+    DR = DR/(Nd*Nr)
+    print DR
     return DR

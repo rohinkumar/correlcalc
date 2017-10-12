@@ -343,32 +343,35 @@ def poserr(xi, DD):
 
 
 def DDwcalc(dat, bins, metric, weights):
-    print ("Calculating DD with weights...\n DD=")
+    print ("Calculating DD with weights (parallelized)...\n DD=")
     # DD = autocorrw(dat, bins, metric, weights)
-    DD = multi_autocp(dat, bins, metric, weights, len(dat), pcpus)
-    DD[DD == 0] = 1.0
     Nd = len(dat)
+    DD = multi_autocp(dat, bins, metric, weights, Nd, pcpus)
+    DD[DD == 0] = 1.0
     DD = DD/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
     print (DD)
     return DD
 
 
 def RRwcalc(datR, bins, metric, weights):
-    print ("Calculating RR with weights...\n RR=")
-    RR = autocorrw(datR, bins, metric, weights)
-    RR[RR == 0] = 1.0
+    print ("Calculating RR with weights (parallelized)...\n RR=")
+    # RR = autocorrw(datR, bins, metric, weights)
     Nr = len(datR)
+    RR = multi_autocp(datR, bins, metric, weights, Nr, pcpus)
+    RR[RR == 0] = 1.0
+
     RR = RR/(Nr*(Nr-1.0))
     print (RR)
     return RR
 
 
 def DRwcalc(dat, datR, bins, metric, rweights):
-    print ("Calculating DR with weights...\n DR=")
-    DR = crosscorrw(dat, datR, bins, metric, rweights)
-    DR[DR == 0] = 1.0
+    print ("Calculating DR with weights (parallelized)...\n DR=")
+    # DR = crosscorrw(dat, datR, bins, metric, rweights)
     Nd = len(dat)
     Nr = len(datR)
+    DR = multi_crosscp(dat, datR, bins, metric, rweights, Nd, pcpus)
+    DR[DR == 0] = 1.0
     DR = DR/(Nd*Nr)
     print (DR)
     return DR
@@ -376,10 +379,11 @@ def DRwcalc(dat, datR, bins, metric, rweights):
 
 def RDwcalc(dat, datR, bins, metric, weights):
     print ("Calculating RD with weights...\n RD=")
-    DR = crosscorrwrd(dat, datR, bins, metric, weights)
-    DR[DR == 0] = 1.0
+    # DR = crosscorrwrd(dat, datR, bins, metric, weights)
     Nd = len(dat)
     Nr = len(datR)
+    DR = multi_crosscp(dat, datR, bins, metric, weights, Nr, pcpus)
+    DR[DR == 0] = 1.0
     DR = DR/(Nd*Nr)
     print (DR)
     return DR
@@ -430,10 +434,10 @@ def crosscorrwrd(dat, datR, bins, metric, weights):
     return RD
 
 
-def autocorrwp(dat, bins, metric, weights, Nd, multi=False, queue=0):
+def autocorrwp(dat, bins, metric, weights, rNd, multi=False, queue=0):
     bt = BallTree(dat, metric='pyfunc', func=metric)
     DD = np.zeros(len(bins)-1)
-    for i in tqdm(range(Nd)):
+    for i in tqdm(rNd):
         ind = bt.query_radius(dat[i].reshape(1, -1), max(bins))
         # wts=np.array([])
         for j in ind:
@@ -448,12 +452,12 @@ def autocorrwp(dat, bins, metric, weights, Nd, multi=False, queue=0):
     return DD
 
 
-def crosscorrwrdp(dat, datR, bins, metric, weights):
+def crosscorrwrdp(dat, datR, bins, metric, weights, rNr, multi=False, queue=0):
     bt = BallTree(dat, metric='pyfunc', func=metric)
     RD = np.zeros(len(bins)-1)
     # p=multiprocessing.Pool(processes=multiprocessing.cpu_count())
     # RD=p.map(rdcalc, range(len(datR)))
-    for i in tqdm(range(len(datR))):
+    for i in tqdm(rNr):
     # def rdcalc():
         ind = bt.query_radius(datR[i].reshape(1, -1), max(bins))
         #  wts=np.array([])
@@ -466,17 +470,27 @@ def crosscorrwrdp(dat, datR, bins, metric, weights):
     return RD
 
 
-def multi_autocp(dat, bins, metric, weights, T, CORES=pcpus):
+def multi_autocp(dat, bins, metric, weights, Nd, CORES=pcpus):
 
-    # results = np.zeros(len(bins)-1)
     DD = np.zeros(len(bins)-1)
     queues = [Queue() for i in range(CORES)]
-    args = [(dat, bins, metric, weights, int(T*(i+1)/CORES), True, queues[i]) for i in range(CORES)]
+    args = [(dat, bins, metric, weights, range(int(Nd*i/CORES),int(Nd*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
     jobs = [Process(target=autocorrwp, args=(a)) for a in args]
     for j in jobs: j.start()
     for q in queues: DD+=q.get()
     for j in jobs: j.join()
 
-    # DD += results
-
     return DD
+
+
+def multi_crosscp(dat, datR, bins, metric, weights, Nr, CORES=pcpus):
+
+    DR = np.zeros(len(bins)-1)
+    queues = [Queue() for i in range(CORES)]
+    args = [(dat, bins, metric, weights, range(int(Nr*i/CORES),int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
+    jobs = [Process(target=autocorrwp, args=(a)) for a in args]
+    for j in jobs: j.start()
+    for q in queues: DR+=q.get()
+    for j in jobs: j.join()
+
+    return DR
