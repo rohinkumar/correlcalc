@@ -5,7 +5,7 @@ __author__ = 'Rohin Kumar Y'
 # from .comovdist import *
 # from .metrics import metrics
 # from .
-from .metrics import *
+#from metrics.metrics import *
 global Om
 global Ol
 # global datpath

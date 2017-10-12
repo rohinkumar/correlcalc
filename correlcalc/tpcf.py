@@ -10,7 +10,9 @@ __author__ = 'Rohin Kumar Y'
 from tqdm import *
 from datprep import *
 import numpy as np
-from .metrics import *
+from metrics.metrics import *
+import multiprocessing
+# from .correlcalc import metrics
 from sklearn.neighbors import BallTree
 from scipy.spatial import distance as dist
 
@@ -277,7 +279,7 @@ def tpcf(datfile, bins, **kwargs):
         elif estimator == 'h':
             print ("Using Hamilton estimator")
             correl = (DD*RR)/DR**2 - 1.0
-    correlerr = poserr(correl, DD*Nd*(Nd-1.0)*0.5)
+    correlerr = poserr(correl, DD*Nd*(Nd-1.0))
     print("Two-point correlation=")
     print (correl, correlerr)
     return correl, correlerr
@@ -341,7 +343,7 @@ def DDwcalc(dat, bins, metric, weights):
     DD = autocorrw(dat, bins, metric, weights)
     DD[DD == 0] = 1.0
     Nd = len(dat)
-    DD = 2.0*DD/(Nd*(Nd-1.0))
+    DD = DD/(Nd*(Nd-1.0))
     print (DD)
     return DD
 
@@ -351,7 +353,7 @@ def RRwcalc(datR, bins, metric, weights):
     RR = autocorrw(datR, bins, metric, weights)
     RR[RR == 0] = 1.0
     Nr = len(datR)
-    RR = 2.0*RR/(Nr*(Nr-1.0))
+    RR = RR/(Nr*(Nr-1.0))
     print (RR)
     return RR
 
@@ -381,20 +383,21 @@ def RDwcalc(dat, datR, bins, metric, weights):
 def autocorrw(dat, bins, metric, weights):
     bt = BallTree(dat, metric='pyfunc', func=metric)
     DD = np.zeros(len(bins)-1)
-    for i in tqdm(xrange(len(dat))):
+    for i in tqdm(range(len(dat))):
         ind = bt.query_radius(dat[i].reshape(1, -1), max(bins))
         # wts=np.array([])
         for j in ind:
             dist0 = dist.cdist([dat[i], ], dat[j], metric)[0]
             DD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
             # print (dist0,weights[j])
+    print (DD)
     return DD
 
 
 def crosscorrw(dat, datR, bins, metric, rweights):
     rbt = BallTree(datR, metric='pyfunc', func=metric)
     DR = np.zeros(len(bins)-1)
-    for i in tqdm(xrange(len(dat))):
+    for i in tqdm(range(len(dat))):
         ind = rbt.query_radius(dat[i].reshape(1, -1), max(bins))
         # wts=np.array([])
         for j in ind:
@@ -407,11 +410,16 @@ def crosscorrw(dat, datR, bins, metric, rweights):
 def crosscorrwrd(dat, datR, bins, metric, weights):
     bt = BallTree(dat, metric='pyfunc', func=metric)
     RD = np.zeros(len(bins)-1)
-    for i in tqdm(xrange(len(datR))):
+    # p=multiprocessing.Pool(processes=multiprocessing.cpu_count())
+    # RD=p.map(rdcalc, range(len(datR)))
+    for i in tqdm(range(len(datR))):
+    # def rdcalc():
         ind = bt.query_radius(datR[i].reshape(1, -1), max(bins))
         #  wts=np.array([])
         for j in ind:
             dist0 = dist.cdist([datR[i], ], dat[j], metric)[0]
             RD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
-            # print (dist0,weights[j])
+                # print (dist0,weights[j])
+            # return RD
+    print(RD)
     return RD
