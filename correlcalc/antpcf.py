@@ -240,6 +240,15 @@ def atpcf(datfile, bins, **kwargs):
 
     Nr=len(datR)
 
+    global adbt
+    global arbt
+
+    print ("Creating BallTree for data points using permetric...")
+    adbt = BallTree(dat, metric='pyfunc', func=permetric)
+
+    print ("Creating BallTree for random points using permetric...")
+    arbt = BallTree(datR, metric='pyfunc', func=permetric)
+
     print ("Calculating anisotropic 2pCF...")
 
     # Reference: arXiv: 1211.6211
@@ -310,9 +319,9 @@ def atpcf(datfile, bins, **kwargs):
 def aDDcalc(dat, bins, parmetric, permetric, rng):
     print ("Calculating anisotropic DD...\n DD=")
     dd = np.zeros((len(bins)-1, len(bins)-1))
-    ddbt = BallTree(dat, metric='pyfunc', func=permetric)
+    # ddbt = BallTree(dat, metric='pyfunc', func=permetric)
     for i in tqdm(range(len(dat))):
-        ind = ddbt.query_radius(dat[i].reshape(1, -1), max(bins))
+        ind = adbt.query_radius(dat[i].reshape(1, -1), max(bins))
         for j in ind:
             dist0 = dist.cdist([dat[i], ], dat[j], parmetric)[0]
             dist1 = dist.cdist([dat[i], ], dat[j], permetric)[0]
@@ -327,9 +336,9 @@ def aDDcalc(dat, bins, parmetric, permetric, rng):
 def aRRcalc(datR, bins, parmetric, permetric, rng):
     print ("Calculating anisotropic RR...\n RR=")
     rr = np.zeros((len(bins)-1, len(bins)-1))
-    rrbt = BallTree(datR, metric='pyfunc', func=permetric)
+    # rrbt = BallTree(datR, metric='pyfunc', func=permetric)
     for i in tqdm(range(len(datR))):
-        ind = rrbt.query_radius(datR[i].reshape(1, -1), max(bins))
+        ind = arbt.query_radius(datR[i].reshape(1, -1), max(bins))
         for j in ind:
             dist0 = dist.cdist([datR[i], ], datR[j], parmetric)[0]
             dist1 = dist.cdist([datR[i], ], datR[j], permetric)[0]
@@ -344,9 +353,9 @@ def aRRcalc(datR, bins, parmetric, permetric, rng):
 def aDRcalc(dat, datR, bins, parmetric, permetric, rng):
     print ("Calculating anisotropic DR...\n DR=")
     dr = np.zeros((len(bins)-1, len(bins)-1))
-    rrbt = BallTree(datR, metric='pyfunc', func=permetric)
+    # rrbt = BallTree(datR, metric='pyfunc', func=permetric)
     for i in tqdm(range(len(dat))):
-        ind = rrbt.query_radius(dat[i].reshape(1, -1), max(bins))
+        ind = arbt.query_radius(dat[i].reshape(1, -1), max(bins))
         for j in ind:
             dist0 = dist.cdist([dat[i], ], datR[j], parmetric)[0]
             dist1 = dist.cdist([dat[i], ], datR[j], permetric)[0]
@@ -362,9 +371,9 @@ def aDRcalc(dat, datR, bins, parmetric, permetric, rng):
 def aDDwcalc(dat, bins, parmetric, permetric, rng, weights):
     print ("Calculating anisotropic DD with weights...\n DD=")
     dd = np.zeros((len(bins)-1, len(bins)-1))
-    ddbt = BallTree(dat, metric='pyfunc', func=permetric)
+    # ddbt = BallTree(dat, metric='pyfunc', func=permetric)
     for i in tqdm(range(len(dat))):
-        ind = ddbt.query_radius(dat[i].reshape(1, -1), max(bins))
+        ind = adbt.query_radius(dat[i].reshape(1, -1), max(bins))
         for j in ind:
             dist0 = dist.cdist([dat[i], ], dat[j], parmetric)[0]
             dist1 = dist.cdist([dat[i], ], dat[j], permetric)[0]
@@ -379,9 +388,9 @@ def aDDwcalc(dat, bins, parmetric, permetric, rng, weights):
 def aRRwcalc(datR, bins, parmetric, permetric, rng, rweights):
     print ("Calculating anisotropic RR with weights...\n RR=")
     rr = np.zeros((len(bins)-1, len(bins)-1))
-    rrbt = BallTree(datR, metric='pyfunc', func=permetric)
+    # rrbt = BallTree(datR, metric='pyfunc', func=permetric)
     for i in tqdm(range(len(datR))):
-        ind = rrbt.query_radius(datR[i].reshape(1, -1), max(bins))
+        ind = arbt.query_radius(datR[i].reshape(1, -1), max(bins))
         for j in ind:
             dist0 = dist.cdist([datR[i], ], datR[j], parmetric)[0]
             dist1 = dist.cdist([datR[i], ], datR[j], permetric)[0]
@@ -396,9 +405,9 @@ def aRRwcalc(datR, bins, parmetric, permetric, rng, rweights):
 def aDRwcalc(dat, datR, bins, parmetric, permetric, rng, weights, rweights):
     print ("Calculating anisotropic DR with weights...\n DR=")
     dr = np.zeros((len(bins)-1, len(bins)-1))
-    rrbt = BallTree(datR, metric='pyfunc', func=permetric)
+    # rrbt = BallTree(datR, metric='pyfunc', func=permetric)
     for i in tqdm(range(len(dat))):
-        ind = rrbt.query_radius(dat[i].reshape(1, -1), max(bins))
+        ind = arbt.query_radius(dat[i].reshape(1, -1), max(bins))
         for j in ind:
             dist0 = dist.cdist([dat[i], ], datR[j], parmetric)[0]
             dist1 = dist.cdist([dat[i], ], datR[j], permetric)[0]
@@ -414,9 +423,9 @@ def aDRwcalc(dat, datR, bins, parmetric, permetric, rng, weights, rweights):
 def aRDwcalc(dat, datR, bins, parmetric, permetric, rng, weights):
     print ("Calculating anisotropic RD with weights...\n DR=")
     dr = np.zeros((len(bins)-1, len(bins)-1))
-    bt = BallTree(dat, metric='pyfunc', func=permetric)
+    # bt = BallTree(dat, metric='pyfunc', func=permetric)
     for i in tqdm(range(len(datR))):
-        ind = bt.query_radius(datR[i].reshape(1, -1), max(bins))
+        ind = arbt.query_radius(datR[i].reshape(1, -1), max(bins))
         for j in ind:
             dist0 = dist.cdist([datR[i], ], dat[j], parmetric)[0]
             dist1 = dist.cdist([datR[i], ], dat[j], permetric)[0]
@@ -430,9 +439,9 @@ def aRDwcalc(dat, datR, bins, parmetric, permetric, rng, weights):
 
 def aDDwcalcp(dat, bins, parmetric, permetric, rng, weights, rNd, multi=False, queue=0):
     dd = np.zeros((len(bins)-1, len(bins)-1))
-    ddbt = BallTree(dat, metric='pyfunc', func=permetric)
+    # ddbt = BallTree(dat, metric='pyfunc', func=permetric)
     for i in tqdm(rNd):
-        ind = ddbt.query_radius(dat[i].reshape(1, -1), max(bins))
+        ind = adbt.query_radius(dat[i].reshape(1, -1), max(bins))
         for j in ind:
             dist0 = dist.cdist([dat[i], ], dat[j], parmetric)[0]
             dist1 = dist.cdist([dat[i], ], dat[j], permetric)[0]
@@ -447,9 +456,9 @@ def aDDwcalcp(dat, bins, parmetric, permetric, rng, weights, rNd, multi=False, q
 
 def aRRwcalcp(datR, bins, parmetric, permetric, rng, rweights, rNr, multi=False, queue=0):
     rr = np.zeros((len(bins)-1, len(bins)-1))
-    rrbt = BallTree(datR, metric='pyfunc', func=permetric)
+    # rrbt = BallTree(datR, metric='pyfunc', func=permetric)
     for i in tqdm(rNr):
-        ind = rrbt.query_radius(datR[i].reshape(1, -1), max(bins))
+        ind = arbt.query_radius(datR[i].reshape(1, -1), max(bins))
         for j in ind:
             dist0 = dist.cdist([datR[i], ], datR[j], parmetric)[0]
             dist1 = dist.cdist([datR[i], ], datR[j], permetric)[0]
@@ -468,9 +477,9 @@ def aRRwcalcp(datR, bins, parmetric, permetric, rng, rweights, rNr, multi=False,
 def aDRwcalcp(dat, datR, bins, parmetric, permetric, rng, rweights, rNd, multi=False, queue=0):
     # print ("Calculating anisotropic DR with weights (parallelized)...\n DR=")
     dr = np.zeros((len(bins)-1, len(bins)-1))
-    rrbt = BallTree(datR, metric='pyfunc', func=permetric)
+    # rrbt = BallTree(datR, metric='pyfunc', func=permetric)
     for i in tqdm(rNd):
-        ind = rrbt.query_radius(dat[i].reshape(1, -1), max(bins))
+        ind = arbt.query_radius(dat[i].reshape(1, -1), max(bins))
         for j in ind:
             dist0 = dist.cdist([dat[i], ], datR[j], parmetric)[0]
             dist1 = dist.cdist([dat[i], ], datR[j], permetric)[0]
@@ -486,9 +495,9 @@ def aDRwcalcp(dat, datR, bins, parmetric, permetric, rng, rweights, rNd, multi=F
 def aRDwcalcp(dat, datR, bins, parmetric, permetric, rng, weights, rNr, multi=False, queue=0):
     # print ("Calculating anisotropic RD with weights (parallelized)...\n DR=")
     dr = np.zeros((len(bins)-1, len(bins)-1))
-    bt = BallTree(dat, metric='pyfunc', func=permetric)
+    # bt = BallTree(dat, metric='pyfunc', func=permetric)
     for i in tqdm(rNr):
-        ind = bt.query_radius(datR[i].reshape(1, -1), max(bins))
+        ind = arbt.query_radius(datR[i].reshape(1, -1), max(bins))
         for j in ind:
             dist0 = dist.cdist([datR[i], ], dat[j], parmetric)[0]
             dist1 = dist.cdist([datR[i], ], dat[j], permetric)[0]
@@ -503,7 +512,7 @@ def aRDwcalcp(dat, datR, bins, parmetric, permetric, rng, weights, rNr, multi=Fa
 def amulti_autocp(dat, bins, parmetric, permetric, rng, weights, Nd, CORES=pcpus):
 
     DD = np.zeros((len(bins)-1, len(bins)-1))
-    queues = [Queue() for i in range(CORES)]
+    queues = [RetryQueue() for i in range(CORES)]
     args = [(dat, bins, parmetric, permetric, rng, weights, range(int(Nd*i/CORES),int(Nd*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
     jobs = [Process(target=aDDwcalcp, args=(a)) for a in args]
     for j in jobs: j.start()
@@ -518,7 +527,7 @@ def amulti_autocp(dat, bins, parmetric, permetric, rng, weights, Nd, CORES=pcpus
 def amulti_crosscp(dat, datR, bins, parmetric, permetric, rng, weights, Nr, CORES=pcpus):
 
     DR = np.zeros((len(bins)-1, len(bins)-1))
-    queues = [Queue() for i in range(CORES)]
+    queues = [RetryQueue() for i in range(CORES)]
     args = [(dat, datR, bins, parmetric, permetric, rng, weights, range(int(Nr*i/CORES),int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
     jobs = [Process(target=aRDwcalcp, args=(a)) for a in args]
     for j in jobs: j.start()

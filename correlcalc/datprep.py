@@ -11,6 +11,7 @@ from math import pi
 
 def datprep(fname, ftype, model):
     """Method to convert input ascii files into 3xN matrices needed for metric distance calculations. Calculates comoving distances as per input model."""
+    print ("Preparing %s into 3xN matrices in [s,rar,decr] format" % ftype )
     if fname.lower().endswith('.fits'):
         data = readfitsfile(fname, ftype)
     else:
@@ -47,7 +48,8 @@ def datprep(fname, ftype, model):
 
 
 def datprepz(fname, ftype, model):
-    """Method to convert input ascii files into 3xN matrices needed for metric distance calculations. Calculates comoving distances as per input model."""
+    """Method to convert input ascii files into 3xN matrices needed for metric distance calculations. passes z instead of s in matrices."""
+    print ("Preparing %s into 3xN matrices in [z,rar,decr] format" % ftype )
     if fname.lower().endswith('.fits'):
         data = readfitsfile(fname, ftype)
     else:
