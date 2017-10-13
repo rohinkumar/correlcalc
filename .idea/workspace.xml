@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8aa9335b-471d-42fe-9031-1d36388dc0a2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/correlcalc/antpcf.py" afterPath="$PROJECT_DIR$/correlcalc/antpcf.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/correlcalc/tpcf.py" afterPath="$PROJECT_DIR$/correlcalc/tpcf.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/correlcalc/datprep.py" afterPath="$PROJECT_DIR$/correlcalc/datprep.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -21,7 +20,7 @@
         <entry file="file://$PROJECT_DIR$/correlcalc/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="130">
-              <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+              <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
               <folding>
                 <element signature="e#272#291#0" expanded="true" />
               </folding>
@@ -45,21 +44,21 @@
         <entry file="file://$PROJECT_DIR$/correlcalc/antpcf.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="315">
-              <caret line="244" column="18" lean-forward="true" selection-start-line="244" selection-start-column="18" selection-end-line="244" selection-end-column="18" />
+              <caret line="244" column="18" lean-forward="false" selection-start-line="244" selection-start-column="18" selection-end-line="244" selection-end-column="18" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="datprep.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="datprep.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/correlcalc/datprep.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="950">
-              <caret line="50" column="135" lean-forward="false" selection-start-line="50" selection-start-column="135" selection-end-line="50" selection-end-column="135" />
+            <state relative-caret-position="-880">
+              <caret line="79" column="79" lean-forward="false" selection-start-line="79" selection-start-column="79" selection-end-line="79" selection-end-column="79" />
               <folding>
                 <element signature="e#29#47#0" expanded="true" />
-                <marker date="1507863257000" expanded="true" signature="280:1343" ph="..." />
-                <marker date="1507863257000" expanded="true" signature="2655:2868" ph="..." />
+                <marker date="1507865852000" expanded="true" signature="280:1319" ph="..." />
+                <marker date="1507865852000" expanded="true" signature="2687:2980" ph="..." />
               </folding>
             </state>
           </provider>
@@ -81,7 +80,7 @@
         <entry file="file://$PROJECT_DIR$/correlcalc/param.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="76">
-              <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+              <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -121,11 +120,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tpcf.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="tpcf.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/correlcalc/tpcf.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="393">
-              <caret line="533" column="62" lean-forward="true" selection-start-line="533" selection-start-column="62" selection-end-line="533" selection-end-column="62" />
+              <caret line="533" column="62" lean-forward="false" selection-start-line="533" selection-start-column="62" selection-end-line="533" selection-end-column="62" />
               <folding />
             </state>
           </provider>
@@ -184,11 +183,11 @@
         <option value="$PROJECT_DIR$/correlcalc/datvis.py" />
         <option value="$PROJECT_DIR$/correlcalc/test.py" />
         <option value="$PROJECT_DIR$/correlcalc/comovdist.py" />
-        <option value="$PROJECT_DIR$/correlcalc/datprep.py" />
         <option value="$PROJECT_DIR$/correlcalc/__init__.py" />
         <option value="$PROJECT_DIR$/setup.py" />
         <option value="$PROJECT_DIR$/correlcalc/antpcf.py" />
         <option value="$PROJECT_DIR$/correlcalc/tpcf.py" />
+        <option value="$PROJECT_DIR$/correlcalc/datprep.py" />
       </list>
     </option>
   </component>
@@ -677,8 +676,8 @@
           <caret line="10" column="25" lean-forward="false" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
           <folding>
             <element signature="e#29#47#0" expanded="true" />
-            <marker date="1507863257000" expanded="true" signature="280:1343" ph="..." />
-            <marker date="1507863257000" expanded="true" signature="2655:2868" ph="..." />
+            <marker date="1507865852000" expanded="true" signature="280:1319" ph="..." />
+            <marker date="1507865852000" expanded="true" signature="2687:2980" ph="..." />
           </folding>
         </state>
       </provider>
@@ -969,18 +968,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/correlcalc/datprep.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="950">
-          <caret line="50" column="135" lean-forward="false" selection-start-line="50" selection-start-column="135" selection-end-line="50" selection-end-column="135" />
-          <folding>
-            <element signature="e#29#47#0" expanded="true" />
-            <marker date="1507863257000" expanded="true" signature="280:1343" ph="..." />
-            <marker date="1507863257000" expanded="true" signature="2655:2868" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/correlcalc/comovdist.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="570">
@@ -994,7 +981,7 @@
     <entry file="file://$PROJECT_DIR$/correlcalc/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="130">
-          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding>
             <element signature="e#272#291#0" expanded="true" />
           </folding>
@@ -1014,7 +1001,7 @@
     <entry file="file://$PROJECT_DIR$/correlcalc/param.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="76">
-          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1022,7 +1009,7 @@
     <entry file="file://$PROJECT_DIR$/correlcalc/antpcf.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
-          <caret line="244" column="18" lean-forward="true" selection-start-line="244" selection-start-column="18" selection-end-line="244" selection-end-column="18" />
+          <caret line="244" column="18" lean-forward="false" selection-start-line="244" selection-start-column="18" selection-end-line="244" selection-end-column="18" />
           <folding />
         </state>
       </provider>
@@ -1030,8 +1017,20 @@
     <entry file="file://$PROJECT_DIR$/correlcalc/tpcf.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="393">
-          <caret line="533" column="62" lean-forward="true" selection-start-line="533" selection-start-column="62" selection-end-line="533" selection-end-column="62" />
+          <caret line="533" column="62" lean-forward="false" selection-start-line="533" selection-start-column="62" selection-end-line="533" selection-end-column="62" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/correlcalc/datprep.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-880">
+          <caret line="79" column="79" lean-forward="false" selection-start-line="79" selection-start-column="79" selection-end-line="79" selection-end-column="79" />
+          <folding>
+            <element signature="e#29#47#0" expanded="true" />
+            <marker date="1507865852000" expanded="true" signature="280:1319" ph="..." />
+            <marker date="1507865852000" expanded="true" signature="2687:2980" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
