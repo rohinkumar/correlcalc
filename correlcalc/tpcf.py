@@ -14,7 +14,6 @@ from metrics import *
 from multiprocessing import cpu_count
 from multiprocessing import Process
 from multiprocessing.queues import Queue
-# from .correlcalc import metrics
 from sklearn.neighbors import BallTree
 from scipy.spatial import distance as dist
 
@@ -214,6 +213,8 @@ def tpcf(datfile, bins, **kwargs):
     print("-----------------------------------------")
     # Prepare dat from data file
     dat, weights = datprep(datfile, 'data', cosmology)
+    global Nd
+    Nd = len(dat)
     # Nd = len(dat)
     # print (weights)
     # Prepare datR from random file or generate a random catalog
@@ -236,10 +237,8 @@ def tpcf(datfile, bins, **kwargs):
         # print (rweights)
     # Nr=len(datR)
 
-    global Nd
-    global Nr
 
-    Nd = len(dat)
+    global Nr
     Nr = len(datR)
 
 

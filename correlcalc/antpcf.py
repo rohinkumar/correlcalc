@@ -3,6 +3,7 @@ __author__ = 'Rohin Kumar Y'
 
 # Calculate anisotropic 2pCF
 from tpcf import *
+
 # antpcf(dat,datR,bins,parmetric,permetric) returns numpy 2d array DD, RR, DR correl
 # poserr(xi,DD) returns (1.0+xi)/np.sqrt(DD)
 
@@ -223,7 +224,8 @@ def atpcf(datfile, bins, **kwargs):
     print("-------------------------------")
     # Prepare dat from data file
     dat, weights = datprepz(datfile, 'data', cosmology)
-    # Nd = len(dat)
+    global Nd
+    Nd = len(dat)
     # print (weights)
     # Prepare datR from random file or generate a random catalog
     if randfile is None:
@@ -238,10 +240,9 @@ def atpcf(datfile, bins, **kwargs):
     else:
         datR, rweights = datprepz(randfile, 'random', cosmology)
 
-    global Nd
-    global Nr
 
-    Nd = len(dat)
+    global Nr
+    # Nd = len(dat)
     Nr = len(datR)
 
     global adbt
