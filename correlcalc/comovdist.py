@@ -28,6 +28,7 @@ def DC_LC(z):
 def comov(z,model):
     """Method to calculate comoving distance of given redshifts for input model. Units in c/H0"""
     #More models such as wcdm to be added
+    print ("Calculating comoving distances...")
     if model=='lcdm':
         return DC_LCDM(z)
     elif model=='lc':

@@ -10,9 +10,14 @@ __author__ = 'Rohin Kumar Y'
 from tqdm import *
 from datprep import *
 import numpy as np
-from .metrics import *
+from metrics import *
+from multiprocessing import cpu_count
+from multiprocessing import Process
+from multiprocessing.queues import Queue
 from sklearn.neighbors import BallTree
 from scipy.spatial import distance as dist
+
+pcpus=cpu_count()-1
 
 
 def tpcf(datfile, bins, **kwargs):
@@ -208,7 +213,9 @@ def tpcf(datfile, bins, **kwargs):
     print("-----------------------------------------")
     # Prepare dat from data file
     dat, weights = datprep(datfile, 'data', cosmology)
+    global Nd
     Nd = len(dat)
+    # Nd = len(dat)
     # print (weights)
     # Prepare datR from random file or generate a random catalog
     if randfile is None:
@@ -229,6 +236,23 @@ def tpcf(datfile, bins, **kwargs):
         # rweights=rweights/np.mean(rweights)
         # print (rweights)
     # Nr=len(datR)
+
+
+    global Nr
+    Nr = len(datR)
+
+
+    #Creating module-wise global balltrees so that they don't have to be created many times.
+
+    global dbt
+    global rbt
+
+    print ("Creating BallTree for data points using input metric...")
+    dbt = BallTree(dat, metric='pyfunc', func=metric)
+
+    print ("Creating BallTree for random points using input metric...")
+    rbt = BallTree(datR, metric='pyfunc', func=metric)
+
     print ("Calculating 2pCF...")
     # f=(1.0*Nrd)/N
     # print (weights)
@@ -277,7 +301,7 @@ def tpcf(datfile, bins, **kwargs):
         elif estimator == 'h':
             print ("Using Hamilton estimator")
             correl = (DD*RR)/DR**2 - 1.0
-    correlerr = poserr(correl, DD*Nd*(Nd-1.0)*0.5)
+    correlerr = poserr(correl, DD*Nd*(Nd-1.0))
     print("Two-point correlation=")
     print (correl, correlerr)
     return correl, correlerr
@@ -287,7 +311,7 @@ def DDcalc(dat, bins, metric):
     print ("Calculating DD...\n DD=")
     DD = autocorr(dat, bins, metric)
     DD [DD == 0] = 1.0
-    Nd = len(dat)
+    # Nd = len(dat)
     DD = 2.0*DD/(Nd*(Nd-1.0))
     print (DD)
     return DD
@@ -297,7 +321,7 @@ def RRcalc(datR, bins, metric):
     print ("Calculating RR...\n RR=")
     RR = autocorr(datR, bins, metric)
     RR [RR == 0] = 1.0
-    Nr = len(datR)
+    # Nr = len(datR)
     RR = 2.0*RR/(Nr*(Nr-1.0))
     print (RR)
     return RR
@@ -307,22 +331,20 @@ def DRcalc(dat, datR, bins, metric):
     print ("Calculating DR...\n DR=")
     DR = crosscorr(dat, datR, bins, metric)
     DR[DR == 0] = 1.0
-    Nd = len(dat)
-    Nr = len(datR)
+    # Nd = len(dat)
+    # Nr = len(datR)
     DR = DR/(Nd*Nr)
     print (DR)
     return DR
 
 
 def autocorr(dat, bins, metric):
-    bt = BallTree(dat, metric='pyfunc', func=metric)
-    counts_DD = bt.two_point_correlation(dat, bins)
+    counts_DD = dbt.two_point_correlation(dat, bins)
     DD = np.diff(counts_DD)
     return DD
 
 
 def crosscorr(dat, datR, bins, metric):
-    rbt = BallTree(datR, metric='pyfunc', func=metric)
     counts_DR = rbt.two_point_correlation(dat, bins)
     DR = np.diff(counts_DR)
     return DR
@@ -337,31 +359,35 @@ def poserr(xi, DD):
 
 
 def DDwcalc(dat, bins, metric, weights):
-    print ("Calculating DD with weights...\n DD=")
-    DD = autocorrw(dat, bins, metric, weights)
+    print ("Calculating DD with weights (parallelized)...\n DD=")
+    # DD = autocorrw(dat, bins, metric, weights)
+    # Nd = len(dat)
+    DD = multi_autocp(dat, bins, metric, weights, Nd, pcpus)
     DD[DD == 0] = 1.0
-    Nd = len(dat)
-    DD = 2.0*DD/(Nd*(Nd-1.0))
+    DD = DD/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
     print (DD)
     return DD
 
 
 def RRwcalc(datR, bins, metric, weights):
-    print ("Calculating RR with weights...\n RR=")
-    RR = autocorrw(datR, bins, metric, weights)
+    print ("Calculating RR with weights (parallelized)...\n RR=")
+    # RR = autocorrw(datR, bins, metric, weights)
+    # Nr = len(datR)
+    RR = multi_autocp(datR, bins, metric, weights, Nr, pcpus)
     RR[RR == 0] = 1.0
-    Nr = len(datR)
-    RR = 2.0*RR/(Nr*(Nr-1.0))
+
+    RR = RR/(Nr*(Nr-1.0))
     print (RR)
     return RR
 
 
 def DRwcalc(dat, datR, bins, metric, rweights):
-    print ("Calculating DR with weights...\n DR=")
-    DR = crosscorrw(dat, datR, bins, metric, rweights)
+    print ("Calculating DR with weights (parallelized)...\n DR=")
+    # DR = crosscorrw(dat, datR, bins, metric, rweights)
+    # Nd = len(dat)
+    # Nr = len(datR)
+    DR = multi_crosscp(dat, datR, bins, metric, rweights, Nd, pcpus)
     DR[DR == 0] = 1.0
-    Nd = len(dat)
-    Nr = len(datR)
     DR = DR/(Nd*Nr)
     print (DR)
     return DR
@@ -369,32 +395,34 @@ def DRwcalc(dat, datR, bins, metric, rweights):
 
 def RDwcalc(dat, datR, bins, metric, weights):
     print ("Calculating RD with weights...\n RD=")
-    DR = crosscorrwrd(dat, datR, bins, metric, weights)
+    # DR = crosscorrwrd(dat, datR, bins, metric, weights)
+    # Nd = len(dat)
+    # Nr = len(datR)
+    DR = multi_crosscp(dat, datR, bins, metric, weights, Nr, pcpus)
     DR[DR == 0] = 1.0
-    Nd = len(dat)
-    Nr = len(datR)
     DR = DR/(Nd*Nr)
     print (DR)
     return DR
 
 
 def autocorrw(dat, bins, metric, weights):
-    bt = BallTree(dat, metric='pyfunc', func=metric)
+    # dbt = BallTree(dat, metric='pyfunc', func=metric)
     DD = np.zeros(len(bins)-1)
-    for i in tqdm(xrange(len(dat))):
-        ind = bt.query_radius(dat[i].reshape(1, -1), max(bins))
+    for i in tqdm(range(len(dat))):
+        ind = dbt.query_radius(dat[i].reshape(1, -1), max(bins))
         # wts=np.array([])
         for j in ind:
             dist0 = dist.cdist([dat[i], ], dat[j], metric)[0]
             DD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
             # print (dist0,weights[j])
+    print (DD)
     return DD
 
 
 def crosscorrw(dat, datR, bins, metric, rweights):
-    rbt = BallTree(datR, metric='pyfunc', func=metric)
+    # rbt = BallTree(datR, metric='pyfunc', func=metric)
     DR = np.zeros(len(bins)-1)
-    for i in tqdm(xrange(len(dat))):
+    for i in tqdm(range(len(dat))):
         ind = rbt.query_radius(dat[i].reshape(1, -1), max(bins))
         # wts=np.array([])
         for j in ind:
@@ -405,13 +433,101 @@ def crosscorrw(dat, datR, bins, metric, rweights):
 
 
 def crosscorrwrd(dat, datR, bins, metric, weights):
-    bt = BallTree(dat, metric='pyfunc', func=metric)
+    # dbt = BallTree(dat, metric='pyfunc', func=metric)
     RD = np.zeros(len(bins)-1)
-    for i in tqdm(xrange(len(datR))):
-        ind = bt.query_radius(datR[i].reshape(1, -1), max(bins))
+    # p=multiprocessing.Pool(processes=multiprocessing.cpu_count())
+    # RD=p.map(rdcalc, range(len(datR)))
+    for i in tqdm(range(len(datR))):
+    # def rdcalc():
+        ind = dbt.query_radius(datR[i].reshape(1, -1), max(bins))
         #  wts=np.array([])
         for j in ind:
             dist0 = dist.cdist([datR[i], ], dat[j], metric)[0]
             RD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
-            # print (dist0,weights[j])
+                # print (dist0,weights[j])
+            # return RD
+    print(RD)
     return RD
+
+
+def autocorrwp(dat, bins, metric, weights, rNd, multi=False, queue=0):
+    # dbt = BallTree(dat, metric='pyfunc', func=metric)
+    DD = np.zeros(len(bins)-1)
+    for i in tqdm(rNd):
+        ind = dbt.query_radius(dat[i].reshape(1, -1), max(bins))
+        # wts=np.array([])
+        for j in ind:
+            dist0 = dist.cdist([dat[i], ], dat[j], metric)[0]
+            DD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
+            # print (dist0,weights[j])
+    if multi:
+        queue.put(DD)
+    else:
+        return DD
+    print (DD)
+    return DD
+
+
+def crosscorrwrdp(dat, datR, bins, metric, weights, rNr, multi=False, queue=0):
+    # dbt = BallTree(dat, metric='pyfunc', func=metric)
+    RD = np.zeros(len(bins)-1)
+    # p=multiprocessing.Pool(processes=multiprocessing.cpu_count())
+    # RD=p.map(rdcalc, range(len(datR)))
+    for i in tqdm(rNr):
+    # def rdcalc():
+        ind = dbt.query_radius(datR[i].reshape(1, -1), max(bins))
+        #  wts=np.array([])
+        for j in ind:
+            dist0 = dist.cdist([datR[i], ], dat[j], metric)[0]
+            RD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
+                # print (dist0,weights[j])
+            # return RD
+    if multi:
+        queue.put(RD)
+    else:
+        return RD
+    print(RD)
+    return RD
+
+
+def multi_autocp(dat, bins, metric, weights, Nd, CORES=pcpus):
+
+    DD = np.zeros(len(bins)-1)
+    queues = [RetryQueue() for i in range(CORES)]
+    args = [(dat, bins, metric, weights, range(int(Nd*i/CORES),int(Nd*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
+    jobs = [Process(target=autocorrwp, args=(a)) for a in args]
+    for j in jobs: j.start()
+    for q in queues: DD+=q.get()
+    for j in jobs: j.join()
+
+    return DD
+
+
+def multi_crosscp(dat, datR, bins, metric, weights, Nr, CORES=pcpus):
+
+    DR = np.zeros(len(bins)-1)
+    queues = [RetryQueue() for i in range(CORES)]
+    args = [(dat, datR, bins, metric, weights, range(int(Nr*i/CORES),int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
+    jobs = [Process(target=crosscorrwrdp, args=(a)) for a in args]
+    for j in jobs: j.start()
+    for q in queues: DR+=q.get()
+    for j in jobs: j.join()
+
+    return DR
+
+def retry_on_eintr(function, *args, **kw):
+    while True:
+        try:
+            return function(*args, **kw)
+        except IOError, e:
+            if e.errno == KeyboardInterrupt:
+                break
+            elif e.errno == errno.EINTR:
+                continue
+            else:
+                raise
+
+class RetryQueue(Queue):
+
+    def get(self, block=True, timeout=None):
+        return retry_on_eintr(Queue.get, self, block, timeout)

@@ -16,6 +16,7 @@ def datprep(fname, ftype, model):
     else:
         data = readinfile(fname, ftype)
     weights = np.array([])
+    print ("Reading column data from input file...")
     for x in data.colnames:
         if x.lower() == 'z':
             z = np.array(data[x])
@@ -39,6 +40,7 @@ def datprep(fname, ftype, model):
     s = comov(z, model)
     rar = ra*pi/180.0
     decr = dec*pi/180.0
+    print ("Preparing %s into 3xN matrices in [s,rar,decr] format..." % ftype )
     dat = np.array([s, rar, decr])
     dat.reshape(3, len(data))
     dat = dat.transpose()
@@ -48,12 +50,13 @@ def datprep(fname, ftype, model):
 
 
 def datprepz(fname, ftype, model):
-    """Method to convert input ascii files into 3xN matrices needed for metric distance calculations. Calculates comoving distances as per input model."""
+    """Method to convert input ascii files into 3xN matrices needed for metric distance calculations. passes z instead of s in matrices."""
     if fname.lower().endswith('.fits'):
         data = readfitsfile(fname, ftype)
     else:
         data = readinfile(fname, ftype)
     weights = np.array([])
+    print ("Reading column data from input file...")
     for x in data.colnames:
         if x.lower() == 'z':
             z = np.array(data[x])
@@ -76,6 +79,7 @@ def datprepz(fname, ftype, model):
     print ("Converting angles to radians...")
     rar = ra*pi/180.0
     decr = dec*pi/180.0
+    print ("Preparing %s into 3xN matrices in [z,rar,decr] format..." % ftype )
     dat = np.array([z, rar, decr])
     dat.reshape(3, len(data))
     dat = dat.transpose()
@@ -107,6 +111,7 @@ def randcatprep(datfname, randcatsize, maskfile, model):
     rcatfname = "randcat.dat"# %(datfname)
     storerandcat(zr, rar, decr, rcatfname)
     s = comov(zr, model)
+    print ("Preparing random catalog into 3xN matrices in [s,rar,decr] format" )
     datR = np.array([s, rar, decr])
     datR.reshape(3, len(zr))
     datR = datR.transpose()
@@ -136,6 +141,7 @@ def randcatprepz(datfname, randcatsize, maskfile, model):
     decr = dec*pi/180.0
     rcatfname = "randcat.dat"# %(datfname)
     storerandcat(zr, rar, decr, rcatfname)
+    print ("Preparing random catalog into 3xN matrices in [zr,rar,decr] format" )
     datR = np.array([zr, rar, decr])
     datR.reshape(3, len(zr))
     datR = datR.transpose()
