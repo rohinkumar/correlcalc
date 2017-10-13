@@ -500,7 +500,7 @@ def aRDwcalcp(dat, datR, bins, parmetric, permetric, rng, weights, rNr, multi=Fa
     dr = np.zeros((len(bins)-1, len(bins)-1))
     # bt = BallTree(dat, metric='pyfunc', func=permetric)
     for i in tqdm(rNr):
-        ind = arbt.query_radius(datR[i].reshape(1, -1), max(bins))
+        ind = adbt.query_radius(datR[i].reshape(1, -1), max(bins))
         for j in ind:
             dist0 = dist.cdist([datR[i], ], dat[j], parmetric)[0]
             dist1 = dist.cdist([datR[i], ], dat[j], permetric)[0]
