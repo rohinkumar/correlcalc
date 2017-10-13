@@ -214,7 +214,7 @@ def tpcf(datfile, bins, **kwargs):
     print("-----------------------------------------")
     # Prepare dat from data file
     dat, weights = datprep(datfile, 'data', cosmology)
-    Nd = len(dat)
+    # Nd = len(dat)
     # print (weights)
     # Prepare datR from random file or generate a random catalog
     if randfile is None:
@@ -235,6 +235,13 @@ def tpcf(datfile, bins, **kwargs):
         # rweights=rweights/np.mean(rweights)
         # print (rweights)
     # Nr=len(datR)
+
+    global Nd
+    global Nr
+
+    Nd = len(dat)
+    Nr = len(datR)
+
 
     #Creating module-wise global balltrees so that they don't have to be created many times.
 
@@ -305,7 +312,7 @@ def DDcalc(dat, bins, metric):
     print ("Calculating DD...\n DD=")
     DD = autocorr(dat, bins, metric)
     DD [DD == 0] = 1.0
-    Nd = len(dat)
+    # Nd = len(dat)
     DD = 2.0*DD/(Nd*(Nd-1.0))
     print (DD)
     return DD
@@ -315,7 +322,7 @@ def RRcalc(datR, bins, metric):
     print ("Calculating RR...\n RR=")
     RR = autocorr(datR, bins, metric)
     RR [RR == 0] = 1.0
-    Nr = len(datR)
+    # Nr = len(datR)
     RR = 2.0*RR/(Nr*(Nr-1.0))
     print (RR)
     return RR
@@ -325,8 +332,8 @@ def DRcalc(dat, datR, bins, metric):
     print ("Calculating DR...\n DR=")
     DR = crosscorr(dat, datR, bins, metric)
     DR[DR == 0] = 1.0
-    Nd = len(dat)
-    Nr = len(datR)
+    # Nd = len(dat)
+    # Nr = len(datR)
     DR = DR/(Nd*Nr)
     print (DR)
     return DR
@@ -355,7 +362,7 @@ def poserr(xi, DD):
 def DDwcalc(dat, bins, metric, weights):
     print ("Calculating DD with weights (parallelized)...\n DD=")
     # DD = autocorrw(dat, bins, metric, weights)
-    Nd = len(dat)
+    # Nd = len(dat)
     DD = multi_autocp(dat, bins, metric, weights, Nd, pcpus)
     DD[DD == 0] = 1.0
     DD = DD/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
@@ -366,7 +373,7 @@ def DDwcalc(dat, bins, metric, weights):
 def RRwcalc(datR, bins, metric, weights):
     print ("Calculating RR with weights (parallelized)...\n RR=")
     # RR = autocorrw(datR, bins, metric, weights)
-    Nr = len(datR)
+    # Nr = len(datR)
     RR = multi_autocp(datR, bins, metric, weights, Nr, pcpus)
     RR[RR == 0] = 1.0
 
@@ -378,8 +385,8 @@ def RRwcalc(datR, bins, metric, weights):
 def DRwcalc(dat, datR, bins, metric, rweights):
     print ("Calculating DR with weights (parallelized)...\n DR=")
     # DR = crosscorrw(dat, datR, bins, metric, rweights)
-    Nd = len(dat)
-    Nr = len(datR)
+    # Nd = len(dat)
+    # Nr = len(datR)
     DR = multi_crosscp(dat, datR, bins, metric, rweights, Nd, pcpus)
     DR[DR == 0] = 1.0
     DR = DR/(Nd*Nr)
@@ -390,8 +397,8 @@ def DRwcalc(dat, datR, bins, metric, rweights):
 def RDwcalc(dat, datR, bins, metric, weights):
     print ("Calculating RD with weights...\n RD=")
     # DR = crosscorrwrd(dat, datR, bins, metric, weights)
-    Nd = len(dat)
-    Nr = len(datR)
+    # Nd = len(dat)
+    # Nr = len(datR)
     DR = multi_crosscp(dat, datR, bins, metric, weights, Nr, pcpus)
     DR[DR == 0] = 1.0
     DR = DR/(Nd*Nr)

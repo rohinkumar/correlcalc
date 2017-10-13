@@ -223,7 +223,7 @@ def atpcf(datfile, bins, **kwargs):
     print("-------------------------------")
     # Prepare dat from data file
     dat, weights = datprepz(datfile, 'data', cosmology)
-    Nd = len(dat)
+    # Nd = len(dat)
     # print (weights)
     # Prepare datR from random file or generate a random catalog
     if randfile is None:
@@ -238,7 +238,11 @@ def atpcf(datfile, bins, **kwargs):
     else:
         datR, rweights = datprepz(randfile, 'random', cosmology)
 
-    Nr=len(datR)
+    global Nd
+    global Nr
+
+    Nd = len(dat)
+    Nr = len(datR)
 
     global adbt
     global arbt
@@ -327,7 +331,7 @@ def aDDcalc(dat, bins, parmetric, permetric, rng):
             dist1 = dist.cdist([dat[i], ], dat[j], permetric)[0]
             dd += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins))[0]
     dd[dd == 0] = 1.0
-    Nd = len(dat)
+    # Nd = len(dat)
     DD = 2.0*dd/(Nd*(Nd-1.0))
     print (DD)
     return DD
@@ -344,7 +348,7 @@ def aRRcalc(datR, bins, parmetric, permetric, rng):
             dist1 = dist.cdist([datR[i], ], datR[j], permetric)[0]
             rr += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins))[0]
     rr[rr == 0] = 1.0
-    Nr = len(datR)
+    # Nr = len(datR)
     RR = 2.0*rr/(Nr*(Nr-1.0))
     print (RR)
     return RR
@@ -361,8 +365,8 @@ def aDRcalc(dat, datR, bins, parmetric, permetric, rng):
             dist1 = dist.cdist([dat[i], ], datR[j], permetric)[0]
             dr += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins))[0]
     dr[dr == 0] = 1.0
-    Nd = len(dat)
-    Nr = len(datR)
+    # Nd = len(dat)
+    # Nr = len(datR)
     DR = dr/(Nd*Nr)
     print (DR)
     return DR
@@ -379,7 +383,7 @@ def aDDwcalc(dat, bins, parmetric, permetric, rng, weights):
             dist1 = dist.cdist([dat[i], ], dat[j], permetric)[0]
             dd += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins), weights=weights[j])[0]
     dd[dd == 0] = 1.0
-    Nd = len(dat)
+    # Nd = len(dat)
     DD = dd/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
     print (DD)
     return DD
@@ -396,7 +400,7 @@ def aRRwcalc(datR, bins, parmetric, permetric, rng, rweights):
             dist1 = dist.cdist([datR[i], ], datR[j], permetric)[0]
             rr += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins), weights=rweights[j])[0]
     rr[rr == 0] = 1.0
-    Nr = len(datR)
+    # Nr = len(datR)
     RR = rr/(Nr*(Nr-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
     print (RR)
     return RR
@@ -413,8 +417,8 @@ def aDRwcalc(dat, datR, bins, parmetric, permetric, rng, weights, rweights):
             dist1 = dist.cdist([dat[i], ], datR[j], permetric)[0]
             dr += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins), weights=rweights[j])[0]
     dr[dr == 0] = 1.0
-    Nd = len(dat)
-    Nr = len(datR)
+    # Nd = len(dat)
+    # Nr = len(datR)
     DR = dr/(Nd*Nr)
     print (DR)
     return DR
@@ -431,8 +435,6 @@ def aRDwcalc(dat, datR, bins, parmetric, permetric, rng, weights):
             dist1 = dist.cdist([datR[i], ], dat[j], permetric)[0]
             dr += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins), weights=weights[j])[0]
     dr[dr == 0] = 1.0
-    Nd = len(dat)
-    Nr = len(datR)
     DR = dr/(Nd*Nr)
     print (DR)
     return DR
