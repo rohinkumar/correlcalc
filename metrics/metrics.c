@@ -4,12 +4,12 @@
 {
     "distutils": {
         "depends": [], 
-        "name": "metrics", 
+        "name": "metrics.metrics", 
         "sources": [
             "metrics.pyx"
         ]
     }, 
-    "module_name": "metrics"
+    "module_name": "metrics.metrics"
 }
 END: Cython Metadata */
 
@@ -523,8 +523,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__metrics
-#define __PYX_HAVE_API__metrics
+#define __PYX_HAVE__metrics__metrics
+#define __PYX_HAVE_API__metrics__metrics
 #include <math.h>
 #include "pythread.h"
 #include <string.h>
@@ -1517,7 +1517,7 @@ static PyObject *__pyx_memoryviewslice_assign_item_from_object(struct __pyx_memo
 
 /* Module declarations from 'libc.math' */
 
-/* Module declarations from 'metrics' */
+/* Module declarations from 'metrics.metrics' */
 static PyTypeObject *__pyx_array_type = 0;
 static PyTypeObject *__pyx_MemviewEnum_type = 0;
 static PyTypeObject *__pyx_memoryview_type = 0;
@@ -1563,10 +1563,10 @@ static void __pyx_memoryview_slice_assign_scalar(__Pyx_memviewslice *, int, size
 static void __pyx_memoryview__slice_assign_scalar(char *, Py_ssize_t *, Py_ssize_t *, int, size_t, void *); /*proto*/
 static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *, PyObject *); /*proto*/
 static __Pyx_TypeInfo __Pyx_TypeInfo_double = { "double", NULL, sizeof(double), { 0 }, 0, 'R', 0, 0 };
-#define __Pyx_MODULE_NAME "metrics"
-int __pyx_module_is_main_metrics = 0;
+#define __Pyx_MODULE_NAME "metrics.metrics"
+int __pyx_module_is_main_metrics__metrics = 0;
 
-/* Implementation of 'metrics' */
+/* Implementation of 'metrics.metrics' */
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_MemoryError;
 static PyObject *__pyx_builtin_enumerate;
@@ -1623,7 +1623,6 @@ static const char __pyx_k_unpack[] = "unpack";
 static const char __pyx_k_update[] = "update";
 static const char __pyx_k_fortran[] = "fortran";
 static const char __pyx_k_memview[] = "memview";
-static const char __pyx_k_metrics[] = "metrics";
 static const char __pyx_k_Ellipsis[] = "Ellipsis";
 static const char __pyx_k_costheta[] = "costheta";
 static const char __pyx_k_getstate[] = "__getstate__";
@@ -1651,6 +1650,7 @@ static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_View_MemoryView[] = "View.MemoryView";
 static const char __pyx_k_allocate_buffer[] = "allocate_buffer";
 static const char __pyx_k_dtype_is_object[] = "dtype_is_object";
+static const char __pyx_k_metrics_metrics[] = "metrics.metrics";
 static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_pyx_unpickle_Enum[] = "__pyx_unpickle_Enum";
@@ -1733,7 +1733,7 @@ static PyObject *__pyx_n_s_itemsize;
 static PyObject *__pyx_kp_s_itemsize_0_for_cython_array;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_memview;
-static PyObject *__pyx_n_s_metrics;
+static PyObject *__pyx_n_s_metrics_metrics;
 static PyObject *__pyx_kp_s_metrics_pyx;
 static PyObject *__pyx_n_s_mode;
 static PyObject *__pyx_n_s_name;
@@ -1781,11 +1781,11 @@ static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_update;
 static PyObject *__pyx_n_s_x;
 static PyObject *__pyx_n_s_y;
-static PyObject *__pyx_pf_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y); /* proto */
-static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y); /* proto */
-static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y); /* proto */
-static PyObject *__pyx_pf_7metrics_6APzdth(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y); /* proto */
-static PyObject *__pyx_pf_7metrics_8APdz(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y); /* proto */
+static PyObject *__pyx_pf_7metrics_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y); /* proto */
+static PyObject *__pyx_pf_7metrics_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y); /* proto */
+static PyObject *__pyx_pf_7metrics_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y); /* proto */
+static PyObject *__pyx_pf_7metrics_7metrics_6APzdth(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y); /* proto */
+static PyObject *__pyx_pf_7metrics_7metrics_8APdz(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array_2__getbuffer__(struct __pyx_array_obj *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_array___pyx_pf_15View_dot_MemoryView_5array_4__dealloc__(struct __pyx_array_obj *__pyx_v_self); /* proto */
@@ -1873,7 +1873,7 @@ static PyObject *__pyx_codeobj__27;
 static PyObject *__pyx_codeobj__29;
 static PyObject *__pyx_codeobj__36;
 
-/* "metrics.pyx":3
+/* "metrics/metrics.pyx":3
  * from libc.math cimport sin, cos, sqrt, acos, sinh, cosh
  * 
  * def flatdistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
@@ -1882,9 +1882,9 @@ static PyObject *__pyx_codeobj__36;
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7metrics_1flatdistsq(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_7metrics_1flatdistsq = {"flatdistsq", (PyCFunction)__pyx_pw_7metrics_1flatdistsq, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7metrics_1flatdistsq(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_7metrics_7metrics_1flatdistsq(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_7metrics_7metrics_1flatdistsq = {"flatdistsq", (PyCFunction)__pyx_pw_7metrics_7metrics_1flatdistsq, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_7metrics_7metrics_1flatdistsq(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_x = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_y = { 0, 0, { 0 }, { 0 }, { 0 } };
   PyObject *__pyx_r = 0;
@@ -1932,18 +1932,18 @@ static PyObject *__pyx_pw_7metrics_1flatdistsq(PyObject *__pyx_self, PyObject *_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("flatdistsq", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 3, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("metrics.flatdistsq", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("metrics.metrics.flatdistsq", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7metrics_flatdistsq(__pyx_self, __pyx_v_x, __pyx_v_y);
+  __pyx_r = __pyx_pf_7metrics_7metrics_flatdistsq(__pyx_self, __pyx_v_x, __pyx_v_y);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y) {
+static PyObject *__pyx_pf_7metrics_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y) {
   double __pyx_v_res;
   double __pyx_v_s1;
   double __pyx_v_s2;
@@ -1964,7 +1964,7 @@ static PyObject *__pyx_pf_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("flatdistsq", 0);
 
-  /* "metrics.pyx":4
+  /* "metrics/metrics.pyx":4
  * 
  * def flatdistsq (double[:] x, double[:] y):
  *     cdef double res = 0.0             # <<<<<<<<<<<<<<
@@ -1973,7 +1973,7 @@ static PyObject *__pyx_pf_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self
  */
   __pyx_v_res = 0.0;
 
-  /* "metrics.pyx":5
+  /* "metrics/metrics.pyx":5
  * def flatdistsq (double[:] x, double[:] y):
  *     cdef double res = 0.0
  *     cdef double s1=x[0]             # <<<<<<<<<<<<<<
@@ -1992,7 +1992,7 @@ static PyObject *__pyx_pf_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self
   }
   __pyx_v_s1 = (*((double *) ( /* dim=0 */ (__pyx_v_x.data + __pyx_t_1 * __pyx_v_x.strides[0]) )));
 
-  /* "metrics.pyx":6
+  /* "metrics/metrics.pyx":6
  *     cdef double res = 0.0
  *     cdef double s1=x[0]
  *     cdef double s2=y[0]             # <<<<<<<<<<<<<<
@@ -2011,7 +2011,7 @@ static PyObject *__pyx_pf_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self
   }
   __pyx_v_s2 = (*((double *) ( /* dim=0 */ (__pyx_v_y.data + __pyx_t_3 * __pyx_v_y.strides[0]) )));
 
-  /* "metrics.pyx":7
+  /* "metrics/metrics.pyx":7
  *     cdef double s1=x[0]
  *     cdef double s2=y[0]
  *     cdef double ra1=x[1]             # <<<<<<<<<<<<<<
@@ -2030,7 +2030,7 @@ static PyObject *__pyx_pf_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self
   }
   __pyx_v_ra1 = (*((double *) ( /* dim=0 */ (__pyx_v_x.data + __pyx_t_4 * __pyx_v_x.strides[0]) )));
 
-  /* "metrics.pyx":8
+  /* "metrics/metrics.pyx":8
  *     cdef double s2=y[0]
  *     cdef double ra1=x[1]
  *     cdef double ra2=y[1]             # <<<<<<<<<<<<<<
@@ -2049,7 +2049,7 @@ static PyObject *__pyx_pf_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self
   }
   __pyx_v_ra2 = (*((double *) ( /* dim=0 */ (__pyx_v_y.data + __pyx_t_5 * __pyx_v_y.strides[0]) )));
 
-  /* "metrics.pyx":9
+  /* "metrics/metrics.pyx":9
  *     cdef double ra1=x[1]
  *     cdef double ra2=y[1]
  *     cdef double dec1=x[2]             # <<<<<<<<<<<<<<
@@ -2068,7 +2068,7 @@ static PyObject *__pyx_pf_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self
   }
   __pyx_v_dec1 = (*((double *) ( /* dim=0 */ (__pyx_v_x.data + __pyx_t_6 * __pyx_v_x.strides[0]) )));
 
-  /* "metrics.pyx":10
+  /* "metrics/metrics.pyx":10
  *     cdef double ra2=y[1]
  *     cdef double dec1=x[2]
  *     cdef double dec2=y[2]             # <<<<<<<<<<<<<<
@@ -2087,7 +2087,7 @@ static PyObject *__pyx_pf_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self
   }
   __pyx_v_dec2 = (*((double *) ( /* dim=0 */ (__pyx_v_y.data + __pyx_t_7 * __pyx_v_y.strides[0]) )));
 
-  /* "metrics.pyx":11
+  /* "metrics/metrics.pyx":11
  *     cdef double dec1=x[2]
  *     cdef double dec2=y[2]
  *     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)             # <<<<<<<<<<<<<<
@@ -2096,7 +2096,7 @@ static PyObject *__pyx_pf_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self
  */
   __pyx_v_costheta = ((sin(__pyx_v_dec1) * sin(__pyx_v_dec2)) + ((cos(__pyx_v_dec1) * cos(__pyx_v_dec2)) * cos((__pyx_v_ra1 - __pyx_v_ra2))));
 
-  /* "metrics.pyx":12
+  /* "metrics/metrics.pyx":12
  *     cdef double dec2=y[2]
  *     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)
  *     res= s1**2+s2**2-2.0*s1*s2*costheta             # <<<<<<<<<<<<<<
@@ -2105,7 +2105,7 @@ static PyObject *__pyx_pf_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self
  */
   __pyx_v_res = ((pow(__pyx_v_s1, 2.0) + pow(__pyx_v_s2, 2.0)) - (((2.0 * __pyx_v_s1) * __pyx_v_s2) * __pyx_v_costheta));
 
-  /* "metrics.pyx":13
+  /* "metrics/metrics.pyx":13
  *     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)
  *     res= s1**2+s2**2-2.0*s1*s2*costheta
  *     return res             # <<<<<<<<<<<<<<
@@ -2119,7 +2119,7 @@ static PyObject *__pyx_pf_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self
   __pyx_t_8 = 0;
   goto __pyx_L0;
 
-  /* "metrics.pyx":3
+  /* "metrics/metrics.pyx":3
  * from libc.math cimport sin, cos, sqrt, acos, sinh, cosh
  * 
  * def flatdistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
@@ -2130,7 +2130,7 @@ static PyObject *__pyx_pf_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("metrics.flatdistsq", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("metrics.metrics.flatdistsq", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&__pyx_v_x, 1);
@@ -2140,18 +2140,18 @@ static PyObject *__pyx_pf_7metrics_flatdistsq(CYTHON_UNUSED PyObject *__pyx_self
   return __pyx_r;
 }
 
-/* "metrics.pyx":15
+/* "metrics/metrics.pyx":15
  *     return res
  * 
  * def opendistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     cdef double res = 0.0
- *     cdef double K = -1.0
+ *     cdef double K = 0
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7metrics_3opendistsq(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_7metrics_3opendistsq = {"opendistsq", (PyCFunction)__pyx_pw_7metrics_3opendistsq, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7metrics_3opendistsq(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_7metrics_7metrics_3opendistsq(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_7metrics_7metrics_3opendistsq = {"opendistsq", (PyCFunction)__pyx_pw_7metrics_7metrics_3opendistsq, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_7metrics_7metrics_3opendistsq(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_x = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_y = { 0, 0, { 0 }, { 0 }, { 0 } };
   PyObject *__pyx_r = 0;
@@ -2199,18 +2199,18 @@ static PyObject *__pyx_pw_7metrics_3opendistsq(PyObject *__pyx_self, PyObject *_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("opendistsq", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 15, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("metrics.opendistsq", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("metrics.metrics.opendistsq", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7metrics_2opendistsq(__pyx_self, __pyx_v_x, __pyx_v_y);
+  __pyx_r = __pyx_pf_7metrics_7metrics_2opendistsq(__pyx_self, __pyx_v_x, __pyx_v_y);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y) {
+static PyObject *__pyx_pf_7metrics_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y) {
   double __pyx_v_res;
   double __pyx_v_K;
   double __pyx_v_s1;
@@ -2236,27 +2236,27 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
   PyObject *__pyx_t_10 = NULL;
   __Pyx_RefNannySetupContext("opendistsq", 0);
 
-  /* "metrics.pyx":16
+  /* "metrics/metrics.pyx":16
  * 
  * def opendistsq (double[:] x, double[:] y):
  *     cdef double res = 0.0             # <<<<<<<<<<<<<<
- *     cdef double K = -1.0
+ *     cdef double K = 0
  *     cdef double s1=sinh(x[0]*0.007)
  */
   __pyx_v_res = 0.0;
 
-  /* "metrics.pyx":17
+  /* "metrics/metrics.pyx":17
  * def opendistsq (double[:] x, double[:] y):
  *     cdef double res = 0.0
- *     cdef double K = -1.0             # <<<<<<<<<<<<<<
+ *     cdef double K = 0             # <<<<<<<<<<<<<<
  *     cdef double s1=sinh(x[0]*0.007)
  *     cdef double s2=sinh(y[0]*0.007)
  */
-  __pyx_v_K = -1.0;
+  __pyx_v_K = 0.0;
 
-  /* "metrics.pyx":18
+  /* "metrics/metrics.pyx":18
  *     cdef double res = 0.0
- *     cdef double K = -1.0
+ *     cdef double K = 0
  *     cdef double s1=sinh(x[0]*0.007)             # <<<<<<<<<<<<<<
  *     cdef double s2=sinh(y[0]*0.007)
  *     cdef double c1=cosh(x[0]*0.007)
@@ -2273,8 +2273,8 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
   }
   __pyx_v_s1 = sinh(((*((double *) ( /* dim=0 */ (__pyx_v_x.data + __pyx_t_1 * __pyx_v_x.strides[0]) ))) * 0.007));
 
-  /* "metrics.pyx":19
- *     cdef double K = -1.0
+  /* "metrics/metrics.pyx":19
+ *     cdef double K = 0
  *     cdef double s1=sinh(x[0]*0.007)
  *     cdef double s2=sinh(y[0]*0.007)             # <<<<<<<<<<<<<<
  *     cdef double c1=cosh(x[0]*0.007)
@@ -2292,7 +2292,7 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
   }
   __pyx_v_s2 = sinh(((*((double *) ( /* dim=0 */ (__pyx_v_y.data + __pyx_t_3 * __pyx_v_y.strides[0]) ))) * 0.007));
 
-  /* "metrics.pyx":20
+  /* "metrics/metrics.pyx":20
  *     cdef double s1=sinh(x[0]*0.007)
  *     cdef double s2=sinh(y[0]*0.007)
  *     cdef double c1=cosh(x[0]*0.007)             # <<<<<<<<<<<<<<
@@ -2311,7 +2311,7 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
   }
   __pyx_v_c1 = cosh(((*((double *) ( /* dim=0 */ (__pyx_v_x.data + __pyx_t_4 * __pyx_v_x.strides[0]) ))) * 0.007));
 
-  /* "metrics.pyx":21
+  /* "metrics/metrics.pyx":21
  *     cdef double s2=sinh(y[0]*0.007)
  *     cdef double c1=cosh(x[0]*0.007)
  *     cdef double c2=cosh(y[0]*0.007)             # <<<<<<<<<<<<<<
@@ -2330,7 +2330,7 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
   }
   __pyx_v_c2 = cosh(((*((double *) ( /* dim=0 */ (__pyx_v_y.data + __pyx_t_5 * __pyx_v_y.strides[0]) ))) * 0.007));
 
-  /* "metrics.pyx":22
+  /* "metrics/metrics.pyx":22
  *     cdef double c1=cosh(x[0]*0.007)
  *     cdef double c2=cosh(y[0]*0.007)
  *     cdef double ra1=x[1]             # <<<<<<<<<<<<<<
@@ -2349,7 +2349,7 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
   }
   __pyx_v_ra1 = (*((double *) ( /* dim=0 */ (__pyx_v_x.data + __pyx_t_6 * __pyx_v_x.strides[0]) )));
 
-  /* "metrics.pyx":23
+  /* "metrics/metrics.pyx":23
  *     cdef double c2=cosh(y[0]*0.007)
  *     cdef double ra1=x[1]
  *     cdef double ra2=y[1]             # <<<<<<<<<<<<<<
@@ -2368,7 +2368,7 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
   }
   __pyx_v_ra2 = (*((double *) ( /* dim=0 */ (__pyx_v_y.data + __pyx_t_7 * __pyx_v_y.strides[0]) )));
 
-  /* "metrics.pyx":24
+  /* "metrics/metrics.pyx":24
  *     cdef double ra1=x[1]
  *     cdef double ra2=y[1]
  *     cdef double dec1=x[2]             # <<<<<<<<<<<<<<
@@ -2387,7 +2387,7 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
   }
   __pyx_v_dec1 = (*((double *) ( /* dim=0 */ (__pyx_v_x.data + __pyx_t_8 * __pyx_v_x.strides[0]) )));
 
-  /* "metrics.pyx":25
+  /* "metrics/metrics.pyx":25
  *     cdef double ra2=y[1]
  *     cdef double dec1=x[2]
  *     cdef double dec2=y[2]             # <<<<<<<<<<<<<<
@@ -2406,7 +2406,7 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
   }
   __pyx_v_dec2 = (*((double *) ( /* dim=0 */ (__pyx_v_y.data + __pyx_t_9 * __pyx_v_y.strides[0]) )));
 
-  /* "metrics.pyx":26
+  /* "metrics/metrics.pyx":26
  *     cdef double dec1=x[2]
  *     cdef double dec2=y[2]
  *     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)             # <<<<<<<<<<<<<<
@@ -2415,7 +2415,7 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
  */
   __pyx_v_costheta = ((sin(__pyx_v_dec1) * sin(__pyx_v_dec2)) + ((cos(__pyx_v_dec1) * cos(__pyx_v_dec2)) * cos((__pyx_v_ra1 - __pyx_v_ra2))));
 
-  /* "metrics.pyx":27
+  /* "metrics/metrics.pyx":27
  *     cdef double dec2=y[2]
  *     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)
  *     res= s1*s1+s2*s2-2.0*s1*s2*c1*c2*costheta-K*s1*s1*s2*s2*sqrt(1.0+costheta*costheta)             # <<<<<<<<<<<<<<
@@ -2424,7 +2424,7 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
  */
   __pyx_v_res = ((((__pyx_v_s1 * __pyx_v_s1) + (__pyx_v_s2 * __pyx_v_s2)) - (((((2.0 * __pyx_v_s1) * __pyx_v_s2) * __pyx_v_c1) * __pyx_v_c2) * __pyx_v_costheta)) - (((((__pyx_v_K * __pyx_v_s1) * __pyx_v_s1) * __pyx_v_s2) * __pyx_v_s2) * sqrt((1.0 + (__pyx_v_costheta * __pyx_v_costheta)))));
 
-  /* "metrics.pyx":28
+  /* "metrics/metrics.pyx":28
  *     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)
  *     res= s1*s1+s2*s2-2.0*s1*s2*c1*c2*costheta-K*s1*s1*s2*s2*sqrt(1.0+costheta*costheta)
  *     return res*20408.1633             # <<<<<<<<<<<<<<
@@ -2438,18 +2438,18 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
   __pyx_t_10 = 0;
   goto __pyx_L0;
 
-  /* "metrics.pyx":15
+  /* "metrics/metrics.pyx":15
  *     return res
  * 
  * def opendistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     cdef double res = 0.0
- *     cdef double K = -1.0
+ *     cdef double K = 0
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_AddTraceback("metrics.opendistsq", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("metrics.metrics.opendistsq", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&__pyx_v_x, 1);
@@ -2459,7 +2459,7 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
   return __pyx_r;
 }
 
-/* "metrics.pyx":30
+/* "metrics/metrics.pyx":30
  *     return res*20408.1633
  * 
  * def closedistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
@@ -2468,9 +2468,9 @@ static PyObject *__pyx_pf_7metrics_2opendistsq(CYTHON_UNUSED PyObject *__pyx_sel
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7metrics_5closedistsq(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_7metrics_5closedistsq = {"closedistsq", (PyCFunction)__pyx_pw_7metrics_5closedistsq, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7metrics_5closedistsq(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_7metrics_7metrics_5closedistsq(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_7metrics_7metrics_5closedistsq = {"closedistsq", (PyCFunction)__pyx_pw_7metrics_7metrics_5closedistsq, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_7metrics_7metrics_5closedistsq(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_x = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_y = { 0, 0, { 0 }, { 0 }, { 0 } };
   PyObject *__pyx_r = 0;
@@ -2518,18 +2518,18 @@ static PyObject *__pyx_pw_7metrics_5closedistsq(PyObject *__pyx_self, PyObject *
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("closedistsq", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 30, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("metrics.closedistsq", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("metrics.metrics.closedistsq", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7metrics_4closedistsq(__pyx_self, __pyx_v_x, __pyx_v_y);
+  __pyx_r = __pyx_pf_7metrics_7metrics_4closedistsq(__pyx_self, __pyx_v_x, __pyx_v_y);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y) {
+static PyObject *__pyx_pf_7metrics_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y) {
   double __pyx_v_res;
   double __pyx_v_K;
   double __pyx_v_s1;
@@ -2555,7 +2555,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
   PyObject *__pyx_t_10 = NULL;
   __Pyx_RefNannySetupContext("closedistsq", 0);
 
-  /* "metrics.pyx":31
+  /* "metrics/metrics.pyx":31
  * 
  * def closedistsq (double[:] x, double[:] y):
  *     cdef double res = 0.0             # <<<<<<<<<<<<<<
@@ -2564,7 +2564,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
  */
   __pyx_v_res = 0.0;
 
-  /* "metrics.pyx":32
+  /* "metrics/metrics.pyx":32
  * def closedistsq (double[:] x, double[:] y):
  *     cdef double res = 0.0
  *     cdef double K = 1.0             # <<<<<<<<<<<<<<
@@ -2573,7 +2573,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
  */
   __pyx_v_K = 1.0;
 
-  /* "metrics.pyx":33
+  /* "metrics/metrics.pyx":33
  *     cdef double res = 0.0
  *     cdef double K = 1.0
  *     cdef double s1=sin(x[0]*0.007)             # <<<<<<<<<<<<<<
@@ -2592,7 +2592,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
   }
   __pyx_v_s1 = sin(((*((double *) ( /* dim=0 */ (__pyx_v_x.data + __pyx_t_1 * __pyx_v_x.strides[0]) ))) * 0.007));
 
-  /* "metrics.pyx":34
+  /* "metrics/metrics.pyx":34
  *     cdef double K = 1.0
  *     cdef double s1=sin(x[0]*0.007)
  *     cdef double s2=sin(y[0]*0.007)             # <<<<<<<<<<<<<<
@@ -2611,7 +2611,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
   }
   __pyx_v_s2 = sin(((*((double *) ( /* dim=0 */ (__pyx_v_y.data + __pyx_t_3 * __pyx_v_y.strides[0]) ))) * 0.007));
 
-  /* "metrics.pyx":35
+  /* "metrics/metrics.pyx":35
  *     cdef double s1=sin(x[0]*0.007)
  *     cdef double s2=sin(y[0]*0.007)
  *     cdef double c1=cos(x[0]*0.007)             # <<<<<<<<<<<<<<
@@ -2630,7 +2630,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
   }
   __pyx_v_c1 = cos(((*((double *) ( /* dim=0 */ (__pyx_v_x.data + __pyx_t_4 * __pyx_v_x.strides[0]) ))) * 0.007));
 
-  /* "metrics.pyx":36
+  /* "metrics/metrics.pyx":36
  *     cdef double s2=sin(y[0]*0.007)
  *     cdef double c1=cos(x[0]*0.007)
  *     cdef double c2=cos(y[0]*0.007)             # <<<<<<<<<<<<<<
@@ -2649,7 +2649,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
   }
   __pyx_v_c2 = cos(((*((double *) ( /* dim=0 */ (__pyx_v_y.data + __pyx_t_5 * __pyx_v_y.strides[0]) ))) * 0.007));
 
-  /* "metrics.pyx":37
+  /* "metrics/metrics.pyx":37
  *     cdef double c1=cos(x[0]*0.007)
  *     cdef double c2=cos(y[0]*0.007)
  *     cdef double ra1=x[1]             # <<<<<<<<<<<<<<
@@ -2668,7 +2668,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
   }
   __pyx_v_ra1 = (*((double *) ( /* dim=0 */ (__pyx_v_x.data + __pyx_t_6 * __pyx_v_x.strides[0]) )));
 
-  /* "metrics.pyx":38
+  /* "metrics/metrics.pyx":38
  *     cdef double c2=cos(y[0]*0.007)
  *     cdef double ra1=x[1]
  *     cdef double ra2=y[1]             # <<<<<<<<<<<<<<
@@ -2687,7 +2687,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
   }
   __pyx_v_ra2 = (*((double *) ( /* dim=0 */ (__pyx_v_y.data + __pyx_t_7 * __pyx_v_y.strides[0]) )));
 
-  /* "metrics.pyx":39
+  /* "metrics/metrics.pyx":39
  *     cdef double ra1=x[1]
  *     cdef double ra2=y[1]
  *     cdef double dec1=x[2]             # <<<<<<<<<<<<<<
@@ -2706,7 +2706,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
   }
   __pyx_v_dec1 = (*((double *) ( /* dim=0 */ (__pyx_v_x.data + __pyx_t_8 * __pyx_v_x.strides[0]) )));
 
-  /* "metrics.pyx":40
+  /* "metrics/metrics.pyx":40
  *     cdef double ra2=y[1]
  *     cdef double dec1=x[2]
  *     cdef double dec2=y[2]             # <<<<<<<<<<<<<<
@@ -2725,7 +2725,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
   }
   __pyx_v_dec2 = (*((double *) ( /* dim=0 */ (__pyx_v_y.data + __pyx_t_9 * __pyx_v_y.strides[0]) )));
 
-  /* "metrics.pyx":41
+  /* "metrics/metrics.pyx":41
  *     cdef double dec1=x[2]
  *     cdef double dec2=y[2]
  *     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)             # <<<<<<<<<<<<<<
@@ -2734,7 +2734,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
  */
   __pyx_v_costheta = ((sin(__pyx_v_dec1) * sin(__pyx_v_dec2)) + ((cos(__pyx_v_dec1) * cos(__pyx_v_dec2)) * cos((__pyx_v_ra1 - __pyx_v_ra2))));
 
-  /* "metrics.pyx":42
+  /* "metrics/metrics.pyx":42
  *     cdef double dec2=y[2]
  *     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)
  *     res= s1*s1+s2*s2-2.0*s1*s2*c1*c2*costheta-K*s1*s1*s2*s2*sqrt(1.0+costheta*costheta)             # <<<<<<<<<<<<<<
@@ -2743,7 +2743,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
  */
   __pyx_v_res = ((((__pyx_v_s1 * __pyx_v_s1) + (__pyx_v_s2 * __pyx_v_s2)) - (((((2.0 * __pyx_v_s1) * __pyx_v_s2) * __pyx_v_c1) * __pyx_v_c2) * __pyx_v_costheta)) - (((((__pyx_v_K * __pyx_v_s1) * __pyx_v_s1) * __pyx_v_s2) * __pyx_v_s2) * sqrt((1.0 + (__pyx_v_costheta * __pyx_v_costheta)))));
 
-  /* "metrics.pyx":43
+  /* "metrics/metrics.pyx":43
  *     cdef double costheta=sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)
  *     res= s1*s1+s2*s2-2.0*s1*s2*c1*c2*costheta-K*s1*s1*s2*s2*sqrt(1.0+costheta*costheta)
  *     return res*20408.1633             # <<<<<<<<<<<<<<
@@ -2757,7 +2757,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
   __pyx_t_10 = 0;
   goto __pyx_L0;
 
-  /* "metrics.pyx":30
+  /* "metrics/metrics.pyx":30
  *     return res*20408.1633
  * 
  * def closedistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
@@ -2768,7 +2768,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_AddTraceback("metrics.closedistsq", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("metrics.metrics.closedistsq", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&__pyx_v_x, 1);
@@ -2778,7 +2778,7 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
   return __pyx_r;
 }
 
-/* "metrics.pyx":45
+/* "metrics/metrics.pyx":45
  *     return res*20408.1633
  * 
  * def APzdth(double[:] x, double[:] y):             # <<<<<<<<<<<<<<
@@ -2787,9 +2787,9 @@ static PyObject *__pyx_pf_7metrics_4closedistsq(CYTHON_UNUSED PyObject *__pyx_se
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7metrics_7APzdth(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_7metrics_7APzdth = {"APzdth", (PyCFunction)__pyx_pw_7metrics_7APzdth, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7metrics_7APzdth(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_7metrics_7metrics_7APzdth(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_7metrics_7metrics_7APzdth = {"APzdth", (PyCFunction)__pyx_pw_7metrics_7metrics_7APzdth, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_7metrics_7metrics_7APzdth(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_x = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_y = { 0, 0, { 0 }, { 0 }, { 0 } };
   PyObject *__pyx_r = 0;
@@ -2837,18 +2837,18 @@ static PyObject *__pyx_pw_7metrics_7APzdth(PyObject *__pyx_self, PyObject *__pyx
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("APzdth", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 45, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("metrics.APzdth", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("metrics.metrics.APzdth", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7metrics_6APzdth(__pyx_self, __pyx_v_x, __pyx_v_y);
+  __pyx_r = __pyx_pf_7metrics_7metrics_6APzdth(__pyx_self, __pyx_v_x, __pyx_v_y);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7metrics_6APzdth(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y) {
+static PyObject *__pyx_pf_7metrics_7metrics_6APzdth(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   Py_ssize_t __pyx_t_1;
@@ -2863,7 +2863,7 @@ static PyObject *__pyx_pf_7metrics_6APzdth(CYTHON_UNUSED PyObject *__pyx_self, _
   PyObject *__pyx_t_10 = NULL;
   __Pyx_RefNannySetupContext("APzdth", 0);
 
-  /* "metrics.pyx":46
+  /* "metrics/metrics.pyx":46
  * 
  * def APzdth(double[:] x, double[:] y):
  *     return (x[0]+y[0])*0.5*acos(sin(x[2])*sin(y[2])+cos(x[2])*cos(y[2])*cos(x[1]-y[1]))             # <<<<<<<<<<<<<<
@@ -2957,7 +2957,7 @@ static PyObject *__pyx_pf_7metrics_6APzdth(CYTHON_UNUSED PyObject *__pyx_self, _
   __pyx_t_10 = 0;
   goto __pyx_L0;
 
-  /* "metrics.pyx":45
+  /* "metrics/metrics.pyx":45
  *     return res*20408.1633
  * 
  * def APzdth(double[:] x, double[:] y):             # <<<<<<<<<<<<<<
@@ -2968,7 +2968,7 @@ static PyObject *__pyx_pf_7metrics_6APzdth(CYTHON_UNUSED PyObject *__pyx_self, _
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_AddTraceback("metrics.APzdth", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("metrics.metrics.APzdth", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&__pyx_v_x, 1);
@@ -2978,7 +2978,7 @@ static PyObject *__pyx_pf_7metrics_6APzdth(CYTHON_UNUSED PyObject *__pyx_self, _
   return __pyx_r;
 }
 
-/* "metrics.pyx":48
+/* "metrics/metrics.pyx":48
  *     return (x[0]+y[0])*0.5*acos(sin(x[2])*sin(y[2])+cos(x[2])*cos(y[2])*cos(x[1]-y[1]))
  * 
  * def APdz(double[:] x, double[:] y):             # <<<<<<<<<<<<<<
@@ -2986,9 +2986,9 @@ static PyObject *__pyx_pf_7metrics_6APzdth(CYTHON_UNUSED PyObject *__pyx_self, _
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7metrics_9APdz(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_7metrics_9APdz = {"APdz", (PyCFunction)__pyx_pw_7metrics_9APdz, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7metrics_9APdz(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_7metrics_7metrics_9APdz(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_7metrics_7metrics_9APdz = {"APdz", (PyCFunction)__pyx_pw_7metrics_7metrics_9APdz, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_7metrics_7metrics_9APdz(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_x = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_y = { 0, 0, { 0 }, { 0 }, { 0 } };
   PyObject *__pyx_r = 0;
@@ -3036,18 +3036,18 @@ static PyObject *__pyx_pw_7metrics_9APdz(PyObject *__pyx_self, PyObject *__pyx_a
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("APdz", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 48, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("metrics.APdz", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("metrics.metrics.APdz", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7metrics_8APdz(__pyx_self, __pyx_v_x, __pyx_v_y);
+  __pyx_r = __pyx_pf_7metrics_7metrics_8APdz(__pyx_self, __pyx_v_x, __pyx_v_y);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7metrics_8APdz(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y) {
+static PyObject *__pyx_pf_7metrics_7metrics_8APdz(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_x, __Pyx_memviewslice __pyx_v_y) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   Py_ssize_t __pyx_t_1;
@@ -3056,7 +3056,7 @@ static PyObject *__pyx_pf_7metrics_8APdz(CYTHON_UNUSED PyObject *__pyx_self, __P
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("APdz", 0);
 
-  /* "metrics.pyx":49
+  /* "metrics/metrics.pyx":49
  * 
  * def APdz(double[:] x, double[:] y):
  *     return abs(x[0]-y[0])             # <<<<<<<<<<<<<<
@@ -3088,7 +3088,7 @@ static PyObject *__pyx_pf_7metrics_8APdz(CYTHON_UNUSED PyObject *__pyx_self, __P
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "metrics.pyx":48
+  /* "metrics/metrics.pyx":48
  *     return (x[0]+y[0])*0.5*acos(sin(x[2])*sin(y[2])+cos(x[2])*cos(y[2])*cos(x[1]-y[1]))
  * 
  * def APdz(double[:] x, double[:] y):             # <<<<<<<<<<<<<<
@@ -3098,7 +3098,7 @@ static PyObject *__pyx_pf_7metrics_8APdz(CYTHON_UNUSED PyObject *__pyx_self, __P
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("metrics.APdz", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("metrics.metrics.APdz", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&__pyx_v_x, 1);
@@ -16037,7 +16037,7 @@ static PyBufferProcs __pyx_tp_as_buffer_array = {
 
 static PyTypeObject __pyx_type___pyx_array = {
   PyVarObject_HEAD_INIT(0, 0)
-  "metrics.array", /*tp_name*/
+  "metrics.metrics.array", /*tp_name*/
   sizeof(struct __pyx_array_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_array, /*tp_dealloc*/
@@ -16145,7 +16145,7 @@ static PyMethodDef __pyx_methods_Enum[] = {
 
 static PyTypeObject __pyx_type___pyx_MemviewEnum = {
   PyVarObject_HEAD_INIT(0, 0)
-  "metrics.Enum", /*tp_name*/
+  "metrics.metrics.Enum", /*tp_name*/
   sizeof(struct __pyx_MemviewEnum_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_Enum, /*tp_dealloc*/
@@ -16395,7 +16395,7 @@ static PyBufferProcs __pyx_tp_as_buffer_memoryview = {
 
 static PyTypeObject __pyx_type___pyx_memoryview = {
   PyVarObject_HEAD_INIT(0, 0)
-  "metrics.memoryview", /*tp_name*/
+  "metrics.metrics.memoryview", /*tp_name*/
   sizeof(struct __pyx_memoryview_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_memoryview, /*tp_dealloc*/
@@ -16522,7 +16522,7 @@ static struct PyGetSetDef __pyx_getsets__memoryviewslice[] = {
 
 static PyTypeObject __pyx_type___pyx_memoryviewslice = {
   PyVarObject_HEAD_INIT(0, 0)
-  "metrics._memoryviewslice", /*tp_name*/
+  "metrics.metrics._memoryviewslice", /*tp_name*/
   sizeof(struct __pyx_memoryviewslice_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc__memoryviewslice, /*tp_dealloc*/
@@ -16679,7 +16679,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_itemsize_0_for_cython_array, __pyx_k_itemsize_0_for_cython_array, sizeof(__pyx_k_itemsize_0_for_cython_array), 0, 0, 1, 0},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_memview, __pyx_k_memview, sizeof(__pyx_k_memview), 0, 0, 1, 1},
-  {&__pyx_n_s_metrics, __pyx_k_metrics, sizeof(__pyx_k_metrics), 0, 0, 1, 1},
+  {&__pyx_n_s_metrics_metrics, __pyx_k_metrics_metrics, sizeof(__pyx_k_metrics_metrics), 0, 0, 1, 1},
   {&__pyx_kp_s_metrics_pyx, __pyx_k_metrics_pyx, sizeof(__pyx_k_metrics_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_mode, __pyx_k_mode, sizeof(__pyx_k_mode), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
@@ -16950,7 +16950,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__19);
   __Pyx_GIVEREF(__pyx_tuple__19);
 
-  /* "metrics.pyx":3
+  /* "metrics/metrics.pyx":3
  * from libc.math cimport sin, cos, sqrt, acos, sinh, cosh
  * 
  * def flatdistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
@@ -16962,19 +16962,19 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__20);
   __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(2, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_metrics_pyx, __pyx_n_s_flatdistsq, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 3, __pyx_L1_error)
 
-  /* "metrics.pyx":15
+  /* "metrics/metrics.pyx":15
  *     return res
  * 
  * def opendistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     cdef double res = 0.0
- *     cdef double K = -1.0
+ *     cdef double K = 0
  */
   __pyx_tuple__22 = PyTuple_Pack(13, __pyx_n_s_x, __pyx_n_s_y, __pyx_n_s_res, __pyx_n_s_K, __pyx_n_s_s1, __pyx_n_s_s2, __pyx_n_s_c1, __pyx_n_s_c2, __pyx_n_s_ra1, __pyx_n_s_ra2, __pyx_n_s_dec1, __pyx_n_s_dec2, __pyx_n_s_costheta); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__22);
   __Pyx_GIVEREF(__pyx_tuple__22);
   __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(2, 0, 13, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_metrics_pyx, __pyx_n_s_opendistsq, 15, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 15, __pyx_L1_error)
 
-  /* "metrics.pyx":30
+  /* "metrics/metrics.pyx":30
  *     return res*20408.1633
  * 
  * def closedistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
@@ -16986,7 +16986,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__24);
   __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(2, 0, 13, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_metrics_pyx, __pyx_n_s_closedistsq, 30, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 30, __pyx_L1_error)
 
-  /* "metrics.pyx":45
+  /* "metrics/metrics.pyx":45
  *     return res*20408.1633
  * 
  * def APzdth(double[:] x, double[:] y):             # <<<<<<<<<<<<<<
@@ -16998,7 +16998,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__26);
   __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_metrics_pyx, __pyx_n_s_APzdth, 45, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 45, __pyx_L1_error)
 
-  /* "metrics.pyx":48
+  /* "metrics/metrics.pyx":48
  *     return (x[0]+y[0])*0.5*acos(sin(x[2])*sin(y[2])+cos(x[2])*cos(y[2])*cos(x[1]-y[1]))
  * 
  * def APdz(double[:] x, double[:] y):             # <<<<<<<<<<<<<<
@@ -17210,14 +17210,14 @@ static int __pyx_pymod_exec_metrics(PyObject *__pyx_pyinit_module)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_metrics) {
+  if (__pyx_module_is_main_metrics__metrics) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "metrics")) {
-      if (unlikely(PyDict_SetItemString(modules, "metrics", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "metrics.metrics")) {
+      if (unlikely(PyDict_SetItemString(modules, "metrics.metrics", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -17276,66 +17276,66 @@ static int __pyx_pymod_exec_metrics(PyObject *__pyx_pyinit_module)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "metrics.pyx":3
+  /* "metrics/metrics.pyx":3
  * from libc.math cimport sin, cos, sqrt, acos, sinh, cosh
  * 
  * def flatdistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     cdef double res = 0.0
  *     cdef double s1=x[0]
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7metrics_1flatdistsq, NULL, __pyx_n_s_metrics); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7metrics_7metrics_1flatdistsq, NULL, __pyx_n_s_metrics_metrics); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_flatdistsq, __pyx_t_1) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "metrics.pyx":15
+  /* "metrics/metrics.pyx":15
  *     return res
  * 
  * def opendistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     cdef double res = 0.0
- *     cdef double K = -1.0
+ *     cdef double K = 0
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7metrics_3opendistsq, NULL, __pyx_n_s_metrics); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7metrics_7metrics_3opendistsq, NULL, __pyx_n_s_metrics_metrics); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_opendistsq, __pyx_t_1) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "metrics.pyx":30
+  /* "metrics/metrics.pyx":30
  *     return res*20408.1633
  * 
  * def closedistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     cdef double res = 0.0
  *     cdef double K = 1.0
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7metrics_5closedistsq, NULL, __pyx_n_s_metrics); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7metrics_7metrics_5closedistsq, NULL, __pyx_n_s_metrics_metrics); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_closedistsq, __pyx_t_1) < 0) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "metrics.pyx":45
+  /* "metrics/metrics.pyx":45
  *     return res*20408.1633
  * 
  * def APzdth(double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     return (x[0]+y[0])*0.5*acos(sin(x[2])*sin(y[2])+cos(x[2])*cos(y[2])*cos(x[1]-y[1]))
  * 
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7metrics_7APzdth, NULL, __pyx_n_s_metrics); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7metrics_7metrics_7APzdth, NULL, __pyx_n_s_metrics_metrics); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_APzdth, __pyx_t_1) < 0) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "metrics.pyx":48
+  /* "metrics/metrics.pyx":48
  *     return (x[0]+y[0])*0.5*acos(sin(x[2])*sin(y[2])+cos(x[2])*cos(y[2])*cos(x[1]-y[1]))
  * 
  * def APdz(double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     return abs(x[0]-y[0])
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7metrics_9APdz, NULL, __pyx_n_s_metrics); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7metrics_7metrics_9APdz, NULL, __pyx_n_s_metrics_metrics); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_APdz, __pyx_t_1) < 0) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "metrics.pyx":1
+  /* "metrics/metrics.pyx":1
  * from libc.math cimport sin, cos, sqrt, acos, sinh, cosh             # <<<<<<<<<<<<<<
  * 
  * def flatdistsq (double[:] x, double[:] y):
@@ -17505,11 +17505,11 @@ static int __pyx_pymod_exec_metrics(PyObject *__pyx_pyinit_module)
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init metrics", 0, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init metrics.metrics", 0, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init metrics");
+    PyErr_SetString(PyExc_ImportError, "init metrics.metrics");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

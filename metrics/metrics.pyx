@@ -14,7 +14,7 @@ def flatdistsq (double[:] x, double[:] y):
 
 def opendistsq (double[:] x, double[:] y):
     cdef double res = 0.0
-    cdef double K = -1.0
+    cdef double K = 0
     cdef double s1=sinh(x[0]*0.007)
     cdef double s2=sinh(y[0]*0.007)
     cdef double c1=cosh(x[0]*0.007)
