@@ -2145,7 +2145,7 @@ static PyObject *__pyx_pf_7metrics_7metrics_flatdistsq(CYTHON_UNUSED PyObject *_
  * 
  * def opendistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     cdef double res = 0.0
- *     cdef double K = 0
+ *     cdef double K = -1.0
  */
 
 /* Python wrapper */
@@ -2240,7 +2240,7 @@ static PyObject *__pyx_pf_7metrics_7metrics_2opendistsq(CYTHON_UNUSED PyObject *
  * 
  * def opendistsq (double[:] x, double[:] y):
  *     cdef double res = 0.0             # <<<<<<<<<<<<<<
- *     cdef double K = 0
+ *     cdef double K = -1.0
  *     cdef double s1=sinh(x[0]*0.007)
  */
   __pyx_v_res = 0.0;
@@ -2248,15 +2248,15 @@ static PyObject *__pyx_pf_7metrics_7metrics_2opendistsq(CYTHON_UNUSED PyObject *
   /* "metrics/metrics.pyx":17
  * def opendistsq (double[:] x, double[:] y):
  *     cdef double res = 0.0
- *     cdef double K = 0             # <<<<<<<<<<<<<<
+ *     cdef double K = -1.0             # <<<<<<<<<<<<<<
  *     cdef double s1=sinh(x[0]*0.007)
  *     cdef double s2=sinh(y[0]*0.007)
  */
-  __pyx_v_K = 0.0;
+  __pyx_v_K = -1.0;
 
   /* "metrics/metrics.pyx":18
  *     cdef double res = 0.0
- *     cdef double K = 0
+ *     cdef double K = -1.0
  *     cdef double s1=sinh(x[0]*0.007)             # <<<<<<<<<<<<<<
  *     cdef double s2=sinh(y[0]*0.007)
  *     cdef double c1=cosh(x[0]*0.007)
@@ -2274,7 +2274,7 @@ static PyObject *__pyx_pf_7metrics_7metrics_2opendistsq(CYTHON_UNUSED PyObject *
   __pyx_v_s1 = sinh(((*((double *) ( /* dim=0 */ (__pyx_v_x.data + __pyx_t_1 * __pyx_v_x.strides[0]) ))) * 0.007));
 
   /* "metrics/metrics.pyx":19
- *     cdef double K = 0
+ *     cdef double K = -1.0
  *     cdef double s1=sinh(x[0]*0.007)
  *     cdef double s2=sinh(y[0]*0.007)             # <<<<<<<<<<<<<<
  *     cdef double c1=cosh(x[0]*0.007)
@@ -2443,7 +2443,7 @@ static PyObject *__pyx_pf_7metrics_7metrics_2opendistsq(CYTHON_UNUSED PyObject *
  * 
  * def opendistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     cdef double res = 0.0
- *     cdef double K = 0
+ *     cdef double K = -1.0
  */
 
   /* function exit code */
@@ -16967,7 +16967,7 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * def opendistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     cdef double res = 0.0
- *     cdef double K = 0
+ *     cdef double K = -1.0
  */
   __pyx_tuple__22 = PyTuple_Pack(13, __pyx_n_s_x, __pyx_n_s_y, __pyx_n_s_res, __pyx_n_s_K, __pyx_n_s_s1, __pyx_n_s_s2, __pyx_n_s_c1, __pyx_n_s_c2, __pyx_n_s_ra1, __pyx_n_s_ra2, __pyx_n_s_dec1, __pyx_n_s_dec2, __pyx_n_s_costheta); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__22);
@@ -17293,7 +17293,7 @@ static int __pyx_pymod_exec_metrics(PyObject *__pyx_pyinit_module)
  * 
  * def opendistsq (double[:] x, double[:] y):             # <<<<<<<<<<<<<<
  *     cdef double res = 0.0
- *     cdef double K = 0
+ *     cdef double K = -1.0
  */
   __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7metrics_7metrics_3opendistsq, NULL, __pyx_n_s_metrics_metrics); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
