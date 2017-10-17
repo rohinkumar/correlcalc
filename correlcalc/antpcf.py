@@ -287,8 +287,11 @@ def atpcf(datfile, bins, **kwargs):
             print ("Calculating anisotropic DD with weights (parallelized)...\n DD=")
             # DD = aDDwcalc(dat, binsq, parmetric, permetric, rng, weights)
             DD = amulti_autocp(dat, binsq, parmetric, permetric, rng, weights, Nd, pcpus)
-            print ("Calculating anisotropic RR with weights (parallelized)...\n RR=")
-            RR = amulti_autocpr(datR, binsq, parmetric, permetric, rng, rweights, Nr, pcpus)
+            if len(rweights) != Nr:
+                RR = aRRcalc(datR, binsq, parmetric, permetric, rng)
+            else:
+                print ("Calculating anisotropic RR with weights (parallelized)...\n RR=")
+                RR = amulti_autocpr(datR, binsq, parmetric, permetric, rng, rweights, Nr, pcpus)
         print ("Using Peebles-Hauser estimator")
         correl = (DD/RR)-1.0
     else:
@@ -300,12 +303,17 @@ def atpcf(datfile, bins, **kwargs):
             print ("Calculating anisotropic DD with weights (parallelized)...\n DD=")
             # DD = aDDwcalc(dat, binsq, parmetric, permetric, rng, weights)
             DD = amulti_autocp(dat, binsq, parmetric, permetric, rng, weights, Nd, pcpus)
-            print ("Calculating anisotropic RR with weights (parallelized)...\n RR=")
+            # print ("Calculating anisotropic RR with weights (parallelized)...\n RR=")
             # RR = aRRwcalc(datR, binsq, parmetric, permetric, rng, rweights)
-            RR = amulti_autocpr(datR, binsq, parmetric, permetric, rng, rweights, Nr, pcpus)
+            # RR = amulti_autocpr(datR, binsq, parmetric, permetric, rng, rweights, Nr, pcpus)
             # DR = aRDwcalc(dat, datR, binsq, parmetric, permetric, rng, weights)
             print ("Calculating anisotropic DR with weights (parallelized)...\n DR=")
             DR = amulti_crosscp(dat, datR, binsq, parmetric, permetric, rng, weights, Nr, pcpus)
+            if len(rweights) != Nr:
+                RR = aRRcalc(datR, binsq, parmetric, permetric, rng)
+            else:
+                print ("Calculating anisotropic RR with weights (parallelized)...\n RR=")
+                RR = amulti_autocpr(datR, binsq, parmetric, permetric, rng, rweights, Nr, pcpus)
         if estimator == 'ls':
             print ("Using Landy-Szalay estimator")
             correl = (DD-2.0*DR+RR)/RR

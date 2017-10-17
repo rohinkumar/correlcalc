@@ -91,7 +91,7 @@ def datprepz(fname, ftype, model):
 def randcatprep(datfname, randcatsize, maskfile, model):
     """Method to generate random catalog from mangle mask and input redshift distribution for given cosmology"""
     print("Generating random catalog of %d size in file randcat.dat... "% randcatsize)
-    if fname.lower().endswith('.fits'):
+    if datfname.lower().endswith('.fits'):
         data = readfitsfile(datfname, 'internal')
     else:
         data = readinfile(datfname, 'internal')
@@ -122,7 +122,7 @@ def randcatprep(datfname, randcatsize, maskfile, model):
 def randcatprepz(datfname, randcatsize, maskfile, model):
     """Method to generate random catalog from mangle mask and input redshift distribution for given cosmology"""
     print("Generating random catalog of %d size in file randcat.dat... "% randcatsize)
-    if fname.lower().endswith('.fits'):
+    if datfname.lower().endswith('.fits'):
         data = readfitsfile(datfname, 'internal')
     else:
         data = readinfile(datfname, 'internal')

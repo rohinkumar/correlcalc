@@ -12,13 +12,12 @@ from tqdm import *
 from datprep import *
 import numpy as np
 from metrics import *
-from multiprocessing import cpu_count
 from multiprocessing import Process
 from multiprocessing.queues import Queue
 from sklearn.neighbors import BallTree
 from scipy.spatial import distance as dist
 
-pcpus=cpu_count()-1
+# pcpus = cpu_count()-1
 
 
 def tpcf(datfile, bins, **kwargs):
@@ -242,7 +241,6 @@ def tpcf(datfile, bins, **kwargs):
     global Nr
     Nr = len(datR)
 
-
     #Creating module-wise global balltrees so that they don't have to be created many times.
 
     global dbt
@@ -281,7 +279,10 @@ def tpcf(datfile, bins, **kwargs):
             RR = RRcalc(datR, binsq, metric)
         else:
             DD = DDwcalc(dat, binsq, metric, weights)
-            RR = RRwcalc(datR, binsq, metric, rweights)
+            if len(rweights) != Nr:
+                RR = RRcalc(datR, binsq, metric)
+            else:
+                RR = RRwcalc(datR, binsq, metric, rweights)
         print ("Using Peebles-Hauser estimator")
         correl = (DD/RR)-1.0
     else:
@@ -291,8 +292,11 @@ def tpcf(datfile, bins, **kwargs):
             DR = DRcalc(dat, datR, binsq, metric)
         else:
             DD = DDwcalc(dat, binsq, metric, weights)
-            RR = RRwcalc(datR, binsq, metric, rweights)
             DR = RDwcalc(dat, datR, binsq, metric, weights)
+            if len(rweights) != Nr:
+                RR = RRcalc(datR, binsq, metric)
+            else:
+                RR = RRwcalc(datR, binsq, metric, rweights)
         if estimator == 'ls':
             print ("Using Landy-Szalay estimator")
             correl = (DD-2.0*DR+RR)/RR

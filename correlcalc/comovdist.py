@@ -6,8 +6,11 @@ import math as m
 from param import *
 #from correlcalc import *
 from multiprocessing import Pool
+from multiprocessing import cpu_count
 #Om = param.Om
 #Ol = param.Ol
+
+pcpus = cpu_count() - 1
 
 def Ezs(zv):
     """Hubble papameter in H0 units"""
@@ -42,7 +45,7 @@ def comovp(z,model):
     """Method to calculate comoving distance of given redshifts for input model. Units in c/H0"""
     # More models such as wcdm to be added
     print ("Calculating comoving distances (parallelized)...")
-    pool=Pool()
+    pool=Pool(processes=pcpus)
     if model=='lcdm':
         return pool.map(DC_LCDM,z)
     elif model=='lc':
