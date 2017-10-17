@@ -5,7 +5,7 @@ import math as m
 #from . import *
 from param import *
 #from correlcalc import *
-
+from multiprocessing import Pool
 #Om = param.Om
 #Ol = param.Ol
 
@@ -33,6 +33,20 @@ def comov(z,model):
         return DC_LCDM(z)
     elif model=='lc':
         return DC_LC(z)
+    else:
+        print("Only 'lcdm' and 'lc' models supported for now")
+        return None
+
+
+def comovp(z,model):
+    """Method to calculate comoving distance of given redshifts for input model. Units in c/H0"""
+    # More models such as wcdm to be added
+    print ("Calculating comoving distances (parallelized)...")
+    pool=Pool()
+    if model=='lcdm':
+        return pool.map(DC_LCDM,z)
+    elif model=='lc':
+        return pool.map(DC_LC,z)
     else:
         print("Only 'lcdm' and 'lc' models supported for now")
         return None

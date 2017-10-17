@@ -37,7 +37,7 @@ def datprep(fname, ftype, model):
         else:
             pass
     # print ("Calcuating comoving distances and converting angles to radians...")
-    s = comov(z, model)
+    s = comovp(z, model)
     rar = ra*pi/180.0
     decr = dec*pi/180.0
     print ("Preparing %s into 3xN matrices in [s,rar,decr] format..." % ftype )
@@ -110,7 +110,7 @@ def randcatprep(datfname, randcatsize, maskfile, model):
     decr = dec*pi/180.0
     rcatfname = "randcat.dat"# %(datfname)
     storerandcat(zr, rar, decr, rcatfname)
-    s = comov(zr, model)
+    s = comovp(zr, model)
     print ("Preparing random catalog into 3xN matrices in [s,rar,decr] format" )
     datR = np.array([s, rar, decr])
     datR.reshape(3, len(zr))

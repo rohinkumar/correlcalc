@@ -7,7 +7,7 @@ __author__ = 'Rohin Kumar Y'
 # **kwargs for choosing geometry - metric 'flat' 'open' 'close'
 # **kwargs for choosing xi estimator - 'simple' 'ls' '...'
 # import fileios
-from metrics.metrics import * # for pycharm remove comment - for pip installation etc. comment this line
+# from metrics.metrics import * # for pycharm remove comment - for pip installation etc. comment this line
 from tqdm import *
 from datprep import *
 import numpy as np
