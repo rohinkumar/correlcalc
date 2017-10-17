@@ -370,11 +370,11 @@ def DDwcalc(dat, bins, metric, weights):
     return DD
 
 
-def RRwcalc(datR, bins, metric, weights):
+def RRwcalc(datR, bins, metric, rweights):
     print ("Calculating RR with weights (parallelized)...\n RR=")
     # RR = autocorrw(datR, bins, metric, weights)
     # Nr = len(datR)
-    RR = multi_autocp(datR, bins, metric, weights, Nr, pcpus)
+    RR = multi_autocpr(datR, bins, metric, rweights, Nr, pcpus)
     RR[RR == 0] = 1.0
 
     RR = RR/(Nr*(Nr-1.0))
@@ -491,6 +491,24 @@ def crosscorrwrdp(dat, datR, bins, metric, weights, rNr, multi=False, queue=0):
     return RD
 
 
+def autocorrwpr(datR, bins, metric, rweights, rNr, multi=False, queue=0):
+    # dbt = BallTree(dat, metric='pyfunc', func=metric)
+    RR = np.zeros(len(bins)-1)
+    for i in tqdm(rNr):
+        ind = rbt.query_radius(datR[i].reshape(1, -1), max(bins))
+        # wts=np.array([])
+        for j in ind:
+            dist0 = dist.cdist([datR[i], ], datR[j], metric)[0]
+            RR += np.histogram(dist0, bins=bins, weights=rweights[j])[0]
+            # print (dist0,weights[j])
+    if multi:
+        queue.put(RR)
+    else:
+        return RR
+    print (RR)
+    return RR
+
+
 def multi_autocp(dat, bins, metric, weights, Nd, CORES=pcpus):
 
     DD = np.zeros(len(bins)-1)
@@ -502,6 +520,19 @@ def multi_autocp(dat, bins, metric, weights, Nd, CORES=pcpus):
     for j in jobs: j.join()
 
     return DD
+
+
+def multi_autocpr(datR, bins, metric, rweights, Nr, CORES=pcpus):
+
+    RR = np.zeros(len(bins)-1)
+    queues = [RetryQueue() for i in range(CORES)]
+    args = [(datR, bins, metric, rweights, range(int(Nr*i/CORES),int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
+    jobs = [Process(target=autocorrwpr, args=(a)) for a in args]
+    for j in jobs: j.start()
+    for q in queues: RR+=q.get()
+    for j in jobs: j.join()
+
+    return RR
 
 
 def multi_crosscp(dat, datR, bins, metric, weights, Nr, CORES=pcpus):
