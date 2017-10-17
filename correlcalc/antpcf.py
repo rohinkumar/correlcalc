@@ -288,7 +288,7 @@ def atpcf(datfile, bins, **kwargs):
             # DD = aDDwcalc(dat, binsq, parmetric, permetric, rng, weights)
             DD = amulti_autocp(dat, binsq, parmetric, permetric, rng, weights, Nd, pcpus)
             print ("Calculating anisotropic RR with weights (parallelized)...\n RR=")
-            RR = amulti_autocp(datR, binsq, parmetric, permetric, rng, rweights, Nr, pcpus)
+            RR = amulti_autocpr(datR, binsq, parmetric, permetric, rng, rweights, Nr, pcpus)
         print ("Using Peebles-Hauser estimator")
         correl = (DD/RR)-1.0
     else:
@@ -302,7 +302,7 @@ def atpcf(datfile, bins, **kwargs):
             DD = amulti_autocp(dat, binsq, parmetric, permetric, rng, weights, Nd, pcpus)
             print ("Calculating anisotropic RR with weights (parallelized)...\n RR=")
             # RR = aRRwcalc(datR, binsq, parmetric, permetric, rng, rweights)
-            RR = amulti_autocp(datR, binsq, parmetric, permetric, rng, rweights, Nr, pcpus)
+            RR = amulti_autocpr(datR, binsq, parmetric, permetric, rng, rweights, Nr, pcpus)
             # DR = aRDwcalc(dat, datR, binsq, parmetric, permetric, rng, weights)
             print ("Calculating anisotropic DR with weights (parallelized)...\n DR=")
             DR = amulti_crosscp(dat, datR, binsq, parmetric, permetric, rng, weights, Nr, pcpus)
@@ -525,6 +525,21 @@ def amulti_autocp(dat, bins, parmetric, permetric, rng, weights, Nd, CORES=pcpus
     DD = DD/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
     print DD
     return DD
+
+
+def amulti_autocpr(datR, bins, parmetric, permetric, rng, rweights, Nr, CORES=pcpus):
+
+    RR = np.zeros((len(bins)-1, len(bins)-1))
+    queues = [RetryQueue() for i in range(CORES)]
+    args = [(datR, bins, parmetric, permetric, rng, weights, range(int(Nr*i/CORES),int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
+    jobs = [Process(target=aRRwcalcp, args=(a)) for a in args]
+    for j in jobs: j.start()
+    for q in queues: RR+=q.get()
+    for j in jobs: j.join()
+    RR[RR == 0] = 1.0
+    RR = RR/(Nr*(Nr-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
+    print RR
+    return RR
 
 
 def amulti_crosscp(dat, datR, bins, parmetric, permetric, rng, weights, Nr, CORES=pcpus):
