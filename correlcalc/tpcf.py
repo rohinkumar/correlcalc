@@ -261,8 +261,8 @@ def tpcf(datfile, bins, **kwargs):
             # print (weightsflag)
             # print(len(weights))
             # print(len(datR))
-            DD = DDcalc(dat, binsq, metric)
-            DR = DRcalc(dat, datR, binsq, metric)
+            DD = DDcalc(dat, binsq)
+            DR = DRcalc(dat, binsq)
         else:
             # if len(rweights)!=len(datR):
             DD = DDwcalc(dat, binsq, metric, weights)
@@ -275,26 +275,26 @@ def tpcf(datfile, bins, **kwargs):
 
     elif estimator == 'ph':
         if weightsflag is False or len(weights) != Nd:
-            DD = DDcalc(dat, binsq, metric)
-            RR = RRcalc(datR, binsq, metric)
+            DD = DDcalc(dat, binsq)
+            RR = RRcalc(datR, binsq)
         else:
             DD = DDwcalc(dat, binsq, metric, weights)
             if len(rweights) != Nr:
-                RR = RRcalc(datR, binsq, metric)
+                RR = RRcalc(datR, binsq)
             else:
                 RR = RRwcalc(datR, binsq, metric, rweights)
         print ("Using Peebles-Hauser estimator")
         correl = (DD/RR)-1.0
     else:
         if weightsflag == False or len(weights) != Nd:
-            DD = DDcalc(dat, binsq, metric)
-            RR = RRcalc(datR, binsq, metric)
-            DR = DRcalc(dat, datR, binsq, metric)
+            DD = DDcalc(dat, binsq)
+            RR = RRcalc(datR, binsq)
+            DR = DRcalc(dat, binsq)
         else:
             DD = DDwcalc(dat, binsq, metric, weights)
             DR = RDwcalc(dat, datR, binsq, metric, weights)
             if len(rweights) != Nr:
-                RR = RRcalc(datR, binsq, metric)
+                RR = RRcalc(datR, binsq)
             else:
                 RR = RRwcalc(datR, binsq, metric, rweights)
         if estimator == 'ls':
