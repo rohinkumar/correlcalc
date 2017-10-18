@@ -149,7 +149,7 @@ def randcatprepz(datfname, randcatsize, maskfile, model):
     rar = ra*pi/180.0
     decr = dec*pi/180.0
     rcatfname = "randcat.dat"# %(datfname)
-    storerandcat(zr, rar, decr, rcatfname)
+    storerandcat(zr, ra, dec, rweights, rcatfname)
     print ("Preparing random catalog into 3xN matrices in [zr,rar,decr] format" )
     datR = np.array([zr, rar, decr])
     datR.reshape(3, len(zr))

@@ -90,11 +90,11 @@ def readmaskfile(fname):
         return None
 
 
-def storerandcat(z, ra, dec, rcatname):
+def storerandcat(z, ra, dec, rweights, rcatname):
     """Create random catalog file to store generated random catalog from randcatprep method"""
     fobj = open(rcatname, 'w')
-    fobj.write("z\t ra\t dec\n ")
+    fobj.write("z\t ra\t dec\t radial_weight\n ")
     for i in range(0, len(z)):
         fobj.write("%f\t " % z[i])
-        fobj.write("%f\t %f\n " % (ra[i], dec[i]))
+        fobj.write("%f\t %f\t %f\n" % (ra[i], dec[i], rweights[i]))
     fobj.close()
