@@ -312,9 +312,9 @@ def tpcf(datfile, bins, **kwargs):
     return correl, correlerr
 
 
-def DDcalc(dat, bins, metric):
+def DDcalc(dat, bins):
     print ("Calculating DD...\n DD=")
-    DD = autocorr(dat, bins, metric)
+    DD = autocorr(dat, bins)
     DD [DD == 0] = 1.0
     # Nd = len(dat)
     DD = 2.0*DD/(Nd*(Nd-1.0))
@@ -322,9 +322,9 @@ def DDcalc(dat, bins, metric):
     return DD
 
 
-def RRcalc(datR, bins, metric):
+def RRcalc(datR, bins):
     print ("Calculating RR...\n RR=")
-    RR = autocorr(datR, bins, metric)
+    RR = rautocorr(datR, bins)
     RR [RR == 0] = 1.0
     # Nr = len(datR)
     RR = 2.0*RR/(Nr*(Nr-1.0))
@@ -332,9 +332,9 @@ def RRcalc(datR, bins, metric):
     return RR
 
 
-def DRcalc(dat, datR, bins, metric):
+def DRcalc(dat, bins):
     print ("Calculating DR...\n DR=")
-    DR = crosscorr(dat, datR, bins, metric)
+    DR = crosscorr(dat, bins)
     DR[DR == 0] = 1.0
     # Nd = len(dat)
     # Nr = len(datR)
@@ -343,13 +343,17 @@ def DRcalc(dat, datR, bins, metric):
     return DR
 
 
-def autocorr(dat, bins, metric):
+def autocorr(dat, bins):
     counts_DD = dbt.two_point_correlation(dat, bins)
     DD = np.diff(counts_DD)
     return DD
 
+def rautocorr(datR, bins):
+    counts_RR = rbt.two_point_correlation(datR, bins)
+    RR = np.diff(counts_RR)
+    return RR
 
-def crosscorr(dat, datR, bins, metric):
+def crosscorr(dat, bins):
     counts_DR = rbt.two_point_correlation(dat, bins)
     DR = np.diff(counts_DR)
     return DR
@@ -517,10 +521,10 @@ def multi_autocp(dat, bins, metric, weights, Nd, CORES=pcpus):
 
     DD = np.zeros(len(bins)-1)
     queues = [RetryQueue() for i in range(CORES)]
-    args = [(dat, bins, metric, weights, range(int(Nd*i/CORES),int(Nd*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
+    args = [(dat, bins, metric, weights, range(int(Nd*i/CORES), int(Nd*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
     jobs = [Process(target=autocorrwp, args=(a)) for a in args]
     for j in jobs: j.start()
-    for q in queues: DD+=q.get()
+    for q in queues: DD += q.get()
     for j in jobs: j.join()
 
     return DD
@@ -533,7 +537,7 @@ def multi_autocpr(datR, bins, metric, rweights, Nr, CORES=pcpus):
     args = [(datR, bins, metric, rweights, range(int(Nr*i/CORES),int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
     jobs = [Process(target=autocorrwpr, args=(a)) for a in args]
     for j in jobs: j.start()
-    for q in queues: RR+=q.get()
+    for q in queues: RR += q.get()
     for j in jobs: j.join()
 
     return RR
@@ -546,7 +550,7 @@ def multi_crosscp(dat, datR, bins, metric, weights, Nr, CORES=pcpus):
     args = [(dat, datR, bins, metric, weights, range(int(Nr*i/CORES),int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
     jobs = [Process(target=crosscorrwrdp, args=(a)) for a in args]
     for j in jobs: j.start()
-    for q in queues: DR+=q.get()
+    for q in queues: DR += q.get()
     for j in jobs: j.join()
 
     return DR
