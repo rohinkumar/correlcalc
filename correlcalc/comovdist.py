@@ -4,11 +4,11 @@ import numpy as np
 import math as m
 #from . import *
 from param import *
-#from correlcalc import *
+# from correlcalc import *
 from multiprocessing import Pool
 from multiprocessing import cpu_count
-#Om = param.Om
-#Ol = param.Ol
+# Om = param.Om
+# Ol = param.Ol
 
 pcpus = cpu_count() - 1
 
@@ -32,24 +32,24 @@ def comov(z,model):
     """Method to calculate comoving distance of given redshifts for input model. Units in c/H0"""
     # More models such as wcdm to be added
     print ("Calculating comoving distances...")
-    if model=='lcdm':
+    if model == 'lcdm':
         return DC_LCDM(z)
-    elif model=='lc':
+    elif model == 'lc':
         return DC_LC(z)
     else:
         print("Only 'lcdm' and 'lc' models supported for now")
         return None
 
 
-def comovp(z,model):
+def comovp(z, model):
     """Method to calculate comoving distance of given redshifts for input model. Units in c/H0"""
     # More models such as wcdm to be added
     print ("Calculating comoving distances (parallelized)...")
-    pool=Pool(processes=pcpus)
-    if model=='lcdm':
-        return pool.map(DC_LCDM,z)
-    elif model=='lc':
-        return pool.map(DC_LC,z)
+    pool = Pool(processes=pcpus)
+    if model == 'lcdm':
+        return pool.map(DC_LCDM, z)
+    elif model == 'lc':
+        return pool.map(DC_LC, z)
     else:
         print("Only 'lcdm' and 'lc' models supported for now")
         return None

@@ -80,4 +80,6 @@ bins = np.arange(0.002, 0.06, 0.002)
 # print(max(weights))
 # dr12gls=tpcf('/Users/rohin/Documents/ipy_notebooks/galsurveystudy/input/galaxy_DR12v5_LOWZ_South.fits',bins,randfile='/Users/rohin/Downloads/random0_DR12v5_LOWZ_South.fits',weights=True)
 # Planck run with changed parameters in param.py
-corrdr3milne = tpcf('/Users/rohin/Downloads/DR3-ns.ascii', bins, randfile='/Users/rohin/Downloads/random-DR3-ns.ascii', weights=True, geometry='open', cosmology='lc')
+# corrdr3milne = tpcf('/Users/rohin/Downloads/DR3-ns.ascii', bins, randfile='/Users/rohin/Downloads/random-DR3-ns.ascii', weights=True, geometry='open', cosmology='lc')
+# corrdr3milne = tpcf('/Users/rohin/Downloads/DR3-ns.ascii', bins, weights=True, mask='/Users/rohin/Documents/ipy_notebooks/galsurveystudy/masks/window.dr72safe0.ply')
+# corrdr3milne = tpcf('./testw.dat', bins, weights=True, mask='/Users/rohin/Documents/ipy_notebooks/galsurveystudy/masks/window.dr72safe0.ply')

@@ -104,8 +104,17 @@ def randcatprep(datfname, randcatsize, maskfile, model):
         #     rweights=weights/np.mean(rweights)
         # else:
         #
-    zr = randz(z, randcatsize)
+    zr, rweights = randz(z, randcatsize)
     ra, dec = randang(maskfile, randcatsize)
+    print ("Generated random catalog...")
+    print ("zr = ")
+    print (zr)
+    print ("random ra =")
+    print (ra)
+    print ("random dec =")
+    print (dec)
+    print ("radial weights =")
+    print (rweights)
     rar = ra*pi/180.0
     decr = dec*pi/180.0
     rcatfname = "randcat.dat"# %(datfname)
@@ -116,7 +125,7 @@ def randcatprep(datfname, randcatsize, maskfile, model):
     datR.reshape(3, len(zr))
     datR = datR.transpose()
     # print(datR)
-    return datR
+    return datR, rweights
 
 
 def randcatprepz(datfname, randcatsize, maskfile, model):
@@ -135,7 +144,7 @@ def randcatprepz(datfname, randcatsize, maskfile, model):
         #     rweights=weights/np.mean(rweights)
         # else:
         #
-    zr = randz(z, randcatsize)
+    zr, rweights = randz(z, randcatsize)
     ra, dec = randang(maskfile, randcatsize)
     rar = ra*pi/180.0
     decr = dec*pi/180.0
@@ -146,4 +155,4 @@ def randcatprepz(datfname, randcatsize, maskfile, model):
     datR.reshape(3, len(zr))
     datR = datR.transpose()
     # print(datR)
-    return datR
+    return datR, rweights

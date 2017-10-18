@@ -233,8 +233,8 @@ def atpcf(datfile, bins, **kwargs):
         if maskfile is None:
             print ("Mask file compulsory. Please provide mask='maskfilepath.ply'")
         else:
-            datR = randcatprepz(datfile, randcatsize, maskfile, cosmology)
-            rweights = np.array([])
+            datR, rweights = randcatprepz(datfile, randcatsize, maskfile, cosmology)
+            # rweights = np.array([])
             # randfile='./randcat.dat'
             # datR, rweights=datprep(randfile,'random',cosmology)
     else:

@@ -26,7 +26,7 @@ else:
     ext_modules += [Extension("correlcalc.metrics", ["metrics/metrics.c"]), ]
 setup(
     name='correlcalc',
-    version='0.976',
+    version='0.977',
     description='Two-point correlation function (2pCF) calculation',
     long_description=readme(),
     url='http://github.com/rohinkumar/correlcalc',
