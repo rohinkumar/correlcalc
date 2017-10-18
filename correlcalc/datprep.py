@@ -156,3 +156,4 @@ def randcatprepz(datfname, randcatsize, maskfile, model):
     datR = datR.transpose()
     # print(datR)
     return datR, rweights
+

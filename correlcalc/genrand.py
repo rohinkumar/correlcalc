@@ -3,6 +3,7 @@ from scipy.stats import gaussian_kde
 import numpy as np
 from fileios import *
 
+# Need to parallelize these... Very slow indeed! :(
 
 def kde(x, x_grid, bandwidth=0.2):
     """Kernel Density Estimation with Scipy"""

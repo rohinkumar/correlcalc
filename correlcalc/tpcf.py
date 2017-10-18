@@ -534,7 +534,7 @@ def multi_autocpr(datR, bins, metric, rweights, Nr, CORES=pcpus):
 
     RR = np.zeros(len(bins)-1)
     queues = [RetryQueue() for i in range(CORES)]
-    args = [(datR, bins, metric, rweights, range(int(Nr*i/CORES),int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
+    args = [(datR, bins, metric, rweights, range(int(Nr*i/CORES), int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
     jobs = [Process(target=autocorrwpr, args=(a)) for a in args]
     for j in jobs: j.start()
     for q in queues: RR += q.get()
@@ -547,13 +547,14 @@ def multi_crosscp(dat, datR, bins, metric, weights, Nr, CORES=pcpus):
 
     DR = np.zeros(len(bins)-1)
     queues = [RetryQueue() for i in range(CORES)]
-    args = [(dat, datR, bins, metric, weights, range(int(Nr*i/CORES),int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
+    args = [(dat, datR, bins, metric, weights, range(int(Nr*i/CORES), int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
     jobs = [Process(target=crosscorrwrdp, args=(a)) for a in args]
     for j in jobs: j.start()
     for q in queues: DR += q.get()
     for j in jobs: j.join()
 
     return DR
+
 
 def retry_on_eintr(function, *args, **kw):
     while True:
@@ -565,7 +566,8 @@ def retry_on_eintr(function, *args, **kw):
             elif e.errno == errno.EINTR:
                 continue
             else:
-                raise
+                raise "multiprocessing pooling queue error", e
+
 
 class RetryQueue(Queue):
 
