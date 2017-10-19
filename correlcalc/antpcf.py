@@ -158,6 +158,16 @@ def atpcf(datfile, bins, **kwargs):
             elif key.lower() == 'parmetric':
                 if value.lower() == 'apdz':
                     parmetric = APdz
+                elif value.lower() == 'apzdth':
+                    parmetric = APzdth
+                elif value.lower() == 'sflat':
+                    parmetric = flatdistsq
+                elif value.lower() == 'sopen':
+                    parmetric = opendistsq
+                elif value.lower() == 'sclose':
+                    parmetric = closedistsq
+                elif value.lower() == 'mu':
+                    parmetric = mu
                     # metric='APdz'
                 # elif value.lower()=='spar':
                 #     #metric='spar'
@@ -170,6 +180,17 @@ def atpcf(datfile, bins, **kwargs):
             elif key.lower() == 'permetric':
                 if value.lower() == 'apzdth':
                     permetric = APzdth
+                elif value.lower() == 'apdz':
+                    permetric = APdz
+                elif value.lower() == 'sflat':
+                    permetric = flatdistsq
+                elif value.lower() == 'sopen':
+                    permetric = opendistsq
+                elif value.lower() == 'sclose':
+                    permetric = closedistsq
+                elif value.lower() == 'mu':
+                    permetric = mu
+
                     # geometry='flat'
                 # elif value.lower()=='sper':
                 #     # geometry='open'
@@ -203,7 +224,7 @@ def atpcf(datfile, bins, **kwargs):
         print ("Refer documentation to enter valid keyword arguments")
 
     print("Calculating Anisotropic Correlation function with the following parameters")
-    print ("data file=")
+    print("data file=")
     print(datfile)
     print("random file=")
     print(randfile)
