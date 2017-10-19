@@ -118,7 +118,7 @@ def randcatprep(datfname, randcatsize, maskfile, model):
     rar = ra*pi/180.0
     decr = dec*pi/180.0
     rcatfname = "randcat.dat"# %(datfname)
-    storerandcat(zr, rar, decr, rcatfname)
+    storerandcat(zr, rar, decr, rweights, rcatfname)
     s = comovp(zr, model)
     print ("Preparing random catalog into 3xN matrices in [s,rar,decr] format" )
     datR = np.array([s, rar, decr])
