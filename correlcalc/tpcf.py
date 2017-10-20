@@ -134,6 +134,8 @@ def tpcf(datfile, bins, **kwargs):
     """
     # Default function arguments
     # weights = np.array([])
+    global dat
+    global datR
     weightsflag = False
     cosmology = 'lcdm'
     geometry = 'flat'
@@ -286,7 +288,7 @@ def tpcf(datfile, bins, **kwargs):
         print ("Using Peebles-Hauser estimator")
         correl = (DD/RR)-1.0
     else:
-        if weightsflag == False or len(weights) != Nd:
+        if weightsflag is False or len(weights) != Nd:
             DD = DDcalc(dat, binsq)
             RR = RRcalc(datR, binsq)
             DR = DRcalc(dat, binsq)
