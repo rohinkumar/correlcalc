@@ -40,7 +40,7 @@ def datprep(fname, ftype, model):
     s = comovp(z, model)
     rar = ra*pi/180.0
     decr = dec*pi/180.0
-    print ("Preparing %s into 3xN matrices in [s,rar,decr] format..." % ftype )
+    print ("Preparing %s into 3xN matrices in [s,rar,decr] format..." % ftype)
     dat = np.array([s, rar, decr])
     dat.reshape(3, len(data))
     dat = dat.transpose()
