@@ -136,8 +136,11 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     global binsperv
     global dat
     global datR
+    global Nd
+    global Nr
     weightsflag = False
     cosmology = 'lcdm'
+    sflag = True
     # geometry='flat'
     parmetric = mu
     permetric = flatdistsq
@@ -171,88 +174,27 @@ def atpcf(datfile, binspar, binsper, **kwargs):
                 if value.lower() == 'apdz':
                     parmetric = APdz
                     binsparv = binspar
-                    # Prepare dat from data file
-                    dat, weights = datprepz(datfile, 'data', cosmology)
-                    # Prepare datR from random file or generate a random catalog
-                    if randfile is None:
-                        randcatsize = randcatfact*Nd
-                        if maskfile is None:
-                            print ("Mask file compulsory. Please provide mask='maskfilepath.ply'")
-                        else:
-                            datR, rweights = randcatprepz(datfile, randcatsize, maskfile, cosmology)
-
-                    else:
-                        datR, rweights = datprepz(randfile, 'random', cosmology)
+                    sflag = False
                 elif value.lower() == 'apzdth':
                     parmetric = APzdth
                     binsparv = binspar
-                    # Prepare dat from data file
-                    dat, weights = datprepz(datfile, 'data', cosmology)
-                    # Prepare datR from random file or generate a random catalog
-                    if randfile is None:
-                        randcatsize = randcatfact*Nd
-                        if maskfile is None:
-                            print ("Mask file compulsory. Please provide mask='maskfilepath.ply'")
-                        else:
-                            datR, rweights = randcatprepz(datfile, randcatsize, maskfile, cosmology)
-                    else:
-                        datR, rweights = datprepz(randfile, 'random', cosmology)
+                    sflag = False
                 elif value.lower() == 'sflat':
                     parmetric = flatdistsq
                     binsparv = binspar**2
-                    # Prepare dat from data file
-                    dat, weights = datprep(datfile, 'data', cosmology)
-                    # Prepare datR from random file or generate a random catalog
-                    if randfile is None:
-                        randcatsize = randcatfact*Nd
-                        if maskfile is None:
-                            print ("Mask file compulsory. Please provide mask='maskfilepath.ply'")
-                        else:
-                            datR, rweights = randcatprep(datfile, randcatsize, maskfile, cosmology)
-                    else:
-                        datR, rweights = datprep(randfile, 'random', cosmology)
+                    sflag = True
                 elif value.lower() == 'sopen':
                     parmetric = opendistsq
                     binsparv = binspar**2
-                    # Prepare dat from data file
-                    dat, weights = datprep(datfile, 'data', cosmology)
-                    # Prepare datR from random file or generate a random catalog
-                    if randfile is None:
-                        randcatsize = randcatfact*Nd
-                        if maskfile is None:
-                            print ("Mask file compulsory. Please provide mask='maskfilepath.ply'")
-                        else:
-                            datR, rweights = randcatprep(datfile, randcatsize, maskfile, cosmology)
-                    else:
-                        datR, rweights = datprep(randfile, 'random', cosmology)
+                    sflag = True
                 elif value.lower() == 'sclose':
                     parmetric = closedistsq
                     binsparv = binspar**2
-                    # Prepare dat from data file
-                    dat, weights = datprep(datfile, 'data', cosmology)
-                    # Prepare datR from random file or generate a random catalog
-                    if randfile is None:
-                        randcatsize = randcatfact*Nd
-                        if maskfile is None:
-                            print ("Mask file compulsory. Please provide mask='maskfilepath.ply'")
-                        else:
-                            datR, rweights = randcatprep(datfile, randcatsize, maskfile, cosmology)
-                    else:
-                        datR, rweights = datprep(randfile, 'random', cosmology)
+                    sflag = True
                 elif value.lower() == 'mu':
                     parmetric = mu
                     binsparv = binspar
-                    # Prepare dat from data file
-                    dat, weights = datprep(datfile, 'data', cosmology)
-                    # Prepare datR from random file or generate a random catalog
-                    if randfile is None:
-                        randcatsize = randcatfact*Nd
-                        if maskfile is None:
-                            print ("Mask file compulsory. Please provide mask='maskfilepath.ply'")
-                        else:
-                            datR, rweights = randcatprep(datfile, randcatsize, maskfile, cosmology)
-                    else:
-                        datR, rweights = datprep(randfile, 'random', cosmology)
+                    sflag = True
                 else:
                     print("Incorrect parallel metric argument provided!")
             elif key.lower() == 'permetric':
@@ -317,12 +259,35 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     print(estimator)
     print("-----------------------------------")
 
-    global Nd
-    Nd = len(dat)
+    if sflag is False:
+        # Prepare dat from data file
+        dat, weights = datprepz(datfile, 'data', cosmology)
+        Nd = len(dat)
+        # Prepare datR from random file or generate a random catalog
+        if randfile is None:
+            randcatsize = randcatfact*Nd
+            if maskfile is None:
+                print ("Mask file compulsory. Please provide mask='maskfilepath.ply'")
+            else:
+                datR, rweights = randcatprepz(datfile, randcatsize, maskfile, cosmology)
+        else:
+            datR, rweights = datprepz(randfile, 'random', cosmology)
 
+    else:
+        # Prepare dat from data file
+        dat, weights = datprep(datfile, 'data', cosmology)
 
-    global Nr
-    # Nd = len(dat)
+        Nd = len(dat)
+        # Prepare datR from random file or generate a random catalog
+        if randfile is None:
+            randcatsize = randcatfact*Nd
+            if maskfile is None:
+                print ("Mask file compulsory. Please provide mask='maskfilepath.ply'")
+            else:
+                datR, rweights = randcatprep(datfile, randcatsize, maskfile, cosmology)
+        else:
+            datR, rweights = datprep(randfile, 'random', cosmology)
+
     Nr = len(datR)
 
     global adbt
