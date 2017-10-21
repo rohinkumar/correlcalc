@@ -45,7 +45,7 @@ def sparfsq(double[:] x, double[:] y):
 
 
 def sperfsq(double[:] x, double[:] y):
-    return flatdistsq(x, y)(1.0-(mu(x,y))**2)
+    return flatdistsq(x, y)*(1.0-(mu(x,y))**2)
 
 
 def sparosq(double[:] x, double[:] y):
@@ -53,7 +53,7 @@ def sparosq(double[:] x, double[:] y):
 
 
 def sperosq(double[:] x, double[:] y):
-    return opendistsq(x, y)(1.0-(mu(x,y))**2)
+    return opendistsq(x, y)*(1.0-(mu(x,y))**2)
 
 
 def sparcsq(double[:] x, double[:] y):
