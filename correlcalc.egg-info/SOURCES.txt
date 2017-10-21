@@ -21,5 +21,4 @@ correlcalc.egg-info/requires.txt
 correlcalc.egg-info/top_level.txt
 metrics/metrics.c
 metrics/metrics.pyx
-metrics/metrics.so
 metrics/metrics/metrics.so
