@@ -58,3 +58,27 @@ def mu(double[:] x, double[:] y):
     cdef double dec2 = y[2]
     cdef double costheta = sin(dec1)*sin(dec2)+cos(dec1)*cos(dec2)*cos(ra1-ra2)
     return costheta
+
+
+def sparfsq(double[:] x, double[:] y):
+    return flatdistsq(x, y)*(mu(x,y))**2
+
+
+def sperfsq(double[:] x, double[:] y):
+    return flatdistsq(x, y)-sparfsq(x, y)
+
+
+def sparosq(double[:] x, double[:] y):
+    return opendistsq(x, y)*(mu(x,y))**2
+
+
+def sperosq(double[:] x, double[:] y):
+    return opendistsq(x, y)-sparosq(x, y)
+
+
+def sparcsq(double[:] x, double[:] y):
+    return closedistsq(x, y)*(mu(x,y))**2
+
+
+def spercsq(double[:] x, double[:] y):
+    return closedistsq(x, y)-sparcsq(x,y)
