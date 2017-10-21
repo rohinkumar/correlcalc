@@ -131,7 +131,6 @@ def atpcf(datfile, binspar, binsper, **kwargs):
 
     """
     # Default function arguments
-    rng = np.array([[min(binspar), max(binspar)], [min(binsper), max(binsper)]])
     global binsparv
     global binsperv
     global dat
@@ -150,6 +149,7 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     binsperv = binsper**2
     randfile = None
     maskfile = None
+
 
     # Options for correl calculation estimators and cosmology models
     mlist = ['dp', 'ls', 'ph', 'hew', 'h']
@@ -257,6 +257,10 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     print(parmetric)
     print("Correl estimator=")
     print(estimator)
+    print ("binsparv=")
+    print (binsparv)
+    print ("binsperv=")
+    print (binsperv)
     print("-----------------------------------")
 
     if sflag is False:
@@ -299,6 +303,7 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     print ("Creating BallTree for random points using permetric...")
     arbt = BallTree(datR, metric='pyfunc', func=permetric)
 
+    rng = np.array([[min(binsparv), max(binsparv)], [min(binsperv), max(binsperv)]])
     print ("Calculating anisotropic 2pCF...")
 
     # Reference: arXiv: 1211.6211
@@ -381,8 +386,20 @@ def aDDcalc(dat, binspar, binsper, parmetric, permetric, rng):
         ind = adbt.query_radius(dat[i].reshape(1, -1), max(binsper))
         for j in ind:
             dist0 = dist.cdist([dat[i], ], dat[j], parmetric)[0]
+            # print("dist0")
+            # print dist0
             dist1 = dist.cdist([dat[i], ], dat[j], permetric)[0]
+            # print("dist1")
+            # print dist1
+            # print np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper))[0]
             dd += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper))[0]
+            # print ("rng")
+            # print rng
+            # print("binspar")
+            # print binspar
+            # print("binsper")
+            # print binsper
+            # print dd
     dd[dd == 0] = 1.0
     # Nd = len(dat)
     DD = 2.0*dd/(Nd*(Nd-1.0))
@@ -570,7 +587,7 @@ def amulti_autocp(dat, binspar, binsper, parmetric, permetric, rng, weights, Nd,
     args = [(dat, binspar, binsper, parmetric, permetric, rng, weights, range(int(Nd*i/CORES),int(Nd*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
     jobs = [Process(target=aDDwcalcp, args=(a)) for a in args]
     for j in jobs: j.start()
-    for q in queues: DD+=q.get()
+    for q in queues: DD += q.get()
     for j in jobs: j.join()
     DD[DD == 0] = 1.0
     DD = DD/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
@@ -585,7 +602,7 @@ def amulti_autocpr(datR, binspar, binsper, parmetric, permetric, rng, rweights, 
     args = [(datR, binspar, binsper, parmetric, permetric, rng, rweights, range(int(Nr*i/CORES),int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
     jobs = [Process(target=aRRwcalcp, args=(a)) for a in args]
     for j in jobs: j.start()
-    for q in queues: RR+=q.get()
+    for q in queues: RR += q.get()
     for j in jobs: j.join()
     RR[RR == 0] = 1.0
     RR = RR/(Nr*(Nr-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
@@ -600,7 +617,7 @@ def amulti_crosscp(dat, datR, binspar, binsper, parmetric, permetric, rng, weigh
     args = [(dat, datR, binspar, binsper, parmetric, permetric, rng, weights, range(int(Nr*i/CORES),int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
     jobs = [Process(target=aRDwcalcp, args=(a)) for a in args]
     for j in jobs: j.start()
-    for q in queues: DR+=q.get()
+    for q in queues: DR += q.get()
     for j in jobs: j.join()
     DR[DR == 0] = 1.0
     Nd=len(dat)
