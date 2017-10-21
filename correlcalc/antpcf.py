@@ -195,6 +195,15 @@ def atpcf(datfile, binspar, binsper, **kwargs):
                     parmetric = mu
                     binsparv = binspar
                     sflag = True
+                elif value.lower() == 'sparf':
+                    parmetric = sparfsq
+                    binsparv = binspar**2
+                elif value.lower() == 'sparo':
+                    parmetric = sparosq
+                    binsparv = binspar**2
+                elif value.lower() == 'sparc':
+                    parmetric = sparcsq
+                    binsparv = binspar**2
                 else:
                     print("Incorrect parallel metric argument provided!")
             elif key.lower() == 'permetric':
@@ -216,7 +225,15 @@ def atpcf(datfile, binspar, binsper, **kwargs):
                 elif value.lower() == 'mu':
                     permetric = mu
                     binsperv = binsper
-
+                elif value.lower() == 'sperf':
+                    permetric = sperfsq
+                    binsperv = binsper**2
+                elif value.lower() == 'spero':
+                    permetric = sperosq
+                    binsperv = binsper**2
+                elif value.lower() == 'sperc':
+                    permetric = spercsq
+                    binsperv = binsper**2
                 else:
                     print("Incorrect perpendicular metric provided!")
 
