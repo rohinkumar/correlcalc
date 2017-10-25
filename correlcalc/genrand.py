@@ -18,7 +18,8 @@ def generate_rand_from_pdf(pdf, x_grid, N):
     cdf = cdf / cdf[-1]
     values = np.random.rand(N)
     value_bins = np.searchsorted(cdf, values)
-    random_from_cdf, nz = x_grid[value_bins], pdf[value_bins]
+    random_from_cdf, nz = x_grid[value_bins], cdf[value_bins]
+    print (nz)
     return random_from_cdf, nz
 
 

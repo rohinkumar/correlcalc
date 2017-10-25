@@ -307,7 +307,7 @@ def tpcf(datfile, bins, **kwargs):
         elif estimator == 'h':
             print ("Using Hamilton estimator")
             correl = (DD*RR)/DR**2 - 1.0
-    correlerr = poserr(correl, DD*Nd*(Nd-1.0))
+    correlerr = poserr(correl, DD*Nd*(Nd-1.0)/2.0)
     print("Two-point correlation=")
     print (correl, correlerr)
     return correl, correlerr
@@ -318,7 +318,7 @@ def DDcalc(dat, bins):
     DD = autocorr(dat, bins)
     DD[DD == 0] = 1.0
     # Nd = len(dat)
-    DD = DD/(Nd*(Nd-1.0))
+    DD = 2.0*DD/(Nd*(Nd-1.0))
     print (DD)
     return DD
 
@@ -328,7 +328,7 @@ def RRcalc(datR, bins):
     RR = rautocorr(datR, bins)
     RR[RR == 0] = 1.0
     # Nr = len(datR)
-    RR = RR/(Nr*(Nr-1.0))
+    RR = 2.0*RR/(Nr*(Nr-1.0))
     print (RR)
     return RR
 
@@ -383,7 +383,7 @@ def DDwcalc(dat, bins, metric, weights):
     # Nd = len(dat)
     DD = multi_autocp(dat, bins, metric, weights, Nd, pcpus)
     DD[DD == 0] = 1.0
-    DD = DD/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
+    DD = 2.0*DD/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
     print (DD)
     return DD
 
@@ -394,7 +394,7 @@ def RRwcalc(datR, bins, metric, rweights):
     # Nr = len(datR)
     RR = multi_autocpr(datR, bins, metric, rweights, Nr, pcpus)
     RR[RR == 0] = 1.0
-    RR = RR/(Nr*(Nr-1.0))
+    RR = 2.0*RR/(Nr*(Nr-1.0))
     print (RR)
     return RR
 
