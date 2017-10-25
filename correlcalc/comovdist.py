@@ -12,23 +12,29 @@ from multiprocessing import cpu_count
 
 pcpus = cpu_count() - 1
 
+
 def Ezs(zv):
     """Hubble papameter in H0 units"""
     return 1.0/m.sqrt(Om*(1.0+zv)**3+(1.0-Om-Ol)*(1.0+zv)**2+Ol)
 
-Ez=np.vectorize(Ezs)
+
+Ez = np.vectorize(Ezs)
+
 
 def DC_LCDMs(z):
     """Method to calculate comoving distance for LCDM model"""
     return integrate.quad(Ez, 0, z)[0]
 
-DC_LCDM=np.vectorize(DC_LCDMs)
+
+DC_LCDM = np.vectorize(DC_LCDMs)
+
 
 def DC_LC(z):
     """Method for comoving distance in Linear Coasting model"""
     return np.log(1.0+z)
 
-def comov(z,model):
+
+def comov(z, model):
     """Method to calculate comoving distance of given redshifts for input model. Units in c/H0"""
     # More models such as wcdm to be added
     print ("Calculating comoving distances...")
@@ -47,9 +53,15 @@ def comovp(z, model):
     print ("Calculating comoving distances (parallelized)...")
     pool = Pool(processes=pcpus)
     if model == 'lcdm':
-        return pool.map(DC_LCDM, z)
+        res = pool.map(DC_LCDM, z)
+        pool.close()
+        pool.join()
+        return res
     elif model == 'lc':
-        return pool.map(DC_LC, z)
+        res = pool.map(DC_LC, z)
+        pool.close()
+        pool.join()
+        return res
     else:
         print("Only 'lcdm' and 'lc' models supported for now")
         return None

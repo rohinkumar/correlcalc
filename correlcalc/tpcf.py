@@ -239,11 +239,10 @@ def tpcf(datfile, bins, **kwargs):
         # print (rweights)
     # Nr=len(datR)
 
-
     global Nr
     Nr = len(datR)
 
-    #Creating module-wise global balltrees so that they don't have to be created many times.
+    # Creating module-wise global balltrees so that they don't have to be created many times.
 
     global dbt
     global rbt
@@ -317,9 +316,9 @@ def tpcf(datfile, bins, **kwargs):
 def DDcalc(dat, bins):
     print ("Calculating DD...\n DD=")
     DD = autocorr(dat, bins)
-    DD [DD == 0] = 1.0
+    DD[DD == 0] = 1.0
     # Nd = len(dat)
-    DD = 2.0*DD/(Nd*(Nd-1.0))
+    DD = DD/(Nd*(Nd-1.0))
     print (DD)
     return DD
 
@@ -327,9 +326,9 @@ def DDcalc(dat, bins):
 def RRcalc(datR, bins):
     print ("Calculating RR...\n RR=")
     RR = rautocorr(datR, bins)
-    RR [RR == 0] = 1.0
+    RR[RR == 0] = 1.0
     # Nr = len(datR)
-    RR = 2.0*RR/(Nr*(Nr-1.0))
+    RR = RR/(Nr*(Nr-1.0))
     print (RR)
     return RR
 
@@ -350,10 +349,19 @@ def autocorr(dat, bins):
     DD = np.diff(counts_DD)
     return DD
 
+
+# def autocorrp(dat, bins):
+#     pool = Pool(processes=pcpus)
+#     counts_DD = pool.map(dbt.two_point_correlation, (dat, bins))
+#     DD = np.diff(counts_DD)
+#     return DD
+
+
 def rautocorr(datR, bins):
     counts_RR = rbt.two_point_correlation(datR, bins)
     RR = np.diff(counts_RR)
     return RR
+
 
 def crosscorr(dat, bins):
     counts_DR = rbt.two_point_correlation(dat, bins)
@@ -386,7 +394,6 @@ def RRwcalc(datR, bins, metric, rweights):
     # Nr = len(datR)
     RR = multi_autocpr(datR, bins, metric, rweights, Nr, pcpus)
     RR[RR == 0] = 1.0
-
     RR = RR/(Nr*(Nr-1.0))
     print (RR)
     return RR
@@ -491,8 +498,6 @@ def crosscorrwrdp(dat, datR, bins, metric, weights, rNr, multi=False, queue=0):
         for j in ind:
             dist0 = dist.cdist([datR[i], ], dat[j], metric)[0]
             RD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
-                # print (dist0,weights[j])
-            # return RD
     if multi:
         queue.put(RD)
     else:

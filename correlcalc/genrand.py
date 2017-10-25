@@ -37,6 +37,6 @@ def randz(z, randcatsize):
     pdf = kde(z, x_grid, bandwidth=1e-3)
     randzv, nz = generate_rand_from_pdf(pdf, x_grid, randcatsize)
     # randzv = np.array(randzv, np.double)
-    rweights = 1.0/(1.0+4.0*nz)
+    rweights = 1.0/(1.0+40000*nz)
     rweights = rweights/np.mean(rweights)
     return randzv, rweights

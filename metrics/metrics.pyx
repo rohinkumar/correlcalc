@@ -1,9 +1,11 @@
 from libc.math cimport sin, cos, sqrt, acos, sinh, cosh
 
+
 def flatdistsq (double[:] x, double[:] y):
     cdef double s1 = x[0]
     cdef double s2 = y[0]
     return s1**2+s2**2-2.0*s1*s2*mu(x,y)
+
 
 def opendistsq (double[:] x, double[:] y):
     cdef double res = 0.0
@@ -15,6 +17,7 @@ def opendistsq (double[:] x, double[:] y):
     cdef double costheta = mu(x,y)
     res = s1*s1+s2*s2-2.0*s1*s2*c1*c2*costheta-K*s1*s1*s2*s2*sqrt(1.0+costheta*costheta)
     return res*20408.1633
+
 
 def closedistsq (double[:] x, double[:] y):
     cdef double res = 0.0
