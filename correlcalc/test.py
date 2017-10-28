@@ -57,7 +57,7 @@ from antpcf import *
 # tpcf('/Users/rohin/Downloads/DR3-ns.ascii',bins,randfile='/Users/rohin/Downloads/random-DR3-ns.ascii',weights=True)
 # def pmethod():
 bins = np.arange(0.002, 0.06, 0.002)
-# correl = tpcf('./testw.dat',bins,randfile='./testw.dat',weights=True)
+correl = tpcf('./testw.dat',bins,randfile='./testw.dat',weights=True)
 #    return correl
 # pool = multiprocessing.Pool(processes=ncount)
 # correl = pool.map(pmethod)
