@@ -137,6 +137,7 @@ def tpcf(datfile, bins, **kwargs):
     global dat
     global datR
     weightsflag = False
+    useones = False
     cosmology = 'lcdm'
     geometry = 'flat'
     metric = flatdistsq
@@ -188,9 +189,10 @@ def tpcf(datfile, bins, **kwargs):
                     # weights=1.0/(1.0+4.0*np.array(fdat['nz']))
                     # weights=weights/np.mean(weights)
                     # print (weights)
-                elif value.lower() == 'eq':
-                    weightsflag = True
-                    useones = True
+                elif isinstance(value, str):
+                    if value.lower() == 'eq':
+                        weightsflag = True
+                        useones = True
                 else:
                     weightsflag = False
             else:
@@ -439,8 +441,12 @@ def autocorrw(dat, bins, metric, weights):
         ind = dbt.query_radius(dat[i].reshape(1, -1), max(bins))
         # wts=np.array([])
         for j in ind:
-            dist0 = dist.cdist([dat[i], ], dat[j], metric)[0]
-            DD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
+            print ("i j")
+            print (i, j)
+            print ("ind[ind>i]")
+            print (ind[ind>i])
+            dist0 = dist.cdist([dat[i], ], dat[j[j>i]], metric)[0]
+            DD += np.histogram(dist0, bins=bins, weights=weights[j[j>i]])[0]
             # print (dist0,weights[j])
     print (DD)
     return DD
@@ -453,8 +459,8 @@ def crosscorrw(dat, datR, bins, metric, rweights):
         ind = rbt.query_radius(dat[i].reshape(1, -1), max(bins))
         # wts=np.array([])
         for j in ind:
-            dist0 = dist.cdist([dat[i], ], datR[j], metric)[0]
-            DR += np.histogram(dist0, bins=bins, weights=rweights[j])[0]
+            dist0 = dist.cdist([dat[i], ], datR[j[j>i]], metric)[0]
+            DR += np.histogram(dist0, bins=bins, weights=rweights[j[j>i]])[0]
             # print (dist0,weights[j])
     return DR
 
@@ -469,8 +475,8 @@ def crosscorrwrd(dat, datR, bins, metric, weights):
         ind = dbt.query_radius(datR[i].reshape(1, -1), max(bins))
         #  wts=np.array([])
         for j in ind:
-            dist0 = dist.cdist([datR[i], ], dat[j], metric)[0]
-            RD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
+            dist0 = dist.cdist([datR[i], ], dat[j[j>i]], metric)[0]
+            RD += np.histogram(dist0, bins=bins, weights=weights[j[j>i]])[0]
                 # print (dist0,weights[j])
             # return RD
     print(RD)
@@ -484,8 +490,13 @@ def autocorrwp(dat, bins, metric, weights, rNd, multi=False, queue=0):
         ind = dbt.query_radius(dat[i].reshape(1, -1), max(bins))
         # wts=np.array([])
         for j in ind:
-            dist0 = dist.cdist([dat[i], ], dat[j], metric)[0]
-            DD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
+            # print ("i j")
+            # print (i, j)
+            # print ("ind[ind>i]")
+            # print (ind)
+            # print (ind[ind>i])
+            dist0 = dist.cdist([dat[i], ], dat[j[j>i]], metric)[0]
+            DD += np.histogram(dist0, bins=bins, weights=weights[j[j>i]])[0]
             # print (dist0,weights[j])
     if multi:
         queue.put(DD)
@@ -505,8 +516,8 @@ def crosscorrwrdp(dat, datR, bins, metric, weights, rNr, multi=False, queue=0):
         ind = dbt.query_radius(datR[i].reshape(1, -1), max(bins))
         #  wts=np.array([])
         for j in ind:
-            dist0 = dist.cdist([datR[i], ], dat[j], metric)[0]
-            RD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
+            dist0 = dist.cdist([datR[i], ], dat[j[j>i]], metric)[0]
+            RD += np.histogram(dist0, bins=bins, weights=weights[j[j>i]])[0]
     if multi:
         queue.put(RD)
     else:
@@ -522,8 +533,8 @@ def autocorrwpr(datR, bins, metric, rweights, rNr, multi=False, queue=0):
         ind = rbt.query_radius(datR[i].reshape(1, -1), max(bins))
         # wts=np.array([])
         for j in ind:
-            dist0 = dist.cdist([datR[i], ], datR[j], metric)[0]
-            RR += np.histogram(dist0, bins=bins, weights=rweights[j])[0]
+            dist0 = dist.cdist([datR[i], ], datR[j[j>i]], metric)[0]
+            RR += np.histogram(dist0, bins=bins, weights=rweights[j[j>i]])[0]
             # print (dist0,weights[j])
     if multi:
         queue.put(RR)

@@ -419,7 +419,7 @@ def aDDcalc(dat, binspar, binsper, parmetric, permetric, rng):
             # print dd
     dd[dd == 0] = 1.0
     # Nd = len(dat)
-    DD = 2.0*dd/(Nd*(Nd-1.0))
+    DD = dd/(Nd*(Nd-1.0))
     print (DD)
     return DD
 
@@ -436,7 +436,7 @@ def aRRcalc(datR, binspar, binsper, parmetric, permetric, rng):
             rr += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper))[0]
     rr[rr == 0] = 1.0
     # Nr = len(datR)
-    RR = 2.0*rr/(Nr*(Nr-1.0))
+    RR = rr/(Nr*(Nr-1.0))
     print (RR)
     return RR
 
