@@ -247,6 +247,8 @@ def tpcf(datfile, bins, **kwargs):
     global Nr
     Nr = len(datR)
 
+    fact = Nr/Nd
+
     # Creating module-wise global balltrees so that they don't have to be created many times.
 
     global dbt
@@ -274,26 +276,29 @@ def tpcf(datfile, bins, **kwargs):
                 weights = np.ones(Nd)
                 rweights = np.ones(Nr)
             # if len(rweights)!=len(datR):
-        DD = DDwcalc(dat, binsq, metric, weights)
-        DR = RDwcalc(dat, datR, binsq, metric, weights)
+            DD = DDwcalc(dat, binsq, metric, weights)
+            DR = RDwcalc(dat, datR, binsq, metric, weights)
             # else:
             #     DD=DDwcalc(dat,binsq,metric,weights)
             #     DR=DRwcalc(dat,datR,binsq,metric,rweights)
         print ("Using Davis-Peebles estimator")
-        correl = (DD/DR)-1.0
+        correl = fact*(DD/DR)-1.0
 
     elif estimator == 'ph':
         if weightsflag is False or len(weights) != Nd:
             DD = DDcalc(dat, binsq)
             RR = RRcalc(datR, binsq)
         else:
+            if useones is True:
+                weights = np.ones(Nd)
+                rweights = np.ones(Nr)
             DD = DDwcalc(dat, binsq, metric, weights)
             if len(rweights) != Nr:
                 RR = RRcalc(datR, binsq)
             else:
                 RR = RRwcalc(datR, binsq, metric, rweights)
         print ("Using Peebles-Hauser estimator")
-        correl = (DD/RR)-1.0
+        correl = fact**2*(DD/RR)-1.0
     else:
         if weightsflag is False or len(weights) != Nd:
             DD = DDcalc(dat, binsq)
@@ -311,14 +316,15 @@ def tpcf(datfile, bins, **kwargs):
                 RR = RRwcalc(datR, binsq, metric, rweights)
         if estimator == 'ls':
             print ("Using Landy-Szalay estimator")
-            correl = (DD-2.0*DR+RR)/RR
+            # correl = (DD-2.0*DR+RR)/RR
+            correl = fact**2*(DD/RR)-2.0*fact*(DR/RR)+1.0
         elif estimator == 'hew':
             print ("Using Hewett estimator")
-            correl = (DD-DR)/RR
+            correl = fact**2*(DD/RR)-fact*(DR/RR)
         elif estimator == 'h':
             print ("Using Hamilton estimator")
             correl = (DD*RR)/DR**2 - 1.0
-    correlerr = poserr(correl, DD*Nd*(Nd-1.0))
+    correlerr = poserr(correl, DD)
     print("Two-point correlation=")
     print (correl, correlerr)
     return correl, correlerr
@@ -329,7 +335,7 @@ def DDcalc(dat, bins):
     DD = autocorr(dat, bins)
     DD[DD == 0] = 1.0
     # Nd = len(dat)
-    DD = DD/(Nd*(Nd-1.0))
+    # DD = DD/(Nd*(Nd-1.0))
     print (DD)
     return DD
 
@@ -339,7 +345,7 @@ def RRcalc(datR, bins):
     RR = rautocorr(datR, bins)
     RR[RR == 0] = 1.0
     # Nr = len(datR)
-    RR = RR/(Nr*(Nr-1.0))
+    # RR = RR/(Nr*(Nr-1.0))
     print (RR)
     return RR
 
@@ -350,9 +356,9 @@ def DRcalc(dat, bins):
     DR[DR == 0] = 1.0
     # Nd = len(dat)
     # Nr = len(datR)
-    DR = DR/(Nd*Nr)
-    print (DR)
-    return DR
+    # DR = DR/(Nd*Nr)
+    print (DR/2.0)
+    return DR/2.0
 
 
 def autocorr(dat, bins):
@@ -377,7 +383,7 @@ def rautocorr(datR, bins):
 def crosscorr(dat, bins):
     counts_DR = rbt.two_point_correlation(dat, bins)
     DR = np.diff(counts_DR)
-    return DR
+    return 2.0*DR
 
 
 def poserr(xi, DD):
@@ -394,7 +400,7 @@ def DDwcalc(dat, bins, metric, weights):
     # Nd = len(dat)
     DD = multi_autocp(dat, bins, metric, weights, Nd, pcpus)
     DD[DD == 0] = 1.0
-    DD = DD/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
+    # DD = DD/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
     print (DD)
     return DD
 
@@ -405,7 +411,7 @@ def RRwcalc(datR, bins, metric, rweights):
     # Nr = len(datR)
     RR = multi_autocpr(datR, bins, metric, rweights, Nr, pcpus)
     RR[RR == 0] = 1.0
-    RR = RR/(Nr*(Nr-1.0))
+    # RR = RR/(Nr*(Nr-1.0))
     print (RR)
     return RR
 
@@ -417,9 +423,9 @@ def DRwcalc(dat, datR, bins, metric, rweights):
     # Nr = len(datR)
     DR = multi_crosscp(dat, datR, bins, metric, rweights, Nd, pcpus)
     DR[DR == 0] = 1.0
-    DR = DR/(Nd*Nr)
-    print (DR)
-    return DR
+    # DR = DR/(Nd*Nr)
+    print (DR/2.0)
+    return DR/2.0
 
 
 def RDwcalc(dat, datR, bins, metric, weights):
@@ -429,9 +435,9 @@ def RDwcalc(dat, datR, bins, metric, weights):
     # Nr = len(datR)
     DR = multi_crosscp(dat, datR, bins, metric, weights, Nr, pcpus)
     DR[DR == 0] = 1.0
-    DR = DR/(Nd*Nr)
-    print (DR)
-    return DR
+    # DR = DR/(Nd*Nr)
+    print (DR/2.0)
+    return DR/2.0
 
 
 def autocorrw(dat, bins, metric, weights):
@@ -459,8 +465,8 @@ def crosscorrw(dat, datR, bins, metric, rweights):
         ind = rbt.query_radius(dat[i].reshape(1, -1), max(bins))
         # wts=np.array([])
         for j in ind:
-            dist0 = dist.cdist([dat[i], ], datR[j[j>i]], metric)[0]
-            DR += np.histogram(dist0, bins=bins, weights=rweights[j[j>i]])[0]
+            dist0 = dist.cdist([dat[i], ], datR[j], metric)[0]
+            DR += np.histogram(dist0, bins=bins, weights=rweights[j])[0]
             # print (dist0,weights[j])
     return DR
 
@@ -475,8 +481,8 @@ def crosscorrwrd(dat, datR, bins, metric, weights):
         ind = dbt.query_radius(datR[i].reshape(1, -1), max(bins))
         #  wts=np.array([])
         for j in ind:
-            dist0 = dist.cdist([datR[i], ], dat[j[j>i]], metric)[0]
-            RD += np.histogram(dist0, bins=bins, weights=weights[j[j>i]])[0]
+            dist0 = dist.cdist([datR[i], ], dat[j], metric)[0]
+            RD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
                 # print (dist0,weights[j])
             # return RD
     print(RD)
@@ -516,8 +522,8 @@ def crosscorrwrdp(dat, datR, bins, metric, weights, rNr, multi=False, queue=0):
         ind = dbt.query_radius(datR[i].reshape(1, -1), max(bins))
         #  wts=np.array([])
         for j in ind:
-            dist0 = dist.cdist([datR[i], ], dat[j[j>i]], metric)[0]
-            RD += np.histogram(dist0, bins=bins, weights=weights[j[j>i]])[0]
+            dist0 = dist.cdist([datR[i], ], dat[j], metric)[0]
+            RD += np.histogram(dist0, bins=bins, weights=weights[j])[0]
     if multi:
         queue.put(RD)
     else:
