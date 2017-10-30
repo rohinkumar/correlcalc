@@ -29,7 +29,7 @@ else:
     ext_modules += [Extension("correlcalc.metrics", ["metrics/metrics.c"]), ]
 setup(
     name='correlcalc',
-    version='0.9961',
+    version='0.998',
     description='Two-point correlation function (2pCF) calculation',
     long_description=readme(),
     url='http://github.com/rohinkumar/correlcalc',
@@ -41,10 +41,10 @@ setup(
     # package_dir={
     #     'correlcalc' : base_dir + '/correlcalc',
     # },
-    install_requires=['numpy', 'scipy', 'astropy', 'cython', 'tqdm', 'pymangle', 'sklearn'],
+    install_requires=['numpy', 'scipy', 'astropy', 'cython', 'tqdm', 'pymangle', 'sklearn', 'matplotlib'],
     # matplotlib
     # dependency_links=['https://github.com/esheldon/healpix_util/master/tarball#egg=package-0.1'],
-    cmdclass = cmdclass,
+    cmdclass=cmdclass,
     ext_modules=ext_modules,
     include_package_data=True,
     zip_safe=False)

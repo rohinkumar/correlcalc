@@ -418,10 +418,10 @@ def aDDcalc(dat, binspar, binsper, parmetric, permetric, rng):
     for i in tqdm(range(len(dat))):
         ind = adbt.query_radius(dat[i].reshape(1, -1), max(binsper))
         for j in ind:
-            dist0 = dist.cdist([dat[i], ], dat[j[j>i]], parmetric)[0]
+            dist0 = dist.cdist([dat[i], ], dat[j[j>=i]], parmetric)[0]
             # print("dist0")
             # print dist0
-            dist1 = dist.cdist([dat[i], ], dat[j[j>i]], permetric)[0]
+            dist1 = dist.cdist([dat[i], ], dat[j[j>=i]], permetric)[0]
             # print("dist1")
             # print dist1
             # print np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper))[0]
@@ -447,8 +447,8 @@ def aRRcalc(datR, binspar, binsper, parmetric, permetric, rng):
     for i in tqdm(range(len(datR))):
         ind = arbt.query_radius(datR[i].reshape(1, -1), max(binsper))
         for j in ind:
-            dist0 = dist.cdist([datR[i], ], datR[j[j>i]], parmetric)[0]
-            dist1 = dist.cdist([datR[i], ], datR[j[j>i]], permetric)[0]
+            dist0 = dist.cdist([datR[i], ], datR[j[j>=i]], parmetric)[0]
+            dist1 = dist.cdist([datR[i], ], datR[j[j>=i]], permetric)[0]
             rr += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper))[0]
     rr[rr == 0] = 1.0
     # Nr = len(datR)
@@ -464,8 +464,8 @@ def aDRcalc(dat, datR, binspar, binsper, parmetric, permetric, rng):
     for i in tqdm(range(len(dat))):
         ind = arbt.query_radius(dat[i].reshape(1, -1), max(binsper))
         for j in ind:
-            dist0 = dist.cdist([dat[i], ], datR[j[j>i]], parmetric)[0]
-            dist1 = dist.cdist([dat[i], ], datR[j[j>i]], permetric)[0]
+            dist0 = dist.cdist([dat[i], ], datR[j[j>=i]], parmetric)[0]
+            dist1 = dist.cdist([dat[i], ], datR[j[j>=i]], permetric)[0]
             dr += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper))[0]
     dr[dr == 0] = 1.0
     # Nd = len(dat)
@@ -482,9 +482,9 @@ def aDDwcalc(dat, binspar, binsper, parmetric, permetric, rng, weights):
     for i in tqdm(range(len(dat))):
         ind = adbt.query_radius(dat[i].reshape(1, -1), max(binsper))
         for j in ind:
-            dist0 = dist.cdist([dat[i], ], dat[j[j>i]], parmetric)[0]
-            dist1 = dist.cdist([dat[i], ], dat[j[j>i]], permetric)[0]
-            dd += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins), weights=weights[j[j>i]])[0]
+            dist0 = dist.cdist([dat[i], ], dat[j[j>=i]], parmetric)[0]
+            dist1 = dist.cdist([dat[i], ], dat[j[j>=i]], permetric)[0]
+            dd += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper), weights=weights[j[j>=i]])[0]
     dd[dd == 0] = 1.0
     # Nd = len(dat)
     # DD = dd/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
@@ -498,9 +498,9 @@ def aRRwcalc(datR, binspar, binsper, parmetric, permetric, rng, rweights):
     for i in tqdm(range(len(datR))):
         ind = arbt.query_radius(datR[i].reshape(1, -1), max(binsper))
         for j in ind:
-            dist0 = dist.cdist([datR[i], ], datR[j[j>i]], parmetric)[0]
-            dist1 = dist.cdist([datR[i], ], datR[j[j>i]], permetric)[0]
-            rr += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper), weights=rweights[j[j>i]])[0]
+            dist0 = dist.cdist([datR[i], ], datR[j[j>=i]], parmetric)[0]
+            dist1 = dist.cdist([datR[i], ], datR[j[j>=i]], permetric)[0]
+            rr += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper), weights=rweights[j[j>=i]])[0]
     rr[rr == 0] = 1.0
     # Nr = len(datR)
     # RR = rr/(Nr*(Nr-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
@@ -547,9 +547,9 @@ def aDDwcalcp(dat, binspar, binsper, parmetric, permetric, rng, weights, rNd, mu
     for i in tqdm(rNd):
         ind = adbt.query_radius(dat[i].reshape(1, -1), max(binsper))
         for j in ind:
-            dist0 = dist.cdist([dat[i], ], dat[j[j>i]], parmetric)[0]
-            dist1 = dist.cdist([dat[i], ], dat[j[j>i]], permetric)[0]
-            dd += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper), weights=weights[j[j>i]])[0]
+            dist0 = dist.cdist([dat[i], ], dat[j[j>=i]], parmetric)[0]
+            dist1 = dist.cdist([dat[i], ], dat[j[j>=i]], permetric)[0]
+            dd += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper), weights=weights[j[j>=i]])[0]
     if multi:
         queue.put(dd)
     else:
@@ -564,9 +564,9 @@ def aRRwcalcp(datR, binspar, binsper, parmetric, permetric, rng, rweights, rNr, 
     for i in tqdm(rNr):
         ind = arbt.query_radius(datR[i].reshape(1, -1), max(binsper))
         for j in ind:
-            dist0 = dist.cdist([datR[i], ], datR[j[j>i]], parmetric)[0]
-            dist1 = dist.cdist([datR[i], ], datR[j[j>i]], permetric)[0]
-            rr += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper), weights=rweights[j[j>i]])[0]
+            dist0 = dist.cdist([datR[i], ], datR[j[j>=i]], parmetric)[0]
+            dist1 = dist.cdist([datR[i], ], datR[j[j>=i]], permetric)[0]
+            rr += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper), weights=rweights[j[j>=i]])[0]
     if multi:
         queue.put(rr)
     else:
