@@ -275,18 +275,20 @@ def tpcf(datfile, bins, **kwargs):
             # print(len(datR))
             DD = DDcalc(dat, binsq)
             DR = DRcalc(dat, binsq)
+            RD = RDcalc(datR, binsq)
         else:
             if useones is True or len(weights) != Nd:
                 weights = np.ones(Nd)
                 rweights = np.ones(Nr)
             # if len(rweights)!=len(datR):
             DD = DDwcalc(dat, binsq, metric, weights)
-            DR = RDwcalc(dat, datR, binsq, metric, weights)
+            DR = DRwcalc(dat, datR, binsq, metric, rweights)
+            RD = RDwcalc(dat, datR, binsq, metric, weights)
             # else:
             #     DD=DDwcalc(dat,binsq,metric,weights)
             #     DR=DRwcalc(dat,datR,binsq,metric,rweights)
         print ("Using Davis-Peebles estimator")
-        correl = fact*(DD/DR)-1.0
+        correl = fact*(DD*2.0/(DR+RD))-1.0
 
     elif estimator == 'ph':
         if weightsflag is False: # or len(weights) != Nd:
@@ -308,12 +310,14 @@ def tpcf(datfile, bins, **kwargs):
             DD = DDcalc(dat, binsq)
             RR = RRcalc(datR, binsq)
             DR = DRcalc(dat, binsq)
+            RD = RDcalc(datR, binsq)
         else:
             if useones is True or len(weights) != Nd:
                 weights = np.ones(Nd)
                 rweights = np.ones(Nr)
             DD = DDwcalc(dat, binsq, metric, weights)
-            DR = RDwcalc(dat, datR, binsq, metric, weights)
+            DR = DRwcalc(dat, datR, binsq, metric, rweights)
+            RD = RDwcalc(dat, datR, binsq, metric, weights)
             # if len(rweights) != Nr:
             #     RR = RRcalc(datR, binsq)
             # else:
@@ -321,13 +325,13 @@ def tpcf(datfile, bins, **kwargs):
         if estimator == 'ls':
             print ("Using Landy-Szalay estimator")
             # correl = (DD-2.0*DR+RR)/RR
-            correl = fact**2*(DD/RR)-2.0*fact*(DR/RR)+1.0
+            correl = fact**2*(DD/RR)-fact*(DR+RD)/RR+1.0
         elif estimator == 'hew':
             print ("Using Hewett estimator")
-            correl = fact**2*(DD/RR)-fact*(DR/RR)
+            correl = fact**2*(DD/RR)-fact*0.5*(DR+RD)/RR
         elif estimator == 'h':
             print ("Using Hamilton estimator")
-            correl = (DD*RR)/DR**2 - 1.0
+            correl = (4.0*DD*RR)/(DR+RD)**2 - 1.0
     correlerr = poserr(correl, DD)
     print("Two-point correlation=")
     print (correl, correlerr)
@@ -364,6 +368,16 @@ def DRcalc(dat, bins):
     print (DR/2.0)
     return DR/2.0
 
+def RDcalc(datR, bins):
+    print ("Calculating RD...\n DR=")
+    RD = crosscorrd(datR, bins)
+    RD[RD == 0] = 1.0
+    # Nd = len(dat)
+    # Nr = len(datR)
+    # DR = DR/(Nd*Nr)
+    print (RD/2.0)
+    return RD/2.0
+
 
 def autocorr(dat, bins):
     counts_DD = dbt.two_point_correlation(dat, bins)
@@ -388,6 +402,12 @@ def crosscorr(dat, bins):
     counts_DR = rbt.two_point_correlation(dat, bins)
     DR = np.diff(counts_DR)
     return 2.0*DR
+
+
+def crosscorrd(datR, bins):
+    counts_RD = dbt.two_point_correlation(datR, bins)
+    RD = np.diff(counts_RD)
+    return 2.0*RD
 
 
 def poserr(xi, DD):
@@ -425,7 +445,8 @@ def DRwcalc(dat, datR, bins, metric, rweights):
     # DR = crosscorrw(dat, datR, bins, metric, rweights)
     # Nd = len(dat)
     # Nr = len(datR)
-    DR = multi_crosscp(dat, datR, bins, metric, rweights, Nd, pcpus)
+    # DR = multi_crosscp(dat, datR, bins, metric, rweights, Nd, pcpus)
+    DR = multi_crosscpdr(dat, datR, bins, metric, rweights, Nd, pcpus)
     DR[DR == 0] = 1.0
     # DR = DR/(Nd*Nr)
     print (DR/2.0)
@@ -447,8 +468,9 @@ def RDwcalc(dat, datR, bins, metric, weights):
 def autocorrw(dat, bins, metric, weights):
     # dbt = BallTree(dat, metric='pyfunc', func=metric)
     DD = np.zeros(len(bins)-1)
+    binmax = max(bins)
     for i in tqdm(range(len(dat))):
-        ind = dbt.query_radius(dat[i].reshape(1, -1), max(bins))
+        ind = dbt.query_radius(dat[i].reshape(1, -1), binmax)
         # wts=np.array([])
         for j in ind:
             print ("i j")
@@ -465,8 +487,9 @@ def autocorrw(dat, bins, metric, weights):
 def crosscorrw(dat, datR, bins, metric, rweights):
     # rbt = BallTree(datR, metric='pyfunc', func=metric)
     DR = np.zeros(len(bins)-1)
+    binmax = max(bins)
     for i in tqdm(range(len(dat))):
-        ind = rbt.query_radius(dat[i].reshape(1, -1), max(bins))
+        ind = rbt.query_radius(dat[i].reshape(1, -1), binmax)
         # wts=np.array([])
         for j in ind:
             dist0 = dist.cdist([dat[i], ], datR[j], metric)[0]
@@ -482,7 +505,7 @@ def crosscorrwrd(dat, datR, bins, metric, weights):
     # RD=p.map(rdcalc, range(len(datR)))
     for i in tqdm(range(len(datR))):
     # def rdcalc():
-        ind = dbt.query_radius(datR[i].reshape(1, -1), max(bins))
+        ind = dbt.query_radius(datR[i].reshape(1, -1), binmax)
         #  wts=np.array([])
         for j in ind:
             dist0 = dist.cdist([datR[i], ], dat[j], metric)[0]
@@ -496,8 +519,9 @@ def crosscorrwrd(dat, datR, bins, metric, weights):
 def autocorrwp(dat, bins, metric, weights, rNd, multi=False, queue=0):
     # dbt = BallTree(dat, metric='pyfunc', func=metric)
     DD = np.zeros(len(bins)-1)
+    binmax = max(bins)
     for i in tqdm(rNd):
-        ind = dbt.query_radius(dat[i].reshape(1, -1), max(bins))
+        ind = dbt.query_radius(dat[i].reshape(1, -1), binmax)
         # wts=np.array([])
         for j in ind:
             # print ("i j")
@@ -519,11 +543,12 @@ def autocorrwp(dat, bins, metric, weights, rNd, multi=False, queue=0):
 def crosscorrwrdp(dat, datR, bins, metric, weights, rNr, multi=False, queue=0):
     # dbt = BallTree(dat, metric='pyfunc', func=metric)
     RD = np.zeros(len(bins)-1)
+    binmax = max(bins)
     # p=multiprocessing.Pool(processes=multiprocessing.cpu_count())
     # RD=p.map(rdcalc, range(len(datR)))
     for i in tqdm(rNr):
     # def rdcalc():
-        ind = dbt.query_radius(datR[i].reshape(1, -1), max(bins))
+        ind = dbt.query_radius(datR[i].reshape(1, -1), binmax)
         #  wts=np.array([])
         for j in ind:
             dist0 = dist.cdist([datR[i], ], dat[j], metric)[0]
@@ -536,11 +561,32 @@ def crosscorrwrdp(dat, datR, bins, metric, weights, rNr, multi=False, queue=0):
     return RD
 
 
+def crosscorrwdrp(dat, datR, bins, metric, rweights, rNd, multi=False, queue=0):
+    # dbt = BallTree(dat, metric='pyfunc', func=metric)
+    DR = np.zeros(len(bins)-1)
+    binmax = max(bins)
+    # p=multiprocessing.Pool(processes=multiprocessing.cpu_count())
+    # RD=p.map(rdcalc, range(len(datR)))
+    for i in tqdm(rNd):
+    # def rdcalc():
+        ind = rbt.query_radius(dat[i].reshape(1, -1), binmax)
+        #  wts=np.array([])
+        for j in ind:
+            dist0 = dist.cdist([dat[i], ], datR[j], metric)[0]
+            DR += np.histogram(dist0, bins=bins, weights=rweights[j])[0]
+    if multi:
+        queue.put(DR)
+    else:
+        return DR
+    # print(RD)
+    return DR
+
 def autocorrwpr(datR, bins, metric, rweights, rNr, multi=False, queue=0):
     # dbt = BallTree(dat, metric='pyfunc', func=metric)
     RR = np.zeros(len(bins)-1)
+    binmax = max(bins)
     for i in tqdm(rNr):
-        ind = rbt.query_radius(datR[i].reshape(1, -1), max(bins))
+        ind = rbt.query_radius(datR[i].reshape(1, -1), binmax)
         # print (ind)
         # wts=np.array([])
         for j in ind:
@@ -593,6 +639,19 @@ def multi_crosscp(dat, datR, bins, metric, weights, Nr, CORES=pcpus):
     queues = [RetryQueue() for i in range(CORES)]
     args = [(dat, datR, bins, metric, weights, range(int(Nr*i/CORES), int(Nr*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
     jobs = [Process(target=crosscorrwrdp, args=(a)) for a in args]
+    for j in jobs: j.start()
+    for q in queues: DR += q.get()
+    for j in jobs: j.join()
+
+    return DR
+
+
+def multi_crosscpdr(dat, datR, bins, metric, rweights, Nd, CORES=pcpus):
+
+    DR = np.zeros(len(bins)-1)
+    queues = [RetryQueue() for i in range(CORES)]
+    args = [(dat, datR, bins, metric, rweights, range(int(Nd*i/CORES), int(Nd*(i+1)/CORES)), True, queues[i]) for i in range(CORES)]
+    jobs = [Process(target=crosscorrwdrp, args=(a)) for a in args]
     for j in jobs: j.start()
     for q in queues: DR += q.get()
     for j in jobs: j.join()
