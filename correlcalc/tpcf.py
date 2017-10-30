@@ -543,12 +543,12 @@ def autocorrwpr(datR, bins, metric, rweights, rNr, multi=False, queue=0):
         # print (ind)
         # wts=np.array([])
         for j in ind:
-            print("i")
-            print (i)
-            print ("j")
-            print (j)
-            print ("j[j>i]")
-            print (j[j>i])
+            # print("i")
+            # print (i)
+            # print ("j")
+            # print (j)
+            # print ("j[j>i]")
+            # print (j[j>i])
             dist0 = dist.cdist([datR[i], ], datR[j[j>i]], metric)[0]
             RR += np.histogram(dist0, bins=bins, weights=rweights[j[j>i]])[0]
             # print (dist0,weights[j])
