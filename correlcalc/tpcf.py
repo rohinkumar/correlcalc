@@ -318,9 +318,6 @@ def tpcf(datfile, bins, **kwargs):
             DD = DDwcalc(dat, binsq, metric, weights)
             DR = DRwcalc(dat, datR, binsq, metric, rweights)
             RD = RDwcalc(dat, datR, binsq, metric, weights)
-            # if len(rweights) != Nr:
-            #     RR = RRcalc(datR, binsq)
-            # else:
             RR = RRwcalc(datR, binsq, metric, rweights)
         if estimator == 'ls':
             print ("Using Landy-Szalay estimator")
