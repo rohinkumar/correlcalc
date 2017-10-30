@@ -149,10 +149,11 @@ def tpcf(datfile, bins, **kwargs):
 
     # Options for correl calculation estimators and cosmology models
     elist = ['dp', 'ls', 'ph', 'hew', 'h']
-    clist = ['lcdm', 'lc']
+    clist = ['lcdm', 'lc'] # add wcdm
 
     if kwargs is not None:
-        for key, value in kwargs.iteritems():
+        for key, value in kwargs.items():
+            # print (key, value)
             # print (key, value)
             if key.lower() == 'randfile':
                 randfile = value
@@ -217,6 +218,8 @@ def tpcf(datfile, bins, **kwargs):
     print(estimator)
     print ("Weights=")
     print (weightsflag)
+    print ("Using ones as weights?=")
+    print (useones)
     print("-----------------------------------------")
     # Prepare dat from data file
     dat, weights = datprep(datfile, 'data', cosmology)
@@ -265,14 +268,14 @@ def tpcf(datfile, bins, **kwargs):
     # print (weights)
     # Reference: arXiv: 1211.6211
     if estimator == 'dp':
-        if weightsflag is False or len(weights) != Nd:
+        if weightsflag is False: # or len(weights) != Nd:
             # print (weightsflag)
             # print(len(weights))
             # print(len(datR))
             DD = DDcalc(dat, binsq)
             DR = DRcalc(dat, binsq)
         else:
-            if useones is True:
+            if useones is True or len(weights) != Nd:
                 weights = np.ones(Nd)
                 rweights = np.ones(Nr)
             # if len(rweights)!=len(datR):
@@ -285,11 +288,11 @@ def tpcf(datfile, bins, **kwargs):
         correl = fact*(DD/DR)-1.0
 
     elif estimator == 'ph':
-        if weightsflag is False or len(weights) != Nd:
+        if weightsflag is False: # or len(weights) != Nd:
             DD = DDcalc(dat, binsq)
             RR = RRcalc(datR, binsq)
         else:
-            if useones is True:
+            if useones is True or len(weights) != Nd:
                 weights = np.ones(Nd)
                 rweights = np.ones(Nr)
             DD = DDwcalc(dat, binsq, metric, weights)
@@ -300,20 +303,20 @@ def tpcf(datfile, bins, **kwargs):
         print ("Using Peebles-Hauser estimator")
         correl = fact**2*(DD/RR)-1.0
     else:
-        if weightsflag is False or len(weights) != Nd:
+        if weightsflag is False: # or len(weights) != Nd:
             DD = DDcalc(dat, binsq)
             RR = RRcalc(datR, binsq)
             DR = DRcalc(dat, binsq)
         else:
-            if useones is True:
+            if useones is True or len(weights) != Nd:
                 weights = np.ones(Nd)
                 rweights = np.ones(Nr)
             DD = DDwcalc(dat, binsq, metric, weights)
             DR = RDwcalc(dat, datR, binsq, metric, weights)
-            if len(rweights) != Nr:
-                RR = RRcalc(datR, binsq)
-            else:
-                RR = RRwcalc(datR, binsq, metric, rweights)
+            # if len(rweights) != Nr:
+            #     RR = RRcalc(datR, binsq)
+            # else:
+            RR = RRwcalc(datR, binsq, metric, rweights)
         if estimator == 'ls':
             print ("Using Landy-Szalay estimator")
             # correl = (DD-2.0*DR+RR)/RR
@@ -454,7 +457,7 @@ def autocorrw(dat, bins, metric, weights):
             dist0 = dist.cdist([dat[i], ], dat[j[j>i]], metric)[0]
             DD += np.histogram(dist0, bins=bins, weights=weights[j[j>i]])[0]
             # print (dist0,weights[j])
-    print (DD)
+    print(DD)
     return DD
 
 
@@ -508,7 +511,7 @@ def autocorrwp(dat, bins, metric, weights, rNd, multi=False, queue=0):
         queue.put(DD)
     else:
         return DD
-    print (DD)
+    # print (DD)
     return DD
 
 
@@ -528,7 +531,7 @@ def crosscorrwrdp(dat, datR, bins, metric, weights, rNr, multi=False, queue=0):
         queue.put(RD)
     else:
         return RD
-    print(RD)
+    # print(RD)
     return RD
 
 
@@ -537,8 +540,15 @@ def autocorrwpr(datR, bins, metric, rweights, rNr, multi=False, queue=0):
     RR = np.zeros(len(bins)-1)
     for i in tqdm(rNr):
         ind = rbt.query_radius(datR[i].reshape(1, -1), max(bins))
+        # print (ind)
         # wts=np.array([])
         for j in ind:
+            print("i")
+            print (i)
+            print ("j")
+            print (j)
+            print ("j[j>i]")
+            print (j[j>i])
             dist0 = dist.cdist([datR[i], ], datR[j[j>i]], metric)[0]
             RR += np.histogram(dist0, bins=bins, weights=rweights[j[j>i]])[0]
             # print (dist0,weights[j])
@@ -546,7 +556,7 @@ def autocorrwpr(datR, bins, metric, rweights, rNr, multi=False, queue=0):
         queue.put(RR)
     else:
         return RR
-    print (RR)
+    # print (RR)
     return RR
 
 

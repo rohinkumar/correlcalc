@@ -138,6 +138,7 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     global Nd
     global Nr
     weightsflag = False
+    useones = False
     cosmology = 'lcdm'
     sflag = True
     # geometry='flat'
@@ -156,7 +157,7 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     clist = ['lcdm', 'lc'] # to add wcdm
 
     if kwargs is not None:
-        for key, value in kwargs.iteritems():
+        for key, value in kwargs.items():
             # print (key, value)
             if key.lower() == 'randfile':
                 randfile = value
@@ -182,19 +183,19 @@ def atpcf(datfile, binspar, binsper, **kwargs):
                 elif value.lower() == 'sflat':
                     parmetric = flatdistsq
                     binsparv = binspar**2
-                    sflag = True
+                    # sflag = True
                 elif value.lower() == 'sopen':
                     parmetric = opendistsq
                     binsparv = binspar**2
-                    sflag = True
+                    # sflag = True
                 elif value.lower() == 'sclose':
                     parmetric = closedistsq
                     binsparv = binspar**2
-                    sflag = True
+                    # sflag = True
                 elif value.lower() == 'mu':
                     parmetric = mu
                     binsparv = binspar
-                    sflag = True
+                    # sflag = True
                 elif value.lower() == 'sparf':
                     parmetric = sparfsq
                     binsparv = binspar**2
@@ -248,6 +249,10 @@ def atpcf(datfile, binspar, binsper, **kwargs):
             elif key.lower() == 'weights':
                 if value is True:
                     weightsflag = True
+                elif isinstance(value, str):
+                    if value.lower() == 'eq':
+                        weightsflag = True
+                        useones = True
                 else:
                     weightsflag = False
             else:
@@ -268,6 +273,8 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     print(cosmology)
     print("Weights=")
     print(weightsflag)
+    print ("Using ones as weights?=")
+    print (useones)
     print("perpendicular metric=")
     print(permetric)
     print("parallel metric=")
@@ -310,7 +317,7 @@ def atpcf(datfile, binspar, binsper, **kwargs):
             datR, rweights = datprep(randfile, 'random', cosmology)
 
     Nr = len(datR)
-
+    fact = Nr/Nd
     global adbt
     global arbt
 
@@ -325,7 +332,7 @@ def atpcf(datfile, binspar, binsper, **kwargs):
 
     # Reference: arXiv: 1211.6211
     if estimator == 'dp':
-        if weightsflag is False or len(weights) != Nd:
+        if weightsflag is False: # or len(weights) != Nd
             # print (weightsflag)
             # print(len(weights))
             # print(len(datR))
@@ -334,6 +341,9 @@ def atpcf(datfile, binspar, binsper, **kwargs):
         else:
             # if len(rweights)!=len(datR):
             # DD = aDDwcalc(dat, binsq, parmetric, permetric, rng, weights)
+            if useones is True or len(weights) != Nd:
+                weights = np.ones(Nd)
+                rweights = np.ones(Nr)
             print ("Calculating anisotropic DD with weights (parallelized)...\n DD=")
             DD = amulti_autocp(dat, binsparv, binsperv, parmetric, permetric, rng, weights, Nd, pcpus)
             # DR = aRDwcalc(dat, datR, binsq, parmetric, permetric, rng, weights)
@@ -344,29 +354,35 @@ def atpcf(datfile, binspar, binsper, **kwargs):
             #     DR=aDRwcalc(dat,datR,binsq,parmetric,permetric,rng,weights,rweights)
 
         print ("Using Davis-Peebles estimator")
-        correl = (DD/DR)-1.0
+        correl = fact*(DD/DR)-1.0
 
     elif estimator == 'ph':
-        if weightsflag is False or len(weights) != Nd or len(rweights) != len(datR):
+        if weightsflag is False: # or len(weights) != Nd or len(rweights) != len(datR):
             DD = aDDcalc(dat, binsparv, binsperv, parmetric, permetric, rng)
             RR = aRRcalc(datR, binsparv, binsperv, parmetric, permetric, rng)
         else:
+            if useones is True or len(weights) != Nd:
+                weights = np.ones(Nd)
+                rweights = np.ones(Nr)
             print ("Calculating anisotropic DD with weights (parallelized)...\n DD=")
             # DD = aDDwcalc(dat, binsq, parmetric, permetric, rng, weights)
             DD = amulti_autocp(dat, binsparv, binsperv, parmetric, permetric, rng, weights, Nd, pcpus)
-            if len(rweights) != Nr:
-                RR = aRRcalc(datR, binsparv, binsperv, parmetric, permetric, rng)
-            else:
-                print ("Calculating anisotropic RR with weights (parallelized)...\n RR=")
-                RR = amulti_autocpr(datR, binsparv, binsperv, parmetric, permetric, rng, rweights, Nr, pcpus)
+            # if len(rweights) != Nr:
+            #     RR = aRRcalc(datR, binsparv, binsperv, parmetric, permetric, rng)
+            # else:
+            print ("Calculating anisotropic RR with weights (parallelized)...\n RR=")
+            RR = amulti_autocpr(datR, binsparv, binsperv, parmetric, permetric, rng, rweights, Nr, pcpus)
         print ("Using Peebles-Hauser estimator")
-        correl = (DD/RR)-1.0
+        correl = fact**2*(DD/RR)-1.0
     else:
-        if weightsflag is False or len(weights) != Nd or len(rweights) != len(datR):
+        if weightsflag is False: # or len(weights) != Nd or len(rweights) != len(datR):
             DD = aDDcalc(dat, binsparv, binsperv, parmetric, permetric, rng)
             RR = aRRcalc(datR, binsparv, binsperv, parmetric, permetric, rng)
             DR = aDRcalc(dat, binsparv, binsperv, parmetric, permetric, rng)
         else:
+            if useones is True or len(weights) != Nd:
+                weights = np.ones(Nd)
+                rweights = np.ones(Nr)
             print ("Calculating anisotropic DD with weights (parallelized)...\n DD=")
             # DD = aDDwcalc(dat, binsq, parmetric, permetric, rng, weights)
             DD = amulti_autocp(dat, binsparv, binsperv, parmetric, permetric, rng, weights, Nd, pcpus)
@@ -376,21 +392,21 @@ def atpcf(datfile, binspar, binsper, **kwargs):
             # DR = aRDwcalc(dat, datR, binsq, parmetric, permetric, rng, weights)
             print ("Calculating anisotropic DR with weights (parallelized)...\n DR=")
             DR = amulti_crosscp(dat, datR, binsparv, binsperv, parmetric, permetric, rng, weights, Nr, pcpus)
-            if len(rweights) != Nr:
-                RR = aRRcalc(datR, binsparv, binsperv, parmetric, permetric, rng)
-            else:
-                print ("Calculating anisotropic RR with weights (parallelized)...\n RR=")
-                RR = amulti_autocpr(datR, binsparv, binsperv, parmetric, permetric, rng, rweights, Nr, pcpus)
+            # if len(rweights) != Nr:
+            #     RR = aRRcalc(datR, binsparv, binsperv, parmetric, permetric, rng)
+            # else:
+            print ("Calculating anisotropic RR with weights (parallelized)...\n RR=")
+            RR = amulti_autocpr(datR, binsparv, binsperv, parmetric, permetric, rng, rweights, Nr, pcpus)
         if estimator == 'ls':
             print ("Using Landy-Szalay estimator")
-            correl = (DD-2.0*DR+RR)/RR
+            correl = fact**2*(DD/RR)-2.0*fact*(DR/RR)+1.0
         elif estimator == 'hew':
             print ("Using Hewett estimator")
-            correl = (DD-DR)/RR
+            correl = fact**2*(DD/RR)-fact*(DR/RR)
         elif estimator == 'h':
             print ("Using Hamilton estimator")
             correl = (DD*RR)/DR**2 - 1.0
-    correlerr = poserr(correl, DD*Nd*(Nd-1.0)*0.5)
+    correlerr = poserr(correl, DD)
     print("Anisotropic Two-point correlation=")
     print (correl, correlerr)
     return correl, correlerr
@@ -402,10 +418,10 @@ def aDDcalc(dat, binspar, binsper, parmetric, permetric, rng):
     for i in tqdm(range(len(dat))):
         ind = adbt.query_radius(dat[i].reshape(1, -1), max(binsper))
         for j in ind:
-            dist0 = dist.cdist([dat[i], ], dat[j], parmetric)[0]
+            dist0 = dist.cdist([dat[i], ], dat[j[j>i]], parmetric)[0]
             # print("dist0")
             # print dist0
-            dist1 = dist.cdist([dat[i], ], dat[j], permetric)[0]
+            dist1 = dist.cdist([dat[i], ], dat[j[j>i]], permetric)[0]
             # print("dist1")
             # print dist1
             # print np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper))[0]
@@ -419,9 +435,9 @@ def aDDcalc(dat, binspar, binsper, parmetric, permetric, rng):
             # print dd
     dd[dd == 0] = 1.0
     # Nd = len(dat)
-    DD = dd/(Nd*(Nd-1.0))
-    print (DD)
-    return DD
+    # DD = dd/(Nd*(Nd-1.0))
+    print (dd)
+    return dd
 
 
 def aRRcalc(datR, binspar, binsper, parmetric, permetric, rng):
@@ -431,14 +447,14 @@ def aRRcalc(datR, binspar, binsper, parmetric, permetric, rng):
     for i in tqdm(range(len(datR))):
         ind = arbt.query_radius(datR[i].reshape(1, -1), max(binsper))
         for j in ind:
-            dist0 = dist.cdist([datR[i], ], datR[j], parmetric)[0]
-            dist1 = dist.cdist([datR[i], ], datR[j], permetric)[0]
+            dist0 = dist.cdist([datR[i], ], datR[j[j>i]], parmetric)[0]
+            dist1 = dist.cdist([datR[i], ], datR[j[j>i]], permetric)[0]
             rr += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper))[0]
     rr[rr == 0] = 1.0
     # Nr = len(datR)
-    RR = rr/(Nr*(Nr-1.0))
-    print (RR)
-    return RR
+    # RR = rr/(Nr*(Nr-1.0))
+    print (rr)
+    return rr
 
 
 def aDRcalc(dat, datR, binspar, binsper, parmetric, permetric, rng):
@@ -448,15 +464,15 @@ def aDRcalc(dat, datR, binspar, binsper, parmetric, permetric, rng):
     for i in tqdm(range(len(dat))):
         ind = arbt.query_radius(dat[i].reshape(1, -1), max(binsper))
         for j in ind:
-            dist0 = dist.cdist([dat[i], ], datR[j], parmetric)[0]
-            dist1 = dist.cdist([dat[i], ], datR[j], permetric)[0]
+            dist0 = dist.cdist([dat[i], ], datR[j[j>i]], parmetric)[0]
+            dist1 = dist.cdist([dat[i], ], datR[j[j>i]], permetric)[0]
             dr += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper))[0]
     dr[dr == 0] = 1.0
     # Nd = len(dat)
     # Nr = len(datR)
-    DR = dr/(Nd*Nr)
-    print (DR)
-    return DR
+    # DR = dr/(Nd*Nr)
+    print (dr)
+    return dr
 
 
 def aDDwcalc(dat, binspar, binsper, parmetric, permetric, rng, weights):
@@ -466,14 +482,14 @@ def aDDwcalc(dat, binspar, binsper, parmetric, permetric, rng, weights):
     for i in tqdm(range(len(dat))):
         ind = adbt.query_radius(dat[i].reshape(1, -1), max(binsper))
         for j in ind:
-            dist0 = dist.cdist([dat[i], ], dat[j], parmetric)[0]
-            dist1 = dist.cdist([dat[i], ], dat[j], permetric)[0]
-            dd += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins), weights=weights[j])[0]
+            dist0 = dist.cdist([dat[i], ], dat[j[j>i]], parmetric)[0]
+            dist1 = dist.cdist([dat[i], ], dat[j[j>i]], permetric)[0]
+            dd += np.histogram2d(dist0, dist1, range=rng, bins=(bins, bins), weights=weights[j[j>i]])[0]
     dd[dd == 0] = 1.0
     # Nd = len(dat)
-    DD = dd/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
-    print (DD)
-    return DD
+    # DD = dd/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
+    # print (dd)
+    return dd
 
 
 def aRRwcalc(datR, binspar, binsper, parmetric, permetric, rng, rweights):
@@ -482,14 +498,14 @@ def aRRwcalc(datR, binspar, binsper, parmetric, permetric, rng, rweights):
     for i in tqdm(range(len(datR))):
         ind = arbt.query_radius(datR[i].reshape(1, -1), max(binsper))
         for j in ind:
-            dist0 = dist.cdist([datR[i], ], datR[j], parmetric)[0]
-            dist1 = dist.cdist([datR[i], ], datR[j], permetric)[0]
-            rr += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper), weights=rweights[j])[0]
+            dist0 = dist.cdist([datR[i], ], datR[j[j>i]], parmetric)[0]
+            dist1 = dist.cdist([datR[i], ], datR[j[j>i]], permetric)[0]
+            rr += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper), weights=rweights[j[j>i]])[0]
     rr[rr == 0] = 1.0
     # Nr = len(datR)
-    RR = rr/(Nr*(Nr-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
-    print (RR)
-    return RR
+    # RR = rr/(Nr*(Nr-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
+    # print (rr)
+    return rr
 
 
 def aDRwcalc(dat, datR, binspar, binsper, parmetric, permetric, rng, weights, rweights):
@@ -505,9 +521,9 @@ def aDRwcalc(dat, datR, binspar, binsper, parmetric, permetric, rng, weights, rw
     dr[dr == 0] = 1.0
     # Nd = len(dat)
     # Nr = len(datR)
-    DR = dr/(Nd*Nr)
-    print (DR)
-    return DR
+    # DR = dr/(Nd*Nr)
+    # print (dr/2.0)
+    return dr/2.0
 
 
 def aRDwcalc(dat, datR, binspar, binsper, parmetric, permetric, rng, weights):
@@ -521,9 +537,9 @@ def aRDwcalc(dat, datR, binspar, binsper, parmetric, permetric, rng, weights):
             dist1 = dist.cdist([datR[i], ], dat[j], permetric)[0]
             dr += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper), weights=weights[j])[0]
     dr[dr == 0] = 1.0
-    DR = dr/(Nd*Nr)
-    print (DR)
-    return DR
+    # DR = dr/(Nd*Nr)
+    # print (dr/2.0)
+    return dr/2.0
 
 def aDDwcalcp(dat, binspar, binsper, parmetric, permetric, rng, weights, rNd, multi=False, queue=0):
     dd = np.zeros((len(binspar)-1, len(binsper)-1))
@@ -531,9 +547,9 @@ def aDDwcalcp(dat, binspar, binsper, parmetric, permetric, rng, weights, rNd, mu
     for i in tqdm(rNd):
         ind = adbt.query_radius(dat[i].reshape(1, -1), max(binsper))
         for j in ind:
-            dist0 = dist.cdist([dat[i], ], dat[j], parmetric)[0]
-            dist1 = dist.cdist([dat[i], ], dat[j], permetric)[0]
-            dd += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper), weights=weights[j])[0]
+            dist0 = dist.cdist([dat[i], ], dat[j[j>i]], parmetric)[0]
+            dist1 = dist.cdist([dat[i], ], dat[j[j>i]], permetric)[0]
+            dd += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper), weights=weights[j[j>i]])[0]
     if multi:
         queue.put(dd)
     else:
@@ -548,9 +564,9 @@ def aRRwcalcp(datR, binspar, binsper, parmetric, permetric, rng, rweights, rNr, 
     for i in tqdm(rNr):
         ind = arbt.query_radius(datR[i].reshape(1, -1), max(binsper))
         for j in ind:
-            dist0 = dist.cdist([datR[i], ], datR[j], parmetric)[0]
-            dist1 = dist.cdist([datR[i], ], datR[j], permetric)[0]
-            rr += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper), weights=rweights[j])[0]
+            dist0 = dist.cdist([datR[i], ], datR[j[j>i]], parmetric)[0]
+            dist1 = dist.cdist([datR[i], ], datR[j[j>i]], permetric)[0]
+            rr += np.histogram2d(dist0, dist1, range=rng, bins=(binspar, binsper), weights=rweights[j[j>i]])[0]
     if multi:
         queue.put(rr)
     else:
@@ -607,8 +623,8 @@ def amulti_autocp(dat, binspar, binsper, parmetric, permetric, rng, weights, Nd,
     for q in queues: DD += q.get()
     for j in jobs: j.join()
     DD[DD == 0] = 1.0
-    DD = DD/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
-    print DD
+    # DD = DD/(Nd*(Nd-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
+    print (DD)
     return DD
 
 
@@ -622,8 +638,8 @@ def amulti_autocpr(datR, binspar, binsper, parmetric, permetric, rng, rweights, 
     for q in queues: RR += q.get()
     for j in jobs: j.join()
     RR[RR == 0] = 1.0
-    RR = RR/(Nr*(Nr-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
-    print RR
+    # RR = RR/(Nr*(Nr-1.0)) # factor of 2 cancels with 1/2 that needs to be done to remove double counting of pairs
+    print (RR)
     return RR
 
 
@@ -637,7 +653,7 @@ def amulti_crosscp(dat, datR, binspar, binsper, parmetric, permetric, rng, weigh
     for q in queues: DR += q.get()
     for j in jobs: j.join()
     DR[DR == 0] = 1.0
-    Nd=len(dat)
-    DR = DR/(Nd*Nr)
-    print DR
-    return DR
+    # Nd=len(dat)
+    # DR = DR/(Nd*Nr)
+    print (DR/2.0)
+    return DR/2.0
