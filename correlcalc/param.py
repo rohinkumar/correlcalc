@@ -9,3 +9,4 @@
 # Default
 Om = 0.3
 Ol = 0.7
+cbyH0 = 2997.92458 # to multiply bins to plot in Mpc h^{-1}

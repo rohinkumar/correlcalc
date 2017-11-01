@@ -12,6 +12,7 @@ correlcalc/main.py
 correlcalc/param.py
 correlcalc/runtimeupdate.py
 correlcalc/test.py
+correlcalc/testnew.py
 correlcalc/tpcf.py
 correlcalc.egg-info/PKG-INFO
 correlcalc.egg-info/SOURCES.txt
