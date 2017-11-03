@@ -144,11 +144,12 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     sflag = True
     geometry='flat'
     filtermetric = flatdistsq
-    parmetric = mu
-    permetric = flatdistsq
+    permetric = musqlcdmf
+    parmetric = flatdistsq
+    vtype = 'smu'
     randcatfact = 2
     estimator = 'dp'
-    binsparv = binspar
+    binsparv = binspar**2
     binsperv = binsper**2
     randfile = None
     maskfile = None
@@ -157,6 +158,8 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     # Options for correl calculation estimators and cosmology models
     mlist = ['dp', 'ls', 'ph', 'hew', 'h']
     clist = ['lcdm', 'lc'] # to add wcdm
+    glist = ['flat', 'open', 'close']
+    parper = ['ap', 'sigpi', 'smu']
 
     if kwargs is not None:
         for key, value in kwargs.items():
@@ -168,15 +171,16 @@ def atpcf(datfile, binspar, binsper, **kwargs):
                 randcatfact = value
 
             elif key.lower() == 'geometry':
-                if value.lower() == 'flat':
-                    geometry = 'flat'
-                    filtermetric = flatdistsq
-                elif value.lower() == 'open':
-                    geometry = 'open'
-                    filtermetric = opendistsq
-                elif value.lower() == 'close':
-                    geometry = 'close'
-                    filtermetric = closedistsq
+                if value.lower() in glist:
+                    geometry = value.lower()
+                #     geometry = 'flat'
+                #     filtermetric = flatdistsq
+                # elif value.lower() == 'open':
+                #     geometry = 'open'
+                #     filtermetric = opendistsq
+                # elif value.lower() == 'close':
+                #     geometry = 'close'
+                #     filtermetric = closedistsq
 
             elif key.lower() == 'cosmology':
                 if value.lower() in clist:
@@ -184,106 +188,9 @@ def atpcf(datfile, binspar, binsper, **kwargs):
                 else:
                     print("Incorrect Cosmology provided! Using 'lcdm' as default")
 
-            elif key.lower() == 'parmetric':
-                if value.lower() == 'apdz':
-                    parmetric = APdz
-                    binsparv = binspar
-                    sflag = False
-                    filtermetric = APzdth
-                elif value.lower() == 'apzdth':
-                    parmetric = APzdth
-                    binsparv = binspar
-                    sflag = False
-                    filtermetric = APzdth
-                elif value.lower() == 'sflat':
-                    parmetric = flatdistsq
-                    binsparv = binspar**2
-                    filtermetric = flatdistsq
-                    geometry = 'flat'
-                    maxrad = binsparv
-                    # sflag = True
-                elif value.lower() == 'sopen':
-                    parmetric = opendistsq
-                    binsparv = binspar**2
-                    filtermetric = opendistsq
-                    geometry = 'open'
-                    maxrad = binsparv
-                    # sflag = True
-                elif value.lower() == 'sclose':
-                    parmetric = closedistsq
-                    binsparv = binspar**2
-                    filtermetric = closedistsq
-                    geometry = 'close'
-                    maxrad = binsparv
-                    # sflag = True
-                elif value.lower() == 'mu':
-                    parmetric = mu
-                    binsparv = binspar
-                    # sflag = True
-                elif value.lower() == 'sparf':
-                    parmetric = sparfsq
-                    binsparv = binspar**2
-                    geometry = 'flat'
-
-                elif value.lower() == 'sparo':
-                    parmetric = sparosq
-                    binsparv = binspar**2
-                    geometry = 'open'
-
-                elif value.lower() == 'sparc':
-                    parmetric = sparcsq
-                    binsparv = binspar**2
-                    geometry = 'close'
-
-                else:
-                    print("Incorrect parallel metric argument provided!")
-            elif key.lower() == 'permetric':
-                if value.lower() == 'apzdth':
-                    permetric = APzdth
-                    binsperv = binsper
-                    maxrad = binsparv**2 + binsperv**2
-                elif value.lower() == 'apdz':
-                    permetric = APdz
-                    binsperv = binsper
-                    maxrad = binsparv**2 + binsperv**2
-                elif value.lower() == 'sflat':
-                    permetric = flatdistsq
-                    binsperv = binsper**2
-                    filtermetric = flatdistsq
-                    geometry = 'flat'
-                    maxrad = binsperv
-                elif value.lower() == 'sopen':
-                    permetric = opendistsq
-                    binsperv = binsper**2
-                    filtermetric = opendistsq
-                    geometry = 'open'
-                    maxrad = binsperv
-                elif value.lower() == 'sclose':
-                    permetric = closedistsq
-                    binsperv = binsper**2
-                    filtermetric = closedistsq
-                    geometry = 'close'
-                    maxrad = binsperv
-                elif value.lower() == 'mu':
-                    permetric = mu
-                    binsperv = binsper
-                elif value.lower() == 'sperf':
-                    permetric = sperfsq
-                    binsperv = binsper**2
-                    geometry = 'flat'
-                    maxrad = binsparv + binsperv
-                elif value.lower() == 'spero':
-                    permetric = sperosq
-                    binsperv = binsper**2
-                    geometry = 'open'
-                    maxrad = binsparv + binsperv
-                elif value.lower() == 'sperc':
-                    permetric = spercsq
-                    binsperv = binsper**2
-                    geometry = 'close'
-                    maxrad = binsparv + binsperv
-                else:
-                    print("Incorrect perpendicular metric provided!")
+            elif key.lower() == 'vtype':
+                if value.lower() in parper:
+                    vtype = value.lower()
 
             elif key.lower() == 'estimator':
                 if value.lower() in mlist:
@@ -306,6 +213,76 @@ def atpcf(datfile, binspar, binsper, **kwargs):
                 print ("key argument `%s` not valid" % key)
     else:
         print ("Refer documentation to enter valid keyword arguments")
+
+    if vtype == 'ap':
+        parmetric = APdz
+        binsparv = binspar
+        binsperv = binsper
+        sflag = False
+        filtermetric = APzdth
+        permetric = APzdth
+        maxrad = max(np.sqrt(binsparv**2 + binsperv**2))
+
+    elif vtype == 'smu':
+        # binsparv = binspar**2
+        # binsperv = binsper**2
+        maxrad = max(binsparv)
+        if geometry == 'open':
+            parmetric = opendistsq
+            filtermetric = opendistsq
+            if cosmology == 'lc':
+                permetric = musqlco
+            else:
+                permetric = musqlcdmo
+
+        elif geometry == 'close':
+            parmetric = closedistsq
+            filtermetric = closedistsq
+            if cosmology == 'lc':
+                permetric = musqlcc
+            else:
+                permetric = musqlcdmc
+        else:
+            parmetric = flatdistsq
+            filtermetric = flatdistsq
+            if cosmology == 'lc':
+                permetric = musqlcf
+            else:
+                permetric = musqlcdmf
+
+    elif vtype == 'sigpi':
+        # binsparv = binspar**2
+        # binsperv = binsper**2
+        maxrad = max(binsparv+binsperv)
+        if geometry == 'open':
+            filtermetric = opendistsq
+            if cosmology == 'lc':
+                parmetric = sparsqlc
+                permetric = spersqlco
+            else:
+                parmetric = sparsqlcdm
+                permetric = spersqlcdmo
+
+        elif geometry == 'close':
+            filtermetric = closedistsq
+            if cosmology == 'lc':
+                parmetric = sparsqlc
+                permetric = musqlcc
+            else:
+                parmetric = sparsqlcdm
+                permetric = musqlcdmc
+        else:
+            filtermetric = flatdistsq
+            if cosmology == 'lc':
+                parmetric = sparsqlc
+                permetric = musqlcf
+            else:
+                parmetric = sparsqlcdm
+                permetric = musqlcdmf
+
+    else:
+        print ("No valid valuation method provided. Using 'smu' as default")
+
 
     print("Calculating Anisotropic Correlation function with the following parameters")
     print("data file=")
@@ -330,11 +307,13 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     print(parmetric)
     print("Correl estimator=")
     print(estimator)
+    print("Valuation type=")
+    print(vtype)
     print ("binsparv=")
     print (binsparv)
     print ("binsperv=")
     print (binsperv)
-    print("-------------------------------------------------------")
+    print("---------------------------------------------------------------------------")
 
     if sflag is False:
         # Prepare dat from data file

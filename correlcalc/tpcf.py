@@ -258,10 +258,12 @@ def tpcf(datfile, bins, **kwargs):
     global dbt
     global rbt
 
-    print ("Creating BallTree for data points using input metric...")
+    print ("Creating BallTree for data points using metric=")
+    print (metric)
     dbt = BallTree(dat, metric='pyfunc', func=metric)
 
-    print ("Creating BallTree for random points using input metric...")
+    print ("Creating BallTree for random points using metric=")
+    print (metric)
     rbt = BallTree(datR, metric='pyfunc', func=metric)
 
     print ("Calculating 2pCF...")
@@ -470,10 +472,10 @@ def autocorrw(dat, bins, metric, weights):
         ind = dbt.query_radius(dat[i].reshape(1, -1), binmax)
         # wts=np.array([])
         for j in ind:
-            print ("i j")
-            print (i, j)
-            print ("ind[ind>i]")
-            print (ind[ind>i])
+            # print ("i j")
+            # print (i, j)
+            # print ("ind[ind>i]")
+            # print (ind[ind>i])
             dist0 = dist.cdist([dat[i], ], dat[j[j>=i]], metric)[0]
             DD += np.histogram(dist0, bins=bins, weights=weights[j[j>=i]])[0]
             # print (dist0,weights[j])

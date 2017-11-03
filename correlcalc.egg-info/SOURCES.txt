@@ -10,6 +10,7 @@ correlcalc/fileios.py
 correlcalc/genrand.py
 correlcalc/main.py
 correlcalc/param.py
+correlcalc/rough.py
 correlcalc/runtimeupdate.py
 correlcalc/test.py
 correlcalc/testnew.py

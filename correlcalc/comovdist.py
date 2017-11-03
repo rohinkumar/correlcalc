@@ -2,11 +2,13 @@ __author__ = 'Rohin Kumar Y'
 from scipy import integrate
 import numpy as np
 import math as m
+from metrics import *
 #from . import *
 from param import *
 # from correlcalc import *
 from multiprocessing import Pool
 from multiprocessing import cpu_count
+# from __future__ import division
 # Om = param.Om
 # Ol = param.Ol
 
@@ -14,7 +16,7 @@ pcpus = cpu_count() - 1
 
 
 def Ezs(zv):
-    """Hubble papameter in H0 units"""
+    """Hubble parameter in H0 units"""
     return 1.0/m.sqrt(Om*(1.0+zv)**3+(1.0-Om-Ol)*(1.0+zv)**2+Ol)
 
 
@@ -65,3 +67,15 @@ def comovp(z, model):
     else:
         print("Only 'lcdm' and 'lc' models supported for now")
         return None
+
+
+# def sparsq(dat1, dat2, cosmology):
+#     if cosmology == 'lc':
+#         Omv = 0
+#         Olv = 0
+#     else:
+#         Omv = Om
+#         Olv = Ol
+#     return csparsq(dat1, dat2, Omv, Olv)
+
+
