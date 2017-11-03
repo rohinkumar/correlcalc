@@ -267,18 +267,18 @@ def atpcf(datfile, binspar, binsper, **kwargs):
             filtermetric = closedistsq
             if cosmology == 'lc':
                 parmetric = sparsqlc
-                permetric = musqlcc
+                permetric = spersqlcc
             else:
                 parmetric = sparsqlcdm
-                permetric = musqlcdmc
+                permetric = spersqlcdmc
         else:
             filtermetric = flatdistsq
             if cosmology == 'lc':
                 parmetric = sparsqlc
-                permetric = musqlcf
+                permetric = spersqlcf
             else:
                 parmetric = sparsqlcdm
-                permetric = musqlcdmf
+                permetric = spersqlcdmf
 
     else:
         print ("No valid valuation method provided. Using 'smu' as default")
