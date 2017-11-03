@@ -3551,7 +3551,7 @@ static PyObject *__pyx_pf_7metrics_7metrics_14sparsqlcdm(CYTHON_UNUSED PyObject 
  *     cdef double zv = 0
  *     cdef double Om = 0.3             # <<<<<<<<<<<<<<
  *     cdef double Ol = 0.7
- *     zv = (dat1[0] + dat2[0])/2.0
+ *     zv = (dat1[3] + dat2[3])/2.0
  */
   __pyx_v_Om = 0.3;
 
@@ -3559,19 +3559,19 @@ static PyObject *__pyx_pf_7metrics_7metrics_14sparsqlcdm(CYTHON_UNUSED PyObject 
  *     cdef double zv = 0
  *     cdef double Om = 0.3
  *     cdef double Ol = 0.7             # <<<<<<<<<<<<<<
- *     zv = (dat1[0] + dat2[0])/2.0
- *     return (dat1[0]-dat2[0])**2/Ezsq(zv, Om, Ol)
+ *     zv = (dat1[3] + dat2[3])/2.0
+ *     return (dat1[3]-dat2[3])**2/Ezsq(zv, Om, Ol)
  */
   __pyx_v_Ol = 0.7;
 
   /* "metrics/metrics.pyx":54
  *     cdef double Om = 0.3
  *     cdef double Ol = 0.7
- *     zv = (dat1[0] + dat2[0])/2.0             # <<<<<<<<<<<<<<
- *     return (dat1[0]-dat2[0])**2/Ezsq(zv, Om, Ol)
+ *     zv = (dat1[3] + dat2[3])/2.0             # <<<<<<<<<<<<<<
+ *     return (dat1[3]-dat2[3])**2/Ezsq(zv, Om, Ol)
  * 
  */
-  __pyx_t_1 = 0;
+  __pyx_t_1 = 3;
   __pyx_t_2 = -1;
   if (__pyx_t_1 < 0) {
     __pyx_t_1 += __pyx_v_dat1.shape[0];
@@ -3581,7 +3581,7 @@ static PyObject *__pyx_pf_7metrics_7metrics_14sparsqlcdm(CYTHON_UNUSED PyObject 
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
     __PYX_ERR(0, 54, __pyx_L1_error)
   }
-  __pyx_t_3 = 0;
+  __pyx_t_3 = 3;
   __pyx_t_2 = -1;
   if (__pyx_t_3 < 0) {
     __pyx_t_3 += __pyx_v_dat2.shape[0];
@@ -3595,13 +3595,13 @@ static PyObject *__pyx_pf_7metrics_7metrics_14sparsqlcdm(CYTHON_UNUSED PyObject 
 
   /* "metrics/metrics.pyx":55
  *     cdef double Ol = 0.7
- *     zv = (dat1[0] + dat2[0])/2.0
- *     return (dat1[0]-dat2[0])**2/Ezsq(zv, Om, Ol)             # <<<<<<<<<<<<<<
+ *     zv = (dat1[3] + dat2[3])/2.0
+ *     return (dat1[3]-dat2[3])**2/Ezsq(zv, Om, Ol)             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = 0;
+  __pyx_t_4 = 3;
   __pyx_t_2 = -1;
   if (__pyx_t_4 < 0) {
     __pyx_t_4 += __pyx_v_dat1.shape[0];
@@ -3611,7 +3611,7 @@ static PyObject *__pyx_pf_7metrics_7metrics_14sparsqlcdm(CYTHON_UNUSED PyObject 
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
     __PYX_ERR(0, 55, __pyx_L1_error)
   }
-  __pyx_t_5 = 0;
+  __pyx_t_5 = 3;
   __pyx_t_2 = -1;
   if (__pyx_t_5 < 0) {
     __pyx_t_5 += __pyx_v_dat2.shape[0];
@@ -3726,7 +3726,7 @@ static PyObject *__pyx_pf_7metrics_7metrics_14sparsqlcdm(CYTHON_UNUSED PyObject 
  * 
  * def sparsqlc(double[:] dat1, double[:] dat2):             # <<<<<<<<<<<<<<
  *     cdef double zv = 0
- *     zv = (dat1[0] + dat2[0])/2.0
+ *     zv = (dat1[3] + dat2[3])/2.0
  */
 
 /* Python wrapper */
@@ -3809,19 +3809,19 @@ static PyObject *__pyx_pf_7metrics_7metrics_16sparsqlc(CYTHON_UNUSED PyObject *_
  * 
  * def sparsqlc(double[:] dat1, double[:] dat2):
  *     cdef double zv = 0             # <<<<<<<<<<<<<<
- *     zv = (dat1[0] + dat2[0])/2.0
- *     return (dat1[0]-dat2[0])**2/(1.0+zv)**2
+ *     zv = (dat1[3] + dat2[3])/2.0
+ *     return (dat1[3]-dat2[3])**2/(1.0+zv)**2
  */
   __pyx_v_zv = 0.0;
 
   /* "metrics/metrics.pyx":60
  * def sparsqlc(double[:] dat1, double[:] dat2):
  *     cdef double zv = 0
- *     zv = (dat1[0] + dat2[0])/2.0             # <<<<<<<<<<<<<<
- *     return (dat1[0]-dat2[0])**2/(1.0+zv)**2
+ *     zv = (dat1[3] + dat2[3])/2.0             # <<<<<<<<<<<<<<
+ *     return (dat1[3]-dat2[3])**2/(1.0+zv)**2
  * 
  */
-  __pyx_t_1 = 0;
+  __pyx_t_1 = 3;
   __pyx_t_2 = -1;
   if (__pyx_t_1 < 0) {
     __pyx_t_1 += __pyx_v_dat1.shape[0];
@@ -3831,7 +3831,7 @@ static PyObject *__pyx_pf_7metrics_7metrics_16sparsqlc(CYTHON_UNUSED PyObject *_
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
     __PYX_ERR(0, 60, __pyx_L1_error)
   }
-  __pyx_t_3 = 0;
+  __pyx_t_3 = 3;
   __pyx_t_2 = -1;
   if (__pyx_t_3 < 0) {
     __pyx_t_3 += __pyx_v_dat2.shape[0];
@@ -3845,13 +3845,13 @@ static PyObject *__pyx_pf_7metrics_7metrics_16sparsqlc(CYTHON_UNUSED PyObject *_
 
   /* "metrics/metrics.pyx":61
  *     cdef double zv = 0
- *     zv = (dat1[0] + dat2[0])/2.0
- *     return (dat1[0]-dat2[0])**2/(1.0+zv)**2             # <<<<<<<<<<<<<<
+ *     zv = (dat1[3] + dat2[3])/2.0
+ *     return (dat1[3]-dat2[3])**2/(1.0+zv)**2             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = 0;
+  __pyx_t_4 = 3;
   __pyx_t_2 = -1;
   if (__pyx_t_4 < 0) {
     __pyx_t_4 += __pyx_v_dat1.shape[0];
@@ -3861,7 +3861,7 @@ static PyObject *__pyx_pf_7metrics_7metrics_16sparsqlc(CYTHON_UNUSED PyObject *_
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
     __PYX_ERR(0, 61, __pyx_L1_error)
   }
-  __pyx_t_5 = 0;
+  __pyx_t_5 = 3;
   __pyx_t_2 = -1;
   if (__pyx_t_5 < 0) {
     __pyx_t_5 += __pyx_v_dat2.shape[0];
@@ -3888,7 +3888,7 @@ static PyObject *__pyx_pf_7metrics_7metrics_16sparsqlc(CYTHON_UNUSED PyObject *_
  * 
  * def sparsqlc(double[:] dat1, double[:] dat2):             # <<<<<<<<<<<<<<
  *     cdef double zv = 0
- *     zv = (dat1[0] + dat2[0])/2.0
+ *     zv = (dat1[3] + dat2[3])/2.0
  */
 
   /* function exit code */
@@ -20696,7 +20696,7 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * def sparsqlc(double[:] dat1, double[:] dat2):             # <<<<<<<<<<<<<<
  *     cdef double zv = 0
- *     zv = (dat1[0] + dat2[0])/2.0
+ *     zv = (dat1[3] + dat2[3])/2.0
  */
   __pyx_tuple__36 = PyTuple_Pack(3, __pyx_n_s_dat1, __pyx_n_s_dat2, __pyx_n_s_zv); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__36);
@@ -21215,7 +21215,7 @@ static int __pyx_pymod_exec_metrics(PyObject *__pyx_pyinit_module)
  * 
  * def sparsqlc(double[:] dat1, double[:] dat2):             # <<<<<<<<<<<<<<
  *     cdef double zv = 0
- *     zv = (dat1[0] + dat2[0])/2.0
+ *     zv = (dat1[3] + dat2[3])/2.0
  */
   __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7metrics_7metrics_17sparsqlc, NULL, __pyx_n_s_metrics_metrics); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);

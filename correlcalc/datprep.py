@@ -41,8 +41,8 @@ def datprep(fname, ftype, model):
     rar = ra*pi/180.0
     decr = dec*pi/180.0
     print ("Preparing %s into 3xN matrices in [s,rar,decr] format..." % ftype)
-    dat = np.array([s, rar, decr])
-    dat.reshape(3, len(data))
+    dat = np.array([s, rar, decr, z])
+    dat.reshape(4, len(data))
     dat = dat.transpose()
     # print ("Printing 3xN array")
     # print(dat)
@@ -121,8 +121,8 @@ def randcatprep(datfname, randcatsize, maskfile, model):
     storerandcat(zr, ra, dec, rweights, rcatfname)
     s = comovp(zr, model)
     print ("Preparing random catalog into 3xN matrices in [s,rar,decr] format" )
-    datR = np.array([s, rar, decr])
-    datR.reshape(3, len(zr))
+    datR = np.array([s, rar, decr, zr])
+    datR.reshape(4, len(zr))
     datR = datR.transpose()
     # print(datR)
     return datR, rweights

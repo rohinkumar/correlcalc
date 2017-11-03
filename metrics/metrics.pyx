@@ -51,14 +51,14 @@ def sparsqlcdm(double[:] dat1, double[:] dat2):
     cdef double zv = 0
     cdef double Om = 0.3
     cdef double Ol = 0.7
-    zv = (dat1[0] + dat2[0])/2.0
-    return (dat1[0]-dat2[0])**2/Ezsq(zv, Om, Ol)
+    zv = (dat1[3] + dat2[3])/2.0
+    return (dat1[3]-dat2[3])**2/Ezsq(zv, Om, Ol)
 
 
 def sparsqlc(double[:] dat1, double[:] dat2):
     cdef double zv = 0
-    zv = (dat1[0] + dat2[0])/2.0
-    return (dat1[0]-dat2[0])**2/(1.0+zv)**2
+    zv = (dat1[3] + dat2[3])/2.0
+    return (dat1[3]-dat2[3])**2/(1.0+zv)**2
 
 
 def musqlcdmf(double[:] dat1, double[:] dat2):

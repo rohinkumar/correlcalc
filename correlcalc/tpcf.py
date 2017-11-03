@@ -476,8 +476,8 @@ def autocorrw(dat, bins, metric, weights):
             # print (i, j)
             # print ("ind[ind>i]")
             # print (ind[ind>i])
-            dist0 = dist.cdist([dat[i], ], dat[j[j>=i]], metric)[0]
-            DD += np.histogram(dist0, bins=bins, weights=weights[j[j>=i]])[0]
+            dist0 = dist.cdist([dat[i], ], dat[j[j>i]], metric)[0]
+            DD += np.histogram(dist0, bins=bins, weights=weights[j[j>i]])[0]
             # print (dist0,weights[j])
     print(DD)
     return DD
@@ -528,8 +528,8 @@ def autocorrwp(dat, bins, metric, weights, rNd, multi=False, queue=0):
             # print ("ind[ind>i]")
             # print (ind)
             # print (ind[ind>i])
-            dist0 = dist.cdist([dat[i], ], dat[j[j>=i]], metric)[0]
-            DD += np.histogram(dist0, bins=bins, weights=weights[j[j>=i]])[0]
+            dist0 = dist.cdist([dat[i], ], dat[j[j>i]], metric)[0]
+            DD += np.histogram(dist0, bins=bins, weights=weights[j[j>i]])[0]
             # print (dist0,weights[j])
     if multi:
         queue.put(DD)
@@ -593,10 +593,10 @@ def autocorrwpr(datR, bins, metric, rweights, rNr, multi=False, queue=0):
             # print (i)
             # print ("j")
             # print (j)
-            # print ("j[j>=i]")
-            # print (j[j>=i])
-            dist0 = dist.cdist([datR[i], ], datR[j[j>=i]], metric)[0]
-            RR += np.histogram(dist0, bins=bins, weights=rweights[j[j>=i]])[0]
+            # print ("j[j>i]")
+            # print (j[j>i])
+            dist0 = dist.cdist([datR[i], ], datR[j[j>i]], metric)[0]
+            RR += np.histogram(dist0, bins=bins, weights=rweights[j[j>i]])[0]
             # print (dist0,weights[j])
     if multi:
         queue.put(RR)
