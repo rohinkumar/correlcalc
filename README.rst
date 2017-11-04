@@ -32,6 +32,9 @@ the folder that contains setup.py and type "``pip install .``" or
 If you do not have root permission, you can install by adding
 "``--user``" at the end of above commands
 
+If you have an older version installed already you can upgrade by
+"``pip install correlcalc --upgrade``" command
+
 A note on Dependencies:
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -68,176 +71,120 @@ example.nb" and in ``main.py``
 All the methods in correlcalc can be imported using the following
 command
 
-``from correlcalc import *``
+::
 
-We first need to define bins (in :math:`c/H_0` units) to calculate 2pCF.
-For e.g. to calculate correlation between 0-180Mpc in steps of 6Mpc, we
-say
+    `from correlcalc import *`
 
-``bins=np.arange(0.002,0.06,0.002)``
+    We first need to define bins (in $c/H_0$ units) to calculate 2pCF. For e.g. to calculate correlation between 0-180Mpc in steps of 6Mpc, we say
 
-To calculate 2pCF using input data file (both ascii and fits files are
-supported), use ``tpcf`` method as follows
+    `bins=np.arange(0.002,0.06,0.002)`
 
-``correl, poserr=tpcf('/path/to/datfile.dat',bins, randfile='/path/to/randomfile.dat', weights=True)``
+    To calculate 2pCF using input data file (both ascii and fits files are supported), use `tpcf` method as follows
 
-If random file is not available or not provided, we can generate random
-catalog by providing the mangle mask file in ``.ply`` format along with
-specifying the size of the catalog in multiples of size of data catalog
-(default 2x size). To do this
+    `correl, poserr=tpcf('/path/to/datfile.dat',bins, randfile='/path/to/randomfile.dat', weights='eq')`
 
-``correl, poserr=tpcf('/path/to/datfile.dat', bins, maskfile='/path/to/maskfile.ply', weights=True, randfact=3)``
+    If random file is not available or not provided, we can generate random catalog by providing the mangle mask file in `.ply` format along with specifying the size of the catalog in multiples of size of data catalog (default 2x size). To do this
 
-This returns ``correl`` and ``poserr`` ``numpy`` arrays corresponding to
-Two-point correlation and Poisson error
+    `correl, poserr=tpcf('/path/to/datfile.dat', bins, maskfile='/path/to/maskfile.ply', weights=True, randfact=3)`
 
-Keyword Arguments
-~~~~~~~~~~~~~~~~~
+    This returns `correl` and `poserr` `numpy` arrays corresponding to Two-point correlation and Poisson error
 
-The following keyword arguments can be included as needed
+    ### Keyword Arguments
+    The following keyword arguments can be included as needed
 
-Data file (Mandatory)
-^^^^^^^^^^^^^^^^^^^^^
+    #### Data file (Mandatory)
 
-Data file of galaxy/quasar redshift survey must be passed as the first
-argument to both ``tpcf`` and ``atpcf`` methods.
+    Data file of galaxy/quasar redshift survey must be passed as the first argument to both `tpcf` and `atpcf` methods.
 
-**Supported filetypes**: ascii text files with columns, csv files or
-fits files are all supported. Most files provided by SDSS Value added
-catalogs should be directly usable.
+    **Supported filetypes**: ascii text files with columns, csv files or fits files are all supported. Most files provided by SDSS Value added catalogs should be directly usable.
 
-**To contain**: Any type of file provided must at least have columns
-named **Z** (redshift), **RA** (Right Ascension), **DEC** (Declination).
-These column names can be in any case.
+     **To contain**: Any type of file provided must at least have columns named **Z** (redshift), **RA** (Right Ascension), **DEC** (Declination). These column names can be in any case.
 
-If one intends to use ``weights=True`` option (must to obtain accurate
-results) the data file must also contain radial weights with column
-title **radial\_weight** or **WEIGHT\_SYSTOT**
+     If one intends to use `weights=True` option (must to obtain accurate results) the data file must also contain radial weights with column title **radial_weight** or **WEIGHT_SYSTOT**
 
-bins (Mandatory)
-^^^^^^^^^^^^^^^^
+    #### bins (Mandatory)
 
-A numpy array with ascending values in :math:`c/H_0` units must be
-provided as the second argument to both ``tpcf`` and ``atpcf`` methods.
-In case of ``atpcf`` it automatically creates 2D bins as
-``bins2d=(bins,bins)`` from provided 1D ``bins``
+    A numpy array with ascending values in $c/H_0$ units must be provided as the second argument to both `tpcf` and `atpcf` methods. In case of `atpcf` it automatically creates 2D bins as `bins2d=(bins,bins)` from provided 1D `bins`
 
-``randfile=`` Path to random file (semi-Optional)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    #### `randfile=` Path to random file (semi-Optional)
 
-If not provided, ``maskfile=`` argument must be given ``.ply`` file.
+    If not provided, `maskfile=` argument must be given `.ply` file.
 
-**Supported filetypes**: ascii text files with columns, csv files or
-fits files are all supported. Most files provided by SDSS Value added
-catalogs should be directly usable.
+    **Supported filetypes**: ascii text files with columns, csv files or fits files are all supported. Most files provided by SDSS Value added catalogs should be directly usable.
 
-**To contain**: Any type of file provided must at least have columns
-named **Z** (redshift), **RA** (Right Ascension), **DEC** (Declination).
-These column names can be in any case.
+     **To contain**: Any type of file provided must at least have columns named **Z** (redshift), **RA** (Right Ascension), **DEC** (Declination). These column names can be in any case.
 
-If one intends to use ``weights=True`` option (must to obtain accurate
-results) the data file must also contain radial weights with column
-title **radial\_weight** or **WEIGHT\_SYSTOT**
+     If one intends to use `weights=True` option (must to obtain accurate results) the data file must also contain radial weights with column title **radial_weight** or **WEIGHT_SYSTOT**
 
-**To add:** In future support for other column titles for weights will
-be added. To also add calculation of weights from n(z) and for random
-catalog generation.
+     **Beta Testing:** Beta support for other column titles for weights is added.
 
-``mask=`` Path to mangle polygon file (semi-Optional)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     Also added is calculation of weights from n(z) during random catalog generation.
 
-If not provided, ``randfile=`` argument must be provided.
 
-**Supported filetypes**: ``.ply`` file containing Mangle polygons
-describing survey geometry in the standard format. Most files provided
-by SDSS Value added catalogs should be directly usable.
+    #### `mask=` Path to mangle polygon file (semi-Optional)
 
-``randfact=`` (Optional)
-^^^^^^^^^^^^^^^^^^^^^^^^
+    If not provided, `randfile=` argument must be provided.
 
-Size of the random catalog in integer multiples of size of data catalog
-if random catalog file is not provided. Default value is ``2``
+    **Supported filetypes**: `.ply` file containing Mangle polygons describing survey geometry in the standard format. Most files provided by SDSS Value added catalogs should be directly usable.
 
-``weights=`` (Optional)
-^^^^^^^^^^^^^^^^^^^^^^^
+    #### `randfact=` (Optional)
 
-It is highly recommended to use weights argument by providing
-``weights=True`` to obtain accurate two-point correlation calculations.
-This picks up radial weights in the prescribed format (with column title
-**radial\_weight** or **WEIGHT\_SYSTOT** ) from the data and random
-files provided.
+    Size of the random catalog in integer multiples of size of data catalog if random catalog file is not provided. Default value is `2`
 
-If ``weights=False``, by default *+1* will be added for each
-galaxy/random pair found within the bin instead of adding total weight.
-For more details on weights and references, see
-http://www.sdss3.org/dr9/tutorials/lss\_galaxy.php
+    #### `weights=` (Optional)
 
-``geometry='flat'`` (Optional)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    It is highly recommended to use weights argument by providing `weights=True` or `weights='eq'` to obtain accurate two-point correlation calculations. This picks up radial weights in the prescribed format (with column title **radial_weight** or **WEIGHT_SYSTOT** ) from the data and random files provided.
 
-**Available options**:
+    `weights=`eq'` sets equal weights and hence adds *+1* - This implementation is parallelized and is faster than `weights=False` implementation on most machines
 
-``'flat'``\ (default) - for flat geometry of the Universe
+    If `weights=False`, by default *+1* will be added for each galaxy/random pair found within the bin instead of adding total weight. For more details on weights and references, see http://www.sdss3.org/dr9/tutorials/lss_galaxy.php
 
-``'open'`` - for Open Universe models like Milne
+    #### `geometry='flat'` (Optional)
 
-``'close'`` - for Closed Universe
+    **Available options**:
 
-**Customization**
+    `'flat'`(default) - for flat geometry of the Universe
 
-Formulae for calculation of distances between two points (Z1, RA1, DEC1)
-and (Z2, RA2, DEC2) is taken from *T. Matsubara, Correlation function in
-deep redshift space as a cosmological probe, The Astrophysical Journal
-615 (2) (2004) 573*. Using the formulae in this paper, distances squares
-(to reduce additional computational time distance squares are calculated
-to avoid using expensive ``sqrt`` function every time) are computed in
-the ``metrics.pyx`` file for all the above mentioned geometries.
-``Cython`` is chosen for implementation to obtain faster results in
-building ``BallTree``\ s calculating ``cdist`` and to reduce ``query``
-time.
+     `'open'` - for Open Universe models like Milne
 
-One can customize metric definitions as per one's need by editing this
-file. Also **K** (curvature parameter) in the formulae given in this
-reference need to be manually changed in the ``metrics.pyx`` for closed
-and open cases as per the model. After changing this compile it using
-``python metricsetup.py build_ext --inplace``
+     `'close'` - for Closed Universe
 
-``cosmology='lcdm'`` (Optional)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     **Customization**
 
-Used to calculate co-moving distances from redshifts.
+     Formulae for calculation of distances between two points (Z1, RA1, DEC1) and (Z2, RA2, DEC2) is taken from *T. Matsubara, Correlation function in deep redshift space as a cosmological probe, The Astrophysical Journal 615 (2) (2004) 573*. Using the formulae in this paper, distances squares (to reduce additional computational time distance squares are calculated to avoid using expensive `sqrt` function every time) are computed in the `metrics.pyx` file for all the above mentioned geometries. `Cython` is chosen for implementation to obtain faster results in building `BallTree`s  calculating `cdist` and to reduce `query` time.
 
-**Available options**:
+     One can customize metric definitions as per one's need by editing this file. Also **K** (curvature parameter) in the formulae given in this reference need to be manually changed in the `metrics.pyx` for closed and open cases as per the model. After changing this compile it using `python metricsetup.py build_ext --inplace`
 
-``'lcdm'`` (default)- for Lambda CDM model
+    #### `cosmology='lcdm'` (Optional)
 
-``'lc'`` - for :math:`R_h=ct` and linear coasting models
+    Used to calculate co-moving distances from redshifts.
 
-**To add**: ``wcdm`` and other popular cosmology models soon
+    **Available options**:
 
-``estimator=`` (Optional)
-^^^^^^^^^^^^^^^^^^^^^^^^^
+    `'lcdm'` (default)- for Lambda CDM model
 
-**Available options**:
+     `'lc'` - for $R_h=ct$ and linear coasting models
 
-``'dp'`` - Davis - Peebles estimator (default - fastest)
+     **To add**: `wcdm` and other popular cosmology models soon
 
-``'ls'``- Landy - Szalay estimator
+    #### `estimator=` (Optional)
 
-``'ph'`` - Peebles- Hauser estimator
+    **Available options**:
 
-``'hew'`` - Hewitt estimator
+    `'dp'` - Davis - Peebles estimator (default - fastest)
 
-``'h'`` - Hamilton estimator
+    `'ls'`- Landy - Szalay estimator
 
-For more details on estimator formulae see
-https://arxiv.org/pdf/1211.6211.pdf
+    `'ph'` - Peebles- Hauser estimator
 
-Calculation of Anisotropic 2pCF
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    `'hew'` - Hewitt estimator
 
-Calculation of 2pCF
-~~~~~~~~~~~~~~~~~~~
+    `'h'` - Hamilton estimator
+
+    For more details on estimator formulae see https://arxiv.org/pdf/1211.6211.pdf
+
+Calculation of Anisotropic (3D) 2pCF
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Usage of the package is given in jupyter notebook "Using correlcalc
 example-anisotropic.nb" and in ``main.py``
@@ -245,177 +192,143 @@ example-anisotropic.nb" and in ``main.py``
 All the methods in correlcalc can be imported using the following
 command
 
-``from correlcalc import *``
+::
 
-We first need to define bins (in :math:`c/H_0` units) to calculate 2pCF.
-For e.g. to calculate correlation between 0-180Mpc in steps of 6Mpc, we
-say
+    `from correlcalc import *`
 
-``bins=np.arange(0.002,0.06,0.002)``
+    We first need to define bins (in $c/H_0$ units) to calculate 2pCF. For e.g. to calculate correlation between 0-180Mpc in steps of 6Mpc, we say
 
-To calculate anisotropic 2pCF using input data file (both ascii and fits
-files are supported), use ``atpcf`` method as follows
+    `bins=np.arange(0.002,0.06,0.002)`
 
-``correl2d, poserr=atpcf('/path/to/datfile.dat',bins, randfile='/path/to/randomfile.dat', permetric='apzdth', parmetric='apdz', weights=True)``
+    To calculate anisotropic 2pCF using input data file (both ascii and fits files are supported), use `atpcf` method as follows
 
-If random file is not available or not provided, we can generate random
-catalog by providing the mangle mask file in ``.ply`` format along with
-specifying the size of the catalog in multiples of size of data catalog
-(default 2x size). To do this
+    `correl3d, poserr=atpcf('/path/to/datfile.dat',binspar, binsper, randfile='/path/to/randomfile.dat', vtype='sigpi', weights=True)`
 
-``correl2d, poserr=atpcf('/path/to/datfile.dat', bins, maskfile='/path/to/maskfile.ply', permetric='apzdth', parmetric='apdz', weights=True, randfact=3)``
 
-This returns ``correl2d`` and ``poserr`` ``numpy`` arrays corresponding
-to anisotropic Two-point correlation and Poisson error
+    If random file is not available or not provided, we can generate random catalog by providing the mangle mask file in `.ply` format along with specifying the size of the catalog in multiples of size of data catalog (default 2x size). To do this
 
-Keyword Arguments
-~~~~~~~~~~~~~~~~~
+    `correl3d, poserr=atpcf('/path/to/datfile.dat', binspar, binsper, maskfile='/path/to/maskfile.ply', vtype='smu', weights='eq', randfact=3)`
 
-The following keyword arguments can be included as needed
+    This returns `correl3d` and `poserr` `numpy` arrays corresponding to anisotropic Two-point correlation and Poisson error
 
-Data file (Mandatory)
-^^^^^^^^^^^^^^^^^^^^^
+    ### Keyword Arguments
+    The following keyword arguments can be included as needed
 
-Data file of galaxy/quasar redshift survey must be passed as the first
-argument to both ``tpcf`` and ``atpcf`` methods.
+    #### Data file (Mandatory)
 
-**Supported filetypes**: ascii text files with columns, csv files or
-fits files are all supported. Most files provided by SDSS Value added
-catalogs should be directly usable.
+    Data file of galaxy/quasar redshift survey must be passed as the first argument to both `tpcf` and `atpcf` methods.
 
-**To contain**: Any type of file provided must at least have columns
-named **Z** (redshift), **RA** (Right Ascension), **DEC** (Declination).
-These column names can be in any case.
+    **Supported filetypes**: ascii text files with columns, csv files or fits files are all supported. Most files provided by SDSS Value added catalogs should be directly usable.
 
-If one intends to use ``weights=True`` option (must to obtain accurate
-results) the data file must also contain radial weights with column
-title **radial\_weight** or **WEIGHT\_SYSTOT**
+     **To contain**: Any type of file provided must at least have columns named **Z** (redshift), **RA** (Right Ascension), **DEC** (Declination). These column names can be in any case.
 
-bins (Mandatory)
-^^^^^^^^^^^^^^^^
+     If one intends to use `weights=True` option (must to obtain accurate results) the data file must also contain radial weights with column title **radial_weight** or **WEIGHT_SYSTOT**
 
-A numpy array with ascending values in :math:`c/H_0` units must be
-provided as the second argument to both ``tpcf`` and ``atpcf`` methods.
-In case of ``atpcf`` it automatically creates 2D bins as
-``bins2d=(bins,bins)`` from provided 1D ``bins``
+    #### binspar (Mandatory)
 
-``randfile=`` Path to random file (semi-Optional)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    A numpy array with ascending values in $c/H_0$ units (for distances) or $\delta z$ as per choice of `'vtype'` must be provided as the second argument to  `atpcf` method.
 
-If not provided, ``maskfile=`` argument must be given ``.ply`` file.
+    #### binsper (Mandatory)
 
-**Supported filetypes**: ascii text files with columns, csv files or
-fits files are all supported. Most files provided by SDSS Value added
-catalogs should be directly usable.
+    A numpy array with ascending values in $c/H_0$ units (for distances), $z\delta \theta$ or $\mu = \cos \alpha$ must be provided as the third argument to  `atpcf` method.
 
-**To contain**: Any type of file provided must at least have columns
-named **Z** (redshift), **RA** (Right Ascension), **DEC** (Declination).
-These column names can be in any case.
 
-If one intends to use ``weights=True`` option (must to obtain accurate
-results) the data file must also contain radial weights with column
-title **radial\_weight** or **WEIGHT\_SYSTOT**
+    #### `randfile=` Path to random file (semi-Optional)
 
-**To add:** In future support for other column titles for weights will
-be added. To also add calculation of weights from n(z) and for random
-catalog generation.
+    If not provided, `maskfile=` argument must be given `.ply` file.
 
-``mask=`` Path to mangle polygon file (semi-Optional)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    **Supported filetypes**: ascii text files with columns, csv files or fits files are all supported. Most files provided by SDSS Value added catalogs should be directly usable.
 
-If not provided, ``randfile=`` argument must be provided.
+     **To contain**: Any type of file provided must at least have columns named **Z** (redshift), **RA** (Right Ascension), **DEC** (Declination). These column names can be in any case.
 
-**Supported filetypes**: ``.ply`` file containing Mangle polygons
-describing survey geometry in the standard format. Most files provided
-by SDSS Value added catalogs should be directly usable.
+     If one intends to use `weights=True` option the data file must also contain radial weights with column title **radial_weight** or **WEIGHT_SYSTOT**
 
-``randfact=`` (Optional)
-^^^^^^^^^^^^^^^^^^^^^^^^
+    **Beta Testing:** Beta support for other column titles for weights is added.
 
-Size of the random catalog in integer multiples of size of data catalog
-if random catalog file is not provided. Default value is ``2``
+     Also added is calculation of weights from n(z) during random catalog generation.
 
-``weights=`` (Optional)
-^^^^^^^^^^^^^^^^^^^^^^^
+    #### `mask=` Path to mangle polygon file (semi-Optional)
 
-It is highly recommended to use weights argument by providing
-``weights=True`` to obtain accurate two-point correlation calculations.
-This picks up radial weights in the prescribed format (with column title
-**radial\_weight** or **WEIGHT\_SYSTOT** ) from the data and random
-files provided.
+    If not provided, `randfile=` argument must be provided.
 
-If ``weights=False``, by default *+1* will be added for each
-galaxy/random pair found within the bin instead of adding total weight.
-For more details on weights and references, see
-http://www.sdss3.org/dr9/tutorials/lss\_galaxy.php
+    **Supported filetypes**: `.ply` file containing Mangle polygons describing survey geometry in the standard format. Most files provided by SDSS Value added catalogs should be directly usable.
 
-Metrics in parallel and perpendicular directions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    #### `randfact=` (Optional)
 
-Currently calculates anisotropic 2pCF only in angular co-ordinates.
-Currently only small :math:`\Delta \theta` and :math:`z \Delta\theta`
-are supported. But results can be converted to any cosmology model of
-choice (ref: https://arxiv.org/pdf/1312.0003.pdf)
+    Size of the random catalog in integer multiples of size of data catalog if random catalog file is not provided. Default value is `2`
 
-``parmetric=`` (Mandatory)
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+    #### `weights=` (Optional)
 
-Metric to calculate distance in the line-of-sight direction. Currently
-only ``'apdz'`` is supported
+    It is highly recommended to use weights argument by providing `weights=True` or `weights='eq'` to obtain accurate two-point correlation calculations. This picks up radial weights in the prescribed format (with column title **radial_weight** or **WEIGHT_SYSTOT** ) from the data and random files provided.
 
-``permetric=`` (Mandatory)
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+    `weights=`eq'` sets equal weights and hence adds *+1* - This implementation is parallelized and is faster than `weights=False` implementation on most machines
 
-Metric to calculate distance perpendicular to the line-of-sight
-direction. Currently only ``'apzdth'`` is supported
+    If `weights=False`, by default *+1* will be added for each galaxy/random pair found within the bin instead of adding total weight. For more details on weights and references, see http://www.sdss3.org/dr9/tutorials/lss_galaxy.php
 
-**Customization**
+    #### Metrics in parallel and perpendicular directions
 
-Formulae for calculation of distances in parallel and perpendicular
-directions is taken from https://arxiv.org/pdf/1312.0003.pdf. Using the
-formulae in this paper, :math:`\Delta z` and :math:`z \Delta \theta` are
-computed in the ``metrics.pyx`` file for the above mentioned. ``Cython``
-is chosen for implementation to obtain faster results in building
-``BallTree``\ s calculating ``cdist`` and to reduce ``query`` time.
+    Calculates anisotropic 2pCF for the following cases.
 
-One can customize metric definitions as per one's need by editing the
-``metrics.pyx`` file. After changing this compile it using
-``python metricsetup.py build_ext --inplace``
+    #### `vtype=`
 
-**To add:**
+    Valuation method
 
-Direct calculation of distances in LOS and perpendicular to the LOS to
-be added to support standard model Cosmology and other popular models.
-For now, one needs to manually convert the angular bins to physical
-distances to get the approximate results
+    **Available options**:
 
-``cosmology='lcdm'`` (Optional)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    `'smu'` (default)- Calculates 2pCF in s - mu
 
-Used to calculate co-moving distances from redshifts.
+     `'sigpi'` - Calculates 2pCF using parallel and perpendicular distances
 
-**Available options**:
+    `'ap'` calculates 2pCF for small $\Delta \theta$ and $z \Delta\theta$ . But results can be converted to any cosmology model of choice (ref: https://arxiv.org/pdf/1312.0003.pdf)
 
-``'lcdm'`` (default)- for Lambda CDM model
+     **Customization**
 
-``'lc'`` - for :math:`R_h=ct` and linear coasting models
+     Formulae for calculation of distances in parallel and perpendicular directions is taken from https://arxiv.org/pdf/1312.0003.pdf. Using the formulae in this paper, $\Delta z$ and $z \Delta \theta$ are computed in the `metrics.pyx` file for the above mentioned. `Cython` is chosen for implementation to obtain faster results in building `BallTree`s  calculating `cdist` and to reduce `query` time.
 
-**To add**: ``wcdm`` and other popular cosmology models soon
+     One can customize metric definitions as per one's need by editing the `metrics.pyx` file. After changing this compile it using `python metricsetup.py build_ext --inplace`
 
-``estimator=`` (Optional)
-^^^^^^^^^^^^^^^^^^^^^^^^^
+     **To add:**
 
-**Available options**:
+     Direct calculation of distances in LOS and perpendicular to the LOS to be added to support standard model Cosmology and other popular models. For now, one needs to manually convert the angular bins to  physical distances to get the approximate results
 
-``'dp'`` - Davis - Peebles estimator (default - fastest)
 
-``'ls'``- Landy - Szalay estimator
+    #### `cosmology='lcdm'` (Optional)
 
-``'ph'`` - Peebles- Hauser estimator
+    Used to calculate co-moving distances from redshifts.
 
-``'hew'`` - Hewitt estimator
+    **Available options**:
 
-``'h'`` - Hamilton estimator
+    `'lcdm'` (default)- for Lambda CDM model
 
-For more details on estimator formulae see
-https://arxiv.org/pdf/1211.6211.pdf
+     `'lc'` - for $R_h=ct$ and linear coasting models
+
+     **To add**: `wcdm` and other popular cosmology models soon
+
+    #### `geometry='flat'` (Optional)
+
+    Used to calculate co-moving distances between a pair of objects
+
+    **Available options**:
+
+    `'flat'` (default)- for Lambda CDM model
+
+     `'open'`
+
+     `'close'`
+
+
+    #### `estimator=` (Optional)
+
+    **Available options**:
+
+    `'dp'` - Davis - Peebles estimator (default - fastest)
+
+    `'ls'`- Landy - Szalay estimator
+
+    `'ph'` - Peebles- Hauser estimator
+
+    `'hew'` - Hewitt estimator
+
+    `'h'` - Hamilton estimator
+
+    For more details on estimator formulae see https://arxiv.org/pdf/1211.6211.pdf

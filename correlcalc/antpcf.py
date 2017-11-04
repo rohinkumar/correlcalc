@@ -22,14 +22,14 @@ def atpcf(datfile, binspar, binsper, **kwargs):
 
     To calculate anisotropic 2pCF using input data file (both ascii and fits files are supported), use `atpcf` method as follows
 
-    `correl2d, poserr=atpcf('/path/to/datfile.dat',bins, randfile='/path/to/randomfile.dat', permetric='apzdth', parmetric='apdz', weights=True)`
+    `correl3d, poserr=atpcf('/path/to/datfile.dat',binspar, binsper, randfile='/path/to/randomfile.dat', vtype='sigpi', weights=True)`
 
 
     If random file is not available or not provided, we can generate random catalog by providing the mangle mask file in `.ply` format along with specifying the size of the catalog in multiples of size of data catalog (default 2x size). To do this
 
-    `correl2d, poserr=atpcf('/path/to/datfile.dat', bins, maskfile='/path/to/maskfile.ply', permetric='apzdth', parmetric='apdz', weights=True, randfact=3)`
+    `correl3d, poserr=atpcf('/path/to/datfile.dat', binspar, binsper, maskfile='/path/to/maskfile.ply', vtype='smu', weights='eq', randfact=3)`
 
-    This returns `correl2d` and `poserr` `numpy` arrays corresponding to anisotropic Two-point correlation and Poisson error
+    This returns `correl3d` and `poserr` `numpy` arrays corresponding to anisotropic Two-point correlation and Poisson error
 
     ### Keyword Arguments
     The following keyword arguments can be included as needed
@@ -44,9 +44,14 @@ def atpcf(datfile, binspar, binsper, **kwargs):
 
      If one intends to use `weights=True` option (must to obtain accurate results) the data file must also contain radial weights with column title **radial_weight** or **WEIGHT_SYSTOT**
 
-    #### bins (Mandatory)
+    #### binspar (Mandatory)
 
-    A numpy array with ascending values in $c/H_0$ units must be provided as the second argument to both `tpcf` and `atpcf` methods. In case of `atpcf` it automatically creates 2D bins as `bins2d=(bins,bins)` from provided 1D `bins`
+    A numpy array with ascending values in $c/H_0$ units (for distances) or $\delta z$ as per choice of `'vtype'` must be provided as the second argument to  `atpcf` method.
+
+    #### binsper (Mandatory)
+
+    A numpy array with ascending values in $c/H_0$ units (for distances), $z\delta \theta$ or $\mu = \cos \alpha$ must be provided as the third argument to  `atpcf` method.
+
 
     #### `randfile=` Path to random file (semi-Optional)
 
@@ -56,10 +61,11 @@ def atpcf(datfile, binspar, binsper, **kwargs):
 
      **To contain**: Any type of file provided must at least have columns named **Z** (redshift), **RA** (Right Ascension), **DEC** (Declination). These column names can be in any case.
 
-     If one intends to use `weights=True` option (must to obtain accurate results) the data file must also contain radial weights with column title **radial_weight** or **WEIGHT_SYSTOT**
+     If one intends to use `weights=True` option the data file must also contain radial weights with column title **radial_weight** or **WEIGHT_SYSTOT**
 
-     **To add:** In future support for other column titles for weights will be added. To also add calculation of weights from n(z) and for random catalog generation.
+    **Beta Testing:** Beta support for other column titles for weights is added.
 
+     Also added is calculation of weights from n(z) during random catalog generation.
 
     #### `mask=` Path to mangle polygon file (semi-Optional)
 
@@ -73,22 +79,27 @@ def atpcf(datfile, binspar, binsper, **kwargs):
 
     #### `weights=` (Optional)
 
-    It is highly recommended to use weights argument by providing `weights=True` to obtain accurate two-point correlation calculations. This picks up radial weights in the prescribed format (with column title **radial_weight** or **WEIGHT_SYSTOT** ) from the data and random files provided.
+    It is highly recommended to use weights argument by providing `weights=True` or `weights='eq'` to obtain accurate two-point correlation calculations. This picks up radial weights in the prescribed format (with column title **radial_weight** or **WEIGHT_SYSTOT** ) from the data and random files provided.
+
+    `weights=`eq'` sets equal weights and hence adds *+1* - This implementation is parallelized and is faster than `weights=False` implementation on most machines
 
     If `weights=False`, by default *+1* will be added for each galaxy/random pair found within the bin instead of adding total weight. For more details on weights and references, see http://www.sdss3.org/dr9/tutorials/lss_galaxy.php
 
     #### Metrics in parallel and perpendicular directions
 
-    Currently calculates anisotropic 2pCF only in angular co-ordinates. Currently only small $\Delta \theta$ and $z \Delta\theta$ are supported. But results can be converted to any cosmology model of choice (ref: https://arxiv.org/pdf/1312.0003.pdf)
+    Calculates anisotropic 2pCF for the following cases.
 
-    #### `parmetric=` (Mandatory)
+    #### `vtype=`
 
-    Metric to calculate distance in the line-of-sight direction. Currently only `'apdz'` is supported
+    Valuation method
 
-    #### `permetric=` (Mandatory)
+    **Available options**:
 
-    Metric to calculate distance perpendicular to the line-of-sight direction. Currently only `'apzdth'` is supported
+    `'smu'` (default)- Calculates 2pCF in s - mu
 
+     `'sigpi'` - Calculates 2pCF using parallel and perpendicular distances
+
+    `'ap'` calculates 2pCF for small $\Delta \theta$ and $z \Delta\theta$ . But results can be converted to any cosmology model of choice (ref: https://arxiv.org/pdf/1312.0003.pdf)
 
      **Customization**
 
@@ -112,6 +123,19 @@ def atpcf(datfile, binspar, binsper, **kwargs):
      `'lc'` - for $R_h=ct$ and linear coasting models
 
      **To add**: `wcdm` and other popular cosmology models soon
+
+    #### `geometry='flat'` (Optional)
+
+    Used to calculate co-moving distances between a pair of objects
+
+    **Available options**:
+
+    `'flat'` (default)- for Lambda CDM model
+
+     `'open'`
+
+     `'close'`
+
 
     #### `estimator=` (Optional)
 
@@ -154,9 +178,8 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     randfile = None
     maskfile = None
 
-
     # Options for correl calculation estimators and cosmology models
-    mlist = ['dp', 'ls', 'ph', 'hew', 'h']
+    mlist = ['dp', 'ls', 'ph', 'hew', 'h', 'opt']
     clist = ['lcdm', 'lc'] # to add wcdm
     glist = ['flat', 'open', 'close']
     parper = ['ap', 'sigpi', 'smu']

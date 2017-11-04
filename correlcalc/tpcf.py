@@ -35,7 +35,7 @@ def tpcf(datfile, bins, **kwargs):
 
     To calculate 2pCF using input data file (both ascii and fits files are supported), use `tpcf` method as follows
 
-    `correl, poserr=tpcf('/path/to/datfile.dat',bins, randfile='/path/to/randomfile.dat', weights=True)`
+    `correl, poserr=tpcf('/path/to/datfile.dat',bins, randfile='/path/to/randomfile.dat', weights='eq')`
 
     If random file is not available or not provided, we can generate random catalog by providing the mangle mask file in `.ply` format along with specifying the size of the catalog in multiples of size of data catalog (default 2x size). To do this
 
@@ -70,7 +70,9 @@ def tpcf(datfile, bins, **kwargs):
 
      If one intends to use `weights=True` option (must to obtain accurate results) the data file must also contain radial weights with column title **radial_weight** or **WEIGHT_SYSTOT**
 
-     **To add:** In future support for other column titles for weights will be added. To also add calculation of weights from n(z) and for random catalog generation.
+     **Beta Testing:** Beta support for other column titles for weights is added.
+
+     Also added is calculation of weights from n(z) during random catalog generation.
 
 
     #### `mask=` Path to mangle polygon file (semi-Optional)
@@ -85,7 +87,9 @@ def tpcf(datfile, bins, **kwargs):
 
     #### `weights=` (Optional)
 
-    It is highly recommended to use weights argument by providing `weights=True` to obtain accurate two-point correlation calculations. This picks up radial weights in the prescribed format (with column title **radial_weight** or **WEIGHT_SYSTOT** ) from the data and random files provided.
+    It is highly recommended to use weights argument by providing `weights=True` or `weights='eq'` to obtain accurate two-point correlation calculations. This picks up radial weights in the prescribed format (with column title **radial_weight** or **WEIGHT_SYSTOT** ) from the data and random files provided.
+
+    `weights=`eq'` sets equal weights and hence adds *+1* - This implementation is parallelized and is faster than `weights=False` implementation on most machines
 
     If `weights=False`, by default *+1* will be added for each galaxy/random pair found within the bin instead of adding total weight. For more details on weights and references, see http://www.sdss3.org/dr9/tutorials/lss_galaxy.php
 
@@ -149,7 +153,7 @@ def tpcf(datfile, bins, **kwargs):
     maskfile = None
 
     # Options for correl calculation estimators and cosmology models
-    elist = ['dp', 'ls', 'ph', 'hew', 'h']
+    elist = ['dp', 'ls', 'ph', 'hew', 'h', 'opt']
     clist = ['lcdm', 'lc'] # add wcdm
 
     if kwargs is not None:
@@ -251,7 +255,7 @@ def tpcf(datfile, bins, **kwargs):
     global Nr
     Nr = len(datR)
 
-    fact = Nr/Nd
+    fact = (1.0*Nr)/Nd
 
     # Creating module-wise global balltrees so that they don't have to be created many times.
 
@@ -502,6 +506,7 @@ def crosscorrwrd(dat, datR, bins, metric, weights):
     RD = np.zeros(len(bins)-1)
     # p=multiprocessing.Pool(processes=multiprocessing.cpu_count())
     # RD=p.map(rdcalc, range(len(datR)))
+    binmax = max(bins)
     for i in tqdm(range(len(datR))):
     # def rdcalc():
         ind = dbt.query_radius(datR[i].reshape(1, -1), binmax)
