@@ -3,7 +3,7 @@ __author__ = 'Rohin Kumar Y'
 
 # Calculate anisotropic 2pCF
 from tpcf import *
-
+import scipy as sp
 # antpcf(dat,datR,bins,parmetric,permetric) returns numpy 2d array DD, RR, DR correl
 # poserr(xi,DD) returns (1.0+xi)/np.sqrt(DD)
 
@@ -162,6 +162,7 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     global datR
     global Nd
     global Nr
+    DD = DR = RD = RR = np.zeros(len(bins))
     weightsflag = False
     useones = False
     cosmology = 'lcdm'
@@ -179,7 +180,7 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     maskfile = None
 
     # Options for correl calculation estimators and cosmology models
-    mlist = ['dp', 'ls', 'ph', 'hew', 'h', 'opt']
+    mlist = ['dp', 'ls', 'ph', 'hew', 'h']
     clist = ['lcdm', 'lc'] # to add wcdm
     glist = ['flat', 'open', 'close']
     parper = ['ap', 'sigpi', 'smu']
@@ -470,6 +471,13 @@ def atpcf(datfile, binspar, binsper, **kwargs):
             # correl = (DD*RR)/DR**2 - 1.0
     correlerr = poserr(correl, DD)
     print("Anisotropic Two-point correlation=")
+    np.savetxt("aDD_"+str(cosmology)+"_"+str(geometry)+"_"+str(vtype)+"_"+str(estimator)+".txt", DD)
+    np.savetxt("aDR_"+str(cosmology)+"_"+str(geometry)+"_"+str(vtype)+"_"+str(estimator)+".txt", DR)
+    np.savetxt("aRD_"+str(cosmology)+"_"+str(geometry)+"_"+str(vtype)+"_"+str(estimator)+".txt", RD)
+    np.savetxt("aRR_"+str(cosmology)+"_"+str(geometry)+"_"+str(vtype)+"_"+str(estimator)+".txt", RR)
+    np.savetxt("abinspar_"+str(cosmology)+"_"+str(geometry)+"_"+str(vtype)+"_"+str(estimator)+".txt", binspar)
+    np.savetxt("abinsper_"+str(cosmology)+"_"+str(geometry)+"_"+str(vtype)+"_"+str(estimator)+".txt", binsper)
+    np.savetxt("atpcf_"+str(cosmology)+"_"+str(geometry)+"_"+str(vtype)+"_"+str(estimator)+".txt", (correl, correlerr))
     print (correl, correlerr)
     return correl, correlerr
 
@@ -754,3 +762,25 @@ def amulti_crosscpr(dat, datR, binspar, binsper, parmetric, permetric, rng, rwei
     # DR = DR/(Nd*Nr)
     print (DR/2.0)
     return DR/2.0
+
+
+def ximonopole(correlsmu,mu):
+    xi0 = np.sum(correlsmu*sp.legendre(0)(mu),axis=1)
+    np.savetxt("xi0.txt",xi0)
+    return xi0
+
+
+def xidipole(correlsmu,mu):
+    xi2 = np.sum(5.0*correlsmu*sp.legendre(2)(mu),axis=1)
+    np.savetxt("xi2.txt",xi2)
+    return xi2
+
+
+def xiquadpole(correlsmu,mu):
+    xi4 = np.sum(9.0*correlsmu*sp.legendre(4)(mu),axis=1)
+    np.savetxt("xi4.txt",xi4)
+    return xi4
+
+
+# def beta(correlsmu, mu):
+#     betav =

@@ -141,6 +141,7 @@ def tpcf(datfile, bins, **kwargs):
     # weights = np.array([])
     global dat
     global datR
+    DD = DR = RD = RR = np.zeros(len(bins))
     weightsflag = False
     useones = False
     cosmology = 'lcdm'
@@ -153,7 +154,7 @@ def tpcf(datfile, bins, **kwargs):
     maskfile = None
 
     # Options for correl calculation estimators and cosmology models
-    elist = ['dp', 'ls', 'ph', 'hew', 'h', 'opt']
+    elist = ['dp', 'ls', 'ph', 'hew', 'h']
     clist = ['lcdm', 'lc'] # add wcdm
 
     if kwargs is not None:
@@ -179,6 +180,7 @@ def tpcf(datfile, bins, **kwargs):
             elif key.lower() == 'estimator':
                 if value.lower() in elist:
                     estimator = value.lower()
+                    print estimator
                 else:
                     print("Incorrect estimator provided! Using 'dp' as default")
             elif key.lower() == 'cosmology':
@@ -337,6 +339,12 @@ def tpcf(datfile, bins, **kwargs):
             correl = (4.0*DD*RR)/(DR+RD)**2 - 1.0
     correlerr = poserr(correl, DD)
     print("Two-point correlation=")
+    np.savetxt("DD_"+str(cosmology)+"_"+str(geometry)+"_"+str(estimator)+".txt", DD)
+    np.savetxt("DR_"+str(cosmology)+"_"+str(geometry)+"_"+str(estimator)+".txt", DR)
+    np.savetxt("RD_"+str(cosmology)+"_"+str(geometry)+"_"+str(estimator)+".txt", RD)
+    np.savetxt("RR_"+str(cosmology)+"_"+str(geometry)+"_"+str(estimator)+".txt", RR)
+    np.savetxt("bins_"+str(cosmology)+"_"+str(geometry)+"_"+str(estimator)+".txt", bins)
+    np.savetxt("tpcf_"+str(cosmology)+"_"+str(geometry)+"_"+str(estimator)+".txt", (correl, correlerr))
     print (correl, correlerr)
     return correl, correlerr
 
@@ -372,7 +380,7 @@ def DRcalc(dat, bins):
     return DR/2.0
 
 def RDcalc(datR, bins):
-    print ("Calculating RD...\n DR=")
+    print ("Calculating RD...\n RD=")
     RD = crosscorrd(datR, bins)
     RD[RD == 0] = 1.0
     # Nd = len(dat)
