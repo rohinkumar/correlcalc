@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: correlcalc
-Version: 0.9989
+Version: 0.9990
 Summary: Two-point correlation function (2pCF) calculation
 Home-page: http://github.com/rohinkumar/correlcalc
 Author: Rohin Kumar Y
@@ -40,6 +40,9 @@ Description: correlcalc
         
         If you do not have root permission, you can install by adding
         "``--user``" at the end of above commands
+        
+        If you have an older version installed already you can upgrade by
+        "``pip install correlcalc --upgrade``" command
         
         A note on Dependencies:
         ~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,7 +91,7 @@ Description: correlcalc
         To calculate 2pCF using input data file (both ascii and fits files are
         supported), use ``tpcf`` method as follows
         
-        ``correl, poserr=tpcf('/path/to/datfile.dat',bins, randfile='/path/to/randomfile.dat', weights=True)``
+        ``correl, poserr=tpcf('/path/to/datfile.dat',bins, randfile='/path/to/randomfile.dat', weights='eq')``
         
         If random file is not available or not provided, we can generate random
         catalog by providing the mangle mask file in ``.ply`` format along with
@@ -148,9 +151,11 @@ Description: correlcalc
         results) the data file must also contain radial weights with column
         title **radial\_weight** or **WEIGHT\_SYSTOT**
         
-        **To add:** In future support for other column titles for weights will
-        be added. To also add calculation of weights from n(z) and for random
-        catalog generation.
+        **Beta Testing:** Beta support for other column titles for weights is
+        added.
+        
+        Also added is calculation of weights from n(z) during random catalog
+        generation.
         
         ``mask=`` Path to mangle polygon file (semi-Optional)
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -171,10 +176,13 @@ Description: correlcalc
         ^^^^^^^^^^^^^^^^^^^^^^^
         
         It is highly recommended to use weights argument by providing
-        ``weights=True`` to obtain accurate two-point correlation calculations.
-        This picks up radial weights in the prescribed format (with column title
-        **radial\_weight** or **WEIGHT\_SYSTOT** ) from the data and random
-        files provided.
+        ``weights=True`` or ``weights='eq'`` to obtain accurate two-point
+        correlation calculations. This picks up radial weights in the prescribed
+        format (with column title **radial\_weight** or **WEIGHT\_SYSTOT** )
+        from the data and random files provided.
+        
+        ``weights=``\ eq'\ ``sets equal weights and hence adds *+1* - This implementation is parallelized and is faster than``\ weights=False\`
+        implementation on most machines
         
         If ``weights=False``, by default *+1* will be added for each
         galaxy/random pair found within the bin instead of adding total weight.
@@ -242,11 +250,8 @@ Description: correlcalc
         For more details on estimator formulae see
         https://arxiv.org/pdf/1211.6211.pdf
         
-        Calculation of Anisotropic 2pCF
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        
-        Calculation of 2pCF
-        ~~~~~~~~~~~~~~~~~~~
+        Calculation of Anisotropic (3D) 2pCF
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
         Usage of the package is given in jupyter notebook "Using correlcalc
         example-anisotropic.nb" and in ``main.py``
@@ -265,16 +270,16 @@ Description: correlcalc
         To calculate anisotropic 2pCF using input data file (both ascii and fits
         files are supported), use ``atpcf`` method as follows
         
-        ``correl2d, poserr=atpcf('/path/to/datfile.dat',bins, randfile='/path/to/randomfile.dat', permetric='apzdth', parmetric='apdz', weights=True)``
+        ``correl3d, poserr=atpcf('/path/to/datfile.dat',binspar, binsper, randfile='/path/to/randomfile.dat', vtype='sigpi', weights=True)``
         
         If random file is not available or not provided, we can generate random
         catalog by providing the mangle mask file in ``.ply`` format along with
         specifying the size of the catalog in multiples of size of data catalog
         (default 2x size). To do this
         
-        ``correl2d, poserr=atpcf('/path/to/datfile.dat', bins, maskfile='/path/to/maskfile.ply', permetric='apzdth', parmetric='apdz', weights=True, randfact=3)``
+        ``correl3d, poserr=atpcf('/path/to/datfile.dat', binspar, binsper, maskfile='/path/to/maskfile.ply', vtype='smu', weights='eq', randfact=3)``
         
-        This returns ``correl2d`` and ``poserr`` ``numpy`` arrays corresponding
+        This returns ``correl3d`` and ``poserr`` ``numpy`` arrays corresponding
         to anisotropic Two-point correlation and Poisson error
         
         Keyword Arguments
@@ -300,13 +305,19 @@ Description: correlcalc
         results) the data file must also contain radial weights with column
         title **radial\_weight** or **WEIGHT\_SYSTOT**
         
-        bins (Mandatory)
-        ^^^^^^^^^^^^^^^^
+        binspar (Mandatory)
+        ^^^^^^^^^^^^^^^^^^^
         
-        A numpy array with ascending values in :math:`c/H_0` units must be
-        provided as the second argument to both ``tpcf`` and ``atpcf`` methods.
-        In case of ``atpcf`` it automatically creates 2D bins as
-        ``bins2d=(bins,bins)`` from provided 1D ``bins``
+        A numpy array with ascending values in :math:`c/H_0` units (for
+        distances) or :math:`\delta z` as per choice of ``'vtype'`` must be
+        provided as the second argument to ``atpcf`` method.
+        
+        binsper (Mandatory)
+        ^^^^^^^^^^^^^^^^^^^
+        
+        A numpy array with ascending values in :math:`c/H_0` units (for
+        distances), :math:`z\delta \theta` or :math:`\mu = \cos \alpha` must be
+        provided as the third argument to ``atpcf`` method.
         
         ``randfile=`` Path to random file (semi-Optional)
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -321,13 +332,15 @@ Description: correlcalc
         named **Z** (redshift), **RA** (Right Ascension), **DEC** (Declination).
         These column names can be in any case.
         
-        If one intends to use ``weights=True`` option (must to obtain accurate
-        results) the data file must also contain radial weights with column
-        title **radial\_weight** or **WEIGHT\_SYSTOT**
+        If one intends to use ``weights=True`` option the data file must also
+        contain radial weights with column title **radial\_weight** or
+        **WEIGHT\_SYSTOT**
         
-        **To add:** In future support for other column titles for weights will
-        be added. To also add calculation of weights from n(z) and for random
-        catalog generation.
+        **Beta Testing:** Beta support for other column titles for weights is
+        added.
+        
+        Also added is calculation of weights from n(z) during random catalog
+        generation.
         
         ``mask=`` Path to mangle polygon file (semi-Optional)
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -348,10 +361,13 @@ Description: correlcalc
         ^^^^^^^^^^^^^^^^^^^^^^^
         
         It is highly recommended to use weights argument by providing
-        ``weights=True`` to obtain accurate two-point correlation calculations.
-        This picks up radial weights in the prescribed format (with column title
-        **radial\_weight** or **WEIGHT\_SYSTOT** ) from the data and random
-        files provided.
+        ``weights=True`` or ``weights='eq'`` to obtain accurate two-point
+        correlation calculations. This picks up radial weights in the prescribed
+        format (with column title **radial\_weight** or **WEIGHT\_SYSTOT** )
+        from the data and random files provided.
+        
+        ``weights=``\ eq'\ ``sets equal weights and hence adds *+1* - This implementation is parallelized and is faster than``\ weights=False\`
+        implementation on most machines
         
         If ``weights=False``, by default *+1* will be added for each
         galaxy/random pair found within the bin instead of adding total weight.
@@ -361,22 +377,22 @@ Description: correlcalc
         Metrics in parallel and perpendicular directions
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         
-        Currently calculates anisotropic 2pCF only in angular co-ordinates.
-        Currently only small :math:`\Delta \theta` and :math:`z \Delta\theta`
-        are supported. But results can be converted to any cosmology model of
-        choice (ref: https://arxiv.org/pdf/1312.0003.pdf)
+        Calculates anisotropic 2pCF for the following cases.
         
-        ``parmetric=`` (Mandatory)
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+        ``vtype=``
+        ^^^^^^^^^^
         
-        Metric to calculate distance in the line-of-sight direction. Currently
-        only ``'apdz'`` is supported
+        Valuation method
         
-        ``permetric=`` (Mandatory)
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+        **Available options**:
         
-        Metric to calculate distance perpendicular to the line-of-sight
-        direction. Currently only ``'apzdth'`` is supported
+        ``'smu'`` (default)- Calculates 2pCF in s - mu
+        
+        ``'sigpi'`` - Calculates 2pCF using parallel and perpendicular distances
+        
+        ``'ap'`` calculates 2pCF for small :math:`\Delta \theta` and
+        :math:`z \Delta\theta` . But results can be converted to any cosmology
+        model of choice (ref: https://arxiv.org/pdf/1312.0003.pdf)
         
         **Customization**
         
@@ -410,6 +426,19 @@ Description: correlcalc
         ``'lc'`` - for :math:`R_h=ct` and linear coasting models
         
         **To add**: ``wcdm`` and other popular cosmology models soon
+        
+        ``geometry='flat'`` (Optional)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        
+        Used to calculate co-moving distances between a pair of objects
+        
+        **Available options**:
+        
+        ``'flat'`` (default)- for Lambda CDM model
+        
+        ``'open'``
+        
+        ``'close'``
         
         ``estimator=`` (Optional)
         ^^^^^^^^^^^^^^^^^^^^^^^^^
