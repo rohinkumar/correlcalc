@@ -141,7 +141,7 @@ def tpcf(datfile, bins, **kwargs):
     # weights = np.array([])
     global dat
     global datR
-    DD = DR = RD = RR = np.zeros(len(bins))
+    DD = DR = RD = RR = np.zeros(len(bins)-1)
     weightsflag = False
     useones = False
     cosmology = 'lcdm'

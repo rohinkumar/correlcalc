@@ -162,7 +162,7 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     global datR
     global Nd
     global Nr
-    DD = DR = RD = RR = np.zeros(len(bins))
+    DD = DR = RD = RR = np.zeros(len(binspar)-1, len(binsper)-1)
     weightsflag = False
     useones = False
     cosmology = 'lcdm'
