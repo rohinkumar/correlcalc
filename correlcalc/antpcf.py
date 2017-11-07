@@ -162,7 +162,7 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     global datR
     global Nd
     global Nr
-    DD = DR = RD = RR = np.zeros(len(binspar)-1, len(binsper)-1)
+    DD = DR = RD = RR = np.zeros((len(binspar)-1, len(binsper)-1))
     weightsflag = False
     useones = False
     cosmology = 'lcdm'
@@ -477,7 +477,8 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     np.savetxt("aRR_"+str(cosmology)+"_"+str(geometry)+"_"+str(vtype)+"_"+str(estimator)+".txt", RR)
     np.savetxt("abinspar_"+str(cosmology)+"_"+str(geometry)+"_"+str(vtype)+"_"+str(estimator)+".txt", binspar)
     np.savetxt("abinsper_"+str(cosmology)+"_"+str(geometry)+"_"+str(vtype)+"_"+str(estimator)+".txt", binsper)
-    np.savetxt("atpcf_"+str(cosmology)+"_"+str(geometry)+"_"+str(vtype)+"_"+str(estimator)+".txt", (correl, correlerr))
+    np.savetxt("atpcf_"+str(cosmology)+"_"+str(geometry)+"_"+str(vtype)+"_"+str(estimator)+".txt", correl)
+    np.savetxt("atpcferr_"+str(cosmology)+"_"+str(geometry)+"_"+str(vtype)+"_"+str(estimator)+".txt", correlerr)
     print (correl, correlerr)
     return correl, correlerr
 
