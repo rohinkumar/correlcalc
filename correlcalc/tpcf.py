@@ -142,8 +142,8 @@ def tpcf(datfile, bins, **kwargs):
     global dat
     global datR
     DD = DR = RD = RR = np.zeros(len(bins)-1)
-    weightsflag = False
-    useones = False
+    weightsflag = True
+    useones = True
     cosmology = 'lcdm'
     geometry = 'flat'
     metric = flatdistsq
@@ -193,6 +193,8 @@ def tpcf(datfile, bins, **kwargs):
             elif key.lower() == 'weights':
                 if value is True:
                     weightsflag = True
+                    useones = False
+
                     # fdat=readinfile(datfile,ftype='internal')
                     # weights=1.0/(1.0+4.0*np.array(fdat['nz']))
                     # weights=weights/np.mean(weights)

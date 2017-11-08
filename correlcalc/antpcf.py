@@ -163,8 +163,8 @@ def atpcf(datfile, binspar, binsper, **kwargs):
     global Nd
     global Nr
     DD = DR = RD = RR = np.zeros((len(binspar)-1, len(binsper)-1))
-    weightsflag = False
-    useones = False
+    weightsflag = True
+    useones = True
     cosmology = 'lcdm'
     sflag = True
     geometry='flat'
@@ -227,6 +227,7 @@ def atpcf(datfile, binspar, binsper, **kwargs):
             elif key.lower() == 'weights':
                 if value is True:
                     weightsflag = True
+                    useones = False
                 elif isinstance(value, str):
                     if value.lower() == 'eq':
                         weightsflag = True
@@ -766,19 +767,19 @@ def amulti_crosscpr(dat, datR, binspar, binsper, parmetric, permetric, rng, rwei
 
 
 def ximonopole(correlsmu,mu):
-    xi0 = np.sum(correlsmu*sp.legendre(0)(mu),axis=1)
+    xi0 = np.sum(correlsmu*sp.special.legendre(0)(mu),axis=1)
     np.savetxt("xi0.txt",xi0)
     return xi0
 
 
 def xidipole(correlsmu,mu):
-    xi2 = np.sum(5.0*correlsmu*sp.legendre(2)(mu),axis=1)
+    xi2 = np.sum(5.0*correlsmu*sp.special.legendre(2)(mu),axis=1)
     np.savetxt("xi2.txt",xi2)
     return xi2
 
 
 def xiquadpole(correlsmu,mu):
-    xi4 = np.sum(9.0*correlsmu*sp.legendre(4)(mu),axis=1)
+    xi4 = np.sum(9.0*correlsmu*sp.special.legendre(4)(mu),axis=1)
     np.savetxt("xi4.txt",xi4)
     return xi4
 
