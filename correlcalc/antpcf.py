@@ -766,23 +766,30 @@ def amulti_crosscpr(dat, datR, binspar, binsper, parmetric, permetric, rng, rwei
     return DR/2.0
 
 
-def ximonopole(correlsmu,mu):
-    xi0 = np.sum(correlsmu*sp.special.legendre(0)(mu),axis=1)
+def ximonopole(correlsmu, mu):
+    xi0 = np.sum(correlsmu*sp.special.legendre(0)(mu),axis=1)/len(mu)
     np.savetxt("xi0.txt",xi0)
     return xi0
 
 
-def xidipole(correlsmu,mu):
-    xi2 = np.sum(5.0*correlsmu*sp.special.legendre(2)(mu),axis=1)
+def xidipole(correlsmu, mu):
+    xi2 = np.sum(5.0*correlsmu*sp.special.legendre(2)(mu),axis=1)/len(mu)
     np.savetxt("xi2.txt",xi2)
     return xi2
 
 
-def xiquadpole(correlsmu,mu):
-    xi4 = np.sum(9.0*correlsmu*sp.special.legendre(4)(mu),axis=1)
+def xiquadpole(correlsmu, mu):
+    xi4 = np.sum(9.0*correlsmu*sp.special.legendre(4)(mu),axis=1)/len(mu)
     np.savetxt("xi4.txt",xi4)
     return xi4
 
+def beta(correlsmu, mu):
+    xis0 = ximonopole(correlsmu,mu)
+    xis2 = xidipole(correlsmu,mu)
+    xis4 = xiquadpole(correlsmu,mu)
+    xir = xis0*sp.special.legendre(0)(mu) + xis2*sp.special.legendre(2)(mu) + xis4*sp.special.legendre(4)(mu)
+    r = xir/xis0
+    return 5.0/3.0*(np.sqrt(1.8*r-0.8)-1.0)
 
 # def beta(correlsmu, mu):
 #     betav =
