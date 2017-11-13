@@ -3,3 +3,4 @@
 *.tar.gz
 *.out
 *.txt
+./clusterresults/*
