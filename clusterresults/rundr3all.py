@@ -1,0 +1,13 @@
+from correlcalc import *
+bins = np.arange(0.002,0.062,0.002)
+corrdr3flcls=tpcf('/usr3/vstr/yrohin/Downloads/DR3-ns.ascii',bins,randfile='/usr3/vstr/yrohin/Downloads/random-DR3-ns.ascii',estimator='ls',cosmology='lc',weights='eq')
+print("--------------------------------------------------------------------------------------------------------------")
+corrdr3olcls=tpcf('/usr3/vstr/yrohin/Downloads/DR3-ns.ascii',bins,randfile='/usr3/vstr/yrohin/Downloads/random-DR3-ns.ascii',estimator='ls',cosmology='lc',weights='eq',geometry='open')
+print("--------------------------------------------------------------------------------------------------------------")
+corrdr3flclsw=tpcf('/usr3/vstr/yrohin/Downloads/DR3-ns.ascii',bins,randfile='/usr3/vstr/yrohin/Downloads/random-DR3-ns.ascii',estimator='ls',cosmology='lc',weights=True)
+print("--------------------------------------------------------------------------------------------------------------")
+corrdr3flolsw=tpcf('/usr3/vstr/yrohin/Downloads/DR3-ns.ascii',bins,randfile='/usr3/vstr/yrohin/Downloads/random-DR3-ns.ascii',estimator='ls',cosmology='lc',weights=True,geometry='open')
+print("--------------------------------------------------------------------------------------------------------------")
+corrdr3flcdmls=tpcf('/usr3/vstr/yrohin/Downloads/DR3-ns.ascii',bins,randfile='/usr3/vstr/yrohin/Downloads/random-DR3-ns.ascii',estimator='ls',cosmology='lcdm',weights='eq')
+print("--------------------------------------------------------------------------------------------------------------")
+corrdr3flcls=tpcf('/usr3/vstr/yrohin/Downloads/DR3-ns.ascii',bins,randfile='/usr3/vstr/yrohin/Downloads/random-DR3-ns.ascii',estimator='ls',cosmology='lcdm',weights=True)
